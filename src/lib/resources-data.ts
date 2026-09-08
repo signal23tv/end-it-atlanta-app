@@ -55,6 +55,11 @@ export type FultonLocation = {
   services: ServiceTag[];
   note: string;
   officialUrl: string;
+  // Geocoded once via OpenStreetMap's free Nominatim service (2026-09-08),
+  // not an estimate -- used to plot real pins on the Find a Clinic map
+  // without needing a paid Maps API key. Re-geocode if an address changes.
+  lat: number;
+  lng: number;
 };
 
 export const FULTON_LOCATIONS: FultonLocation[] = [
@@ -70,6 +75,8 @@ export const FULTON_LOCATIONS: FultonLocation[] = [
     note: "Services may be walk-in or appointment-only. Calling before visiting and making an appointment are recommended.",
     officialUrl:
       "https://fultoncountyboh.com/services/adult-health/hiv/hiv-testing-and-prevention/",
+    lat: 33.7540614,
+    lng: -84.3885946,
   },
   {
     id: "adamsville",
@@ -81,6 +88,8 @@ export const FULTON_LOCATIONS: FultonLocation[] = [
     services: ["prep", "unsure"],
     note: "Call before visiting to confirm service availability and appointment requirements.",
     officialUrl: "https://fultoncountyboh.com/services/adult-health/sexual-health/",
+    lat: 33.7631602,
+    lng: -84.5095681,
   },
   {
     id: "college_park",
@@ -93,6 +102,8 @@ export const FULTON_LOCATIONS: FultonLocation[] = [
     note: "Call before visiting to confirm service availability and appointment requirements.",
     officialUrl:
       "https://fultoncountyboh.com/services/adult-health/hiv/hiv-testing-and-prevention/",
+    lat: 33.6509834,
+    lng: -84.4516939,
   },
   {
     id: "neighborhood_union",
@@ -105,6 +116,8 @@ export const FULTON_LOCATIONS: FultonLocation[] = [
     services: ["prep", "unsure"],
     note: "General building hours and individual clinic hours may differ. Call before visiting.",
     officialUrl: "https://fultoncountyboh.com/services/adult-health/sexual-health/",
+    lat: 33.7596461,
+    lng: -84.4103844,
   },
 ];
 
@@ -119,6 +132,8 @@ export type MoreResource = {
   note: string;
   officialUrl: string;
   officialUrl2?: string;
+  lat: number;
+  lng: number;
 };
 
 export const MORE_RESOURCES: MoreResource[] = [
@@ -128,6 +143,8 @@ export const MORE_RESOURCES: MoreResource[] = [
     address: "523 Church Street, Decatur, GA 30030",
     phone: "404-589-9040",
     prepPhone: "678-365-4300",
+    lat: 33.7761578,
+    lng: -84.2947472,
     servicesLabel:
       "Free HIV testing and prevention counseling; PrEP, PEP, and STI services",
     services: ["testing", "prep", "pep", "sti", "unsure"],

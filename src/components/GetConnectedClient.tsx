@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   FULTON_LOCATIONS,
@@ -15,6 +16,18 @@ import {
   type MoreResource,
 } from "@/lib/resources-data";
 import { sendReferralEvent, submitConnectionRequest } from "@/lib/tracking";
+
+// Leaflet touches `window` at import time, so it can only run in the
+// browser -- ssr: false keeps it out of the server render entirely
+// instead of crashing the build.
+const ClinicMap = dynamic(() => import("@/components/ClinicMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="rounded-xl border border-black/10 mb-8 h-80 flex items-center justify-center text-muted text-sm bg-black/[0.03]">
+      Loading map…
+    </div>
+  ),
+});
 
 const SERVICE_LABELS: Record<string, string> = {
   testing: "getting tested",
@@ -441,6 +454,17 @@ export default function GetConnectedClient() {
               All locations ↗
             </a>
           </p>
+
+          <ClinicMap
+            pins={[...FULTON_LOCATIONS, ...MORE_RESOURCES].map((loc) => ({
+              id: loc.id,
+              name: loc.name,
+              address: loc.address,
+              phone: loc.phone,
+              lat: loc.lat,
+              lng: loc.lng,
+            }))}
+          />
 
           <div className="grid md:grid-cols-2 gap-5">
             {orderedFulton.map((loc) => (
