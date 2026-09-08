@@ -59,7 +59,7 @@ export default function ToddChat({
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-19rem)] min-h-[22rem] max-h-[38rem] bg-white border border-black/10 rounded-xl overflow-hidden">
+    <div className="flex flex-col h-[calc(100dvh-19rem)] min-h-[22rem] max-h-[38rem] bg-white text-black border border-black/10 rounded-xl overflow-hidden">
       {!configured && (
         <div className="bg-gold/20 border-b border-gold text-black text-xs px-4 py-2">
           Demo mode: Todd&apos;s AI backend isn&apos;t connected yet. Messages
@@ -77,7 +77,7 @@ export default function ToddChat({
                 <button
                   key={t}
                   onClick={() => send(t)}
-                  className="text-xs border border-black/15 hover:border-gold rounded-full px-3 py-1.5"
+                  className="text-xs text-black border border-black/15 hover:border-gold rounded-full px-3 py-1.5"
                 >
                   {t}
                 </button>
@@ -114,7 +114,7 @@ export default function ToddChat({
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask Todd anything..."
           disabled={isPending}
-          className="flex-1 rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-gold"
+          className="flex-1 rounded-md border border-black/15 px-3 py-2 text-sm text-black placeholder:text-black/40 outline-none focus:border-gold"
         />
         <button
           type="submit"
