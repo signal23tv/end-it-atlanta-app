@@ -8,6 +8,7 @@ import {
   TODD_CONTACT,
   LAST_VERIFIED,
   mapsUrl,
+  mapEmbedUrl,
   telHref,
   type ServiceTag,
   type FultonLocation,
@@ -40,6 +41,7 @@ function ResourceCard({
 }) {
   const isRecommended =
     Boolean(selectedService) && selectedService !== "unsure" && loc.services.includes(selectedService!);
+  const [showMap, setShowMap] = useState(false);
 
   return (
     <article
@@ -89,6 +91,13 @@ function ResourceCard({
         >
           Get Directions
         </a>
+        <button
+          type="button"
+          onClick={() => setShowMap((s) => !s)}
+          className="border border-black/15 text-black text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
+        >
+          {showMap ? "Hide Map" : "Show Map"}
+        </button>
         <a
           href={loc.officialUrl}
           target="_blank"
@@ -111,6 +120,17 @@ function ResourceCard({
           Ask For Help Connecting
         </a>
       </div>
+      {showMap && (
+        <div className="mt-4 rounded-lg overflow-hidden border border-black/10">
+          <iframe
+            src={mapEmbedUrl(loc.address)}
+            title={`Map showing ${loc.name}`}
+            loading="lazy"
+            className="w-full h-64 border-0"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      )}
     </article>
   );
 }

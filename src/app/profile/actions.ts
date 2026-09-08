@@ -24,6 +24,12 @@ export async function toggleFollow(
     await supabase
       .from("follows")
       .insert({ follower_id: user.id, following_id: targetUserId });
+
+    await supabase.from("notifications").insert({
+      user_id: targetUserId,
+      actor_id: user.id,
+      type: "follow",
+    });
   }
 
   revalidatePath(`/profile/${username}`);

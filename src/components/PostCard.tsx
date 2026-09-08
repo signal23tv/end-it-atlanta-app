@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useOptimistic, useTransition } from "react";
 import { toggleLike } from "@/app/feed/actions";
+import CommentThread from "@/components/CommentThread";
 import type { Post } from "@/lib/types";
 
 function timeAgo(iso: string): string {
@@ -61,8 +62,12 @@ export default function PostCard({ post }: { post: Post }) {
         >
           ♥ {optimistic.count}
         </button>
-        <span className="text-muted">{post.comment_count} comments</span>
+        <span className="text-muted">
+          {post.comment_count} {post.comment_count === 1 ? "comment" : "comments"}
+        </span>
       </div>
+
+      <CommentThread postId={post.id} />
     </article>
   );
 }

@@ -69,8 +69,90 @@ export async function toggleLike(postId: string, currentlyLiked: boolean) {
       .eq("user_id", user.id);
   } else {
     await supabase.from("likes").insert({ post_id: postId, user_id: user.id });
+
+    // Notify the post's author -- but only on a new like, not an
+    // unlike, and never notify someone about their own like.
+    const { data: post } = await supabase
+      .from("posts")
+      .select("author_id")
+      .eq("id", postId)
+      .maybeSingle();
+    if (post && post.author_id !== user.id) {
+      await supabase.from("notifications").insert({
+        user_id: post.author_id,
+        actor_id: user.id,
+        type: "like",
+        post_id: postId,
+      });
+    }
   }
 
   revalidatePath("/feed");
   revalidatePath("/profile/[username]", "page");
+}
+
+export type CommentItem = {
+  id: string;
+  content: string;
+  created_at: string;
+  author: { username: string; display_name: string } | null;
+};
+
+export async function getComments(postId: string): Promise<CommentItem[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("comments")
+    .select(
+      "id, content, created_at, author:profiles!comments_author_id_fkey(username, display_name)"
+    )
+    .eq("post_id", postId)
+    .is("deleted_at", null)
+    .order("created_at", { ascending: true });
+
+  return (data as unknown as CommentItem[]) ?? [];
+}
+
+export type CommentState = { error?: string };
+
+export async function addComment(
+  postId: string,
+  _prev: CommentState,
+  formData: FormData
+): Promise<CommentState> {
+  const content = String(formData.get("content") || "").trim();
+  if (!content) return { error: "Write something before commenting." };
+  if (content.length > 1000) return { error: "Comments are limited to 1000 characters." };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "You must be logged in to comment." };
+
+  const { data: comment, error } = await supabase
+    .from("comments")
+    .insert({ post_id: postId, author_id: user.id, content })
+    .select("id")
+    .single();
+
+  if (error) return { error: "Couldn't post that comment — try again." };
+
+  const { data: post } = await supabase
+    .from("posts")
+    .select("author_id")
+    .eq("id", postId)
+    .maybeSingle();
+  if (post && post.author_id !== user.id) {
+    await supabase.from("notifications").insert({
+      user_id: post.author_id,
+      actor_id: user.id,
+      type: "comment",
+      post_id: postId,
+      comment_id: comment?.id ?? null,
+    });
+  }
+
+  revalidatePath("/feed");
+  revalidatePath("/profile/[username]", "page");
+  return {};
 }

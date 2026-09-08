@@ -142,6 +142,18 @@ export function mapsUrl(address: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
+/**
+ * Keyless embeddable map for a real street address. No Google Maps
+ * API key required or configured -- this is the classic query-param
+ * embed format (`/maps?q=...&output=embed`), which Google still
+ * serves without a key. If a real Google Maps Embed API key is ever
+ * added, this is the one place to swap it in for the officially
+ * supported version.
+ */
+export function mapEmbedUrl(address: string) {
+  return `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+}
+
 export function telHref(phone: string) {
   return `tel:+1${phone.replace(/[^0-9]/g, "")}`;
 }
