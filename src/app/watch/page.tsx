@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
+import ToddLauncher from "@/components/ToddLauncher";
 
 export default function WatchPage() {
   return (
@@ -21,6 +22,7 @@ export default function WatchPage() {
           <p className="text-xs text-muted">Planned for a later phase of the build.</p>
         </div>
       </main>
+      <ToddLauncher />
       <BottomNav />
     </>
   );

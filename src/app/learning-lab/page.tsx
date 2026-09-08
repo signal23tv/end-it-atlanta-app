@@ -112,7 +112,7 @@ export default function LearningLabPage() {
         </section>
 
         {/* MYTH VS FACT */}
-        <section className="py-16 bg-black text-paper">
+        <section id="myth-vs-fact" className="py-16 bg-black text-paper scroll-mt-20">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="font-display text-3xl md:text-4xl mb-8">MYTH VS. FACT</h2>
             <div className="flex flex-col gap-4">

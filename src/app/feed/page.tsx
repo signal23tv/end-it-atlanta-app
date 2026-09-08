@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
+import ToddLauncher from "@/components/ToddLauncher";
 import PostComposer from "@/components/PostComposer";
 import PostCard from "@/components/PostCard";
 import { getFeedPosts } from "@/lib/posts";
@@ -49,7 +50,7 @@ const QUICK_ACTIONS: {
     ),
   },
   {
-    href: "/#events",
+    href: "/events",
     label: "Events",
     sub: "What's happening.",
     accent: "bg-purple-500/15 text-purple-300 border-purple-500/30",
@@ -125,6 +126,7 @@ export default async function FeedPage() {
           </div>
         </div>
       </main>
+      <ToddLauncher />
       <BottomNav />
     </>
   );

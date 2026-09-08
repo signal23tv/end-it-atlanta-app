@@ -44,7 +44,13 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/settings") ||
     request.nextUrl.pathname.startsWith("/todd") ||
     request.nextUrl.pathname.startsWith("/watch") ||
-    request.nextUrl.pathname.startsWith("/more");
+    request.nextUrl.pathname.startsWith("/more") ||
+    request.nextUrl.pathname.startsWith("/prep-basics") ||
+    request.nextUrl.pathname.startsWith("/events") ||
+    request.nextUrl.pathname.startsWith("/programs") ||
+    request.nextUrl.pathname.startsWith("/nut-juice");
+  // Intentionally NOT protected: /help (crisis resources -- must work
+  // with no login) and /about (public marketing-style content).
 
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone();

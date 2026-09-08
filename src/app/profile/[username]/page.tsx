@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
+import ToddLauncher from "@/components/ToddLauncher";
 import PostCard from "@/components/PostCard";
 import FollowButton from "@/components/FollowButton";
 import { createClient } from "@/lib/supabase/server";
@@ -102,6 +103,7 @@ export default async function ProfilePage({
           )}
         </div>
       </main>
+      <ToddLauncher />
       <BottomNav />
     </>
   );

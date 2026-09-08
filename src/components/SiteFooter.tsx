@@ -47,6 +47,14 @@ export default function SiteFooter() {
               Privacy Notice
             </Link>
           </div>
+          <div>
+            <span className="block text-red uppercase tracking-wide text-xs mb-1">
+              Need Help Now?
+            </span>
+            <Link href="/help" className="text-paper/80 hover:text-gold">
+              Crisis & Urgent Resources
+            </Link>
+          </div>
         </div>
       </div>
 

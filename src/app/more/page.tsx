@@ -9,8 +9,14 @@ const LINKS: { href: string; label: string; description: string }[] = [
   { href: "/settings/profile", label: "Edit Profile", description: "Name, username, bio, photo" },
   { href: "/settings/notifications", label: "Notifications", description: "Push alerts and preferences" },
   { href: "/todd", label: "Todd the PrEP God", description: "Chat about PrEP, testing, and prevention" },
+  { href: "/prep-basics", label: "PrEP Basics", description: "What PrEP is, how it works, and your options" },
   { href: "/get-connected", label: "Get Connected", description: "Find testing and PrEP resources near you" },
+  { href: "/events", label: "Events", description: "Upcoming community events" },
+  { href: "/programs", label: "Community Programs", description: "Where we show up across Atlanta" },
+  { href: "/nut-juice", label: "Nut Juice", description: "Coming soon — join the waitlist" },
   { href: "/learning-lab", label: "Learning Lab", description: "HIV and PrEP education, sourced facts" },
+  { href: "/about", label: "About / Mission", description: "Who we are and what we're working toward" },
+  { href: "/help", label: "Emergency / Help", description: "Crisis and urgent-care resources, no login needed" },
   { href: "/privacy", label: "Privacy Notice", description: "How your data is used and protected" },
 ];
 
@@ -71,3 +77,4 @@ export default async function MorePage() {
     </>
   );
 }
+
