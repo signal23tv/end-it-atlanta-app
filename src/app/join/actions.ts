@@ -10,16 +10,20 @@ export type AvatarColor = (typeof AVATAR_COLORS)[number];
  * table. Never includes name, email, phone, or any entered field
  * value — only the event type and campaign code, per Section 22.
  */
-export async function logJoinEvent(
-  eventType:
-    | "join_landing_view"
-    | "age_gate_blocked"
-    | "eligible_form_started"
-    | "form_submitted"
-    | "contact_verification_completed"
-    | "account_activated",
-  campaignCode: string
-) {
+export type JoinEventType =
+  | "join_landing_view"
+  | "age_gate_blocked"
+  | "eligible_form_started"
+  | "form_submitted"
+  | "contact_verification_completed"
+  | "account_activated"
+  | "installed_context_observed"
+  | "notification_permission_result"
+  | "push_subscription_registered"
+  | "welcome_push_accepted"
+  | "welcome_push_opened";
+
+export async function logJoinEvent(eventType: JoinEventType, campaignCode: string) {
   const supabase = await createClient();
   await supabase.from("referral_events").insert({
     anonymous_session_id: `join-${crypto.randomUUID()}`,

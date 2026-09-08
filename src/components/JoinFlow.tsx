@@ -9,8 +9,17 @@ import {
   type StartJoinState,
   type VerifyJoinState,
 } from "@/app/join/actions";
+import InstallPrompt from "@/components/InstallPrompt";
+import NotificationSetup from "@/components/NotificationSetup";
 
-type Step = "age_gate" | "blocked" | "form" | "otp" | "success";
+type Step =
+  | "age_gate"
+  | "blocked"
+  | "form"
+  | "otp"
+  | "success"
+  | "install"
+  | "notifications";
 
 const AVATAR_SWATCHES: { value: string; hex: string; label: string }[] = [
   { value: "red", hex: "#e5161c", label: "Red" },
@@ -278,13 +287,24 @@ export default function JoinFlow({
           <div className="bg-paper text-black rounded-xl p-6 flex flex-col gap-3 text-center">
             <h1 className="text-2xl">You&apos;re in.</h1>
             <p className="text-sm">Welcome to END IT ATLANTA.</p>
-            <Link
-              href="/feed"
+            <button
+              onClick={() => setStep("install")}
               className="mt-2 bg-red hover:bg-red-dark text-paper font-bold uppercase tracking-wide rounded-md py-3"
             >
               Continue
-            </Link>
+            </button>
           </div>
+        )}
+
+        {step === "install" && (
+          <InstallPrompt onContinue={() => setStep("notifications")} />
+        )}
+
+        {step === "notifications" && (
+          <NotificationSetup
+            campaignCode={campaignCode}
+            onDone={() => (window.location.href = "/feed")}
+          />
         )}
       </div>
     </main>

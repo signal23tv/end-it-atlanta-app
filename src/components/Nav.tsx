@@ -33,6 +33,12 @@ export default async function Nav() {
               <Link href={`/profile/${username}`} className="hover:text-gold">
                 Profile
               </Link>
+              <Link href="/todd" className="hover:text-gold">
+                Todd
+              </Link>
+              <Link href="/settings/notifications" className="hover:text-gold">
+                Settings
+              </Link>
               <form action={logout}>
                 <button type="submit" className="hover:text-gold">
                   Log out
