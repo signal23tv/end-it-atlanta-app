@@ -59,7 +59,7 @@ export default function ToddChat({
   }
 
   return (
-    <div className="flex flex-col h-[70vh] bg-white border border-black/10 rounded-xl overflow-hidden">
+    <div className="flex flex-col h-[calc(100dvh-19rem)] min-h-[22rem] max-h-[38rem] bg-white border border-black/10 rounded-xl overflow-hidden">
       {!configured && (
         <div className="bg-gold/20 border-b border-gold text-black text-xs px-4 py-2">
           Demo mode: Todd&apos;s AI backend isn&apos;t connected yet. Messages
