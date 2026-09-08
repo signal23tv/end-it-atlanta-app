@@ -35,7 +35,7 @@ export async function signup(
 
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -50,6 +50,18 @@ export async function signup(
     // Supabase returns a generic "already registered" style message;
     // pass it through rather than guessing at specifics.
     return { error: error.message };
+  }
+
+  // Supabase intentionally returns a 200 with no error for an email
+  // that's already registered (to avoid leaking which emails exist).
+  // The tell is an empty identities array. Without this check the
+  // form would show "check your email" even though nothing was sent
+  // and no account was created or changed.
+  if (data.user && data.user.identities && data.user.identities.length === 0) {
+    return {
+      error:
+        "An account with that email already exists. Try logging in instead, or use \"Forgot password\" on the login page.",
+    };
   }
 
   return { success: true };

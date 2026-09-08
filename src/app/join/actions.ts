@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient, isAdminConfigured } from "@/lib/supabase/admin";
 
 const AVATAR_COLORS = ["red", "gold", "blue", "purple", "cyan"] as const;
 export type AvatarColor = (typeof AVATAR_COLORS)[number];
@@ -35,16 +36,26 @@ export async function logJoinEvent(eventType: JoinEventType, campaignCode: strin
 
 export type StartJoinState = {
   error?: string;
-  otpSent?: boolean;
+  activated?: boolean;
   email?: string;
 };
 
 /**
- * Step 1: collect the 4 core fields, validate server-side (never
- * trust the client's age gate alone), and send a single email OTP.
- * This does NOT create a visible member yet -- the profile row is
- * only created by the database trigger once the code is verified
- * (see the on_auth_user_confirmed trigger).
+ * Collect the 4 core fields, validate server-side (never trust the
+ * client's age gate alone), and create the account immediately --
+ * no email/SMS verification step. This is a deliberate product
+ * decision (documented in IMPLEMENTATION_STATUS.md): reducing
+ * signup friction matters more than confirming contact info right
+ * now, and there's no SMS provider configured anyway. Email and
+ * phone are still captured and stored -- just not verified.
+ *
+ * Implementation: the service-role admin client creates the auth
+ * user with email_confirm: true, which makes it look identical (to
+ * the rest of the app) to a normal confirmed signup -- the existing
+ * on_auth_user_created trigger fires immediately and creates the
+ * profile, referral attribution, and signup receipt in one shot.
+ * We then sign the new user in with the anon-key server client so
+ * they land in an authenticated session right away.
  */
 export async function startJoin(
   _prevState: StartJoinState,
@@ -69,70 +80,67 @@ export async function startJoin(
     return { error: "Invalid avatar selection." };
   }
 
-  const supabase = await createClient();
+  if (!isAdminConfigured()) {
+    return {
+      error:
+        "Signup isn't fully configured yet on the server (missing admin key). Contact the site owner.",
+    };
+  }
+  const admin = createAdminClient();
+  if (!admin) {
+    return { error: "Signup isn't available right now. Try again shortly." };
+  }
 
   const username = `member_${crypto.randomUUID().slice(0, 8)}`;
+  const randomPassword = crypto.randomUUID() + crypto.randomUUID();
 
-  const { error } = await supabase.auth.signInWithOtp({
+  const { data: created, error: createError } = await admin.auth.admin.createUser({
     email,
-    options: {
-      shouldCreateUser: true,
-      data: {
-        display_name: displayName,
-        username,
-        phone: phone || null,
-        age_band: ageBand,
-        avatar_color: avatarColor,
-        campaign_code: campaignCode || null,
-      },
+    password: randomPassword,
+    email_confirm: true,
+    user_metadata: {
+      display_name: displayName,
+      username,
+      phone: phone || null,
+      age_band: ageBand,
+      avatar_color: avatarColor,
+      campaign_code: campaignCode || null,
     },
   });
 
-  if (error) {
-    return { error: "Couldn't send a verification code. Try again." };
+  if (createError) {
+    // Most common case: email already has an account.
+    if (createError.message?.toLowerCase().includes("already been registered")) {
+      return {
+        error: "An account with that email already exists. Try logging in instead.",
+      };
+    }
+    return { error: "Couldn't create your account. Try again." };
+  }
+  if (!created?.user) {
+    return { error: "Couldn't create your account. Try again." };
+  }
+
+  // Establish a real session for the new user via the cookie-aware
+  // server client (separate from the admin client above).
+  const supabase = await createClient();
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+    email,
+    password: randomPassword,
+  });
+
+  if (signInError) {
+    // Account exists but we couldn't start a session automatically.
+    // Not fatal -- they can log in with "forgot password" later --
+    // but flag it rather than pretending everything's normal.
+    return {
+      error:
+        "Your account was created, but we couldn't sign you in automatically. Try logging in.",
+    };
   }
 
   await logJoinEvent("form_submitted", campaignCode);
-
-  return { otpSent: true, email };
-}
-
-export type VerifyJoinState = {
-  error?: string;
-  verified?: boolean;
-};
-
-/**
- * Step 2: verify the single OTP code. On success this confirms the
- * email, which fires the trigger that creates the profile, records
- * attribution, and generates the signup receipt -- all in one
- * transactional path, and idempotent if retried.
- */
-export async function verifyJoinOtp(
-  _prevState: VerifyJoinState,
-  formData: FormData
-): Promise<VerifyJoinState> {
-  const email = String(formData.get("email") || "").trim();
-  const token = String(formData.get("token") || "").trim();
-  const campaignCode = String(formData.get("campaign_code") || "").trim();
-
-  if (!email || !token) {
-    return { error: "Enter the code we sent you." };
-  }
-
-  const supabase = await createClient();
-  const { error } = await supabase.auth.verifyOtp({
-    email,
-    token,
-    type: "email",
-  });
-
-  if (error) {
-    return { error: "That code is incorrect or expired. Try again or resend." };
-  }
-
-  await logJoinEvent("contact_verification_completed", campaignCode);
   await logJoinEvent("account_activated", campaignCode);
 
-  return { verified: true };
+  return { activated: true, email };
 }

@@ -29,6 +29,19 @@ export async function createPost(
     return { error: "You must be logged in to post." };
   }
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (!profile) {
+    return {
+      error:
+        "Your account is missing a profile, so posts can't be linked to you yet. This can happen on older test accounts — contact the site owner to get it fixed.",
+    };
+  }
+
   const { error } = await supabase
     .from("posts")
     .insert({ author_id: user.id, content });
