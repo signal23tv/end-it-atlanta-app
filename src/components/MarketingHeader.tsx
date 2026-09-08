@@ -24,6 +24,9 @@ export default function MarketingHeader() {
           <Link href="/#events" className="hover:text-gold">
             Events
           </Link>
+          <Link href="/get-connected" className="hover:text-gold">
+            Get Connected
+          </Link>
           <Link href="/learning-lab" className="hover:text-gold">
             Resources
           </Link>
@@ -40,10 +43,10 @@ export default function MarketingHeader() {
             Log In
           </Link>
           <Link
-            href="/get-connected"
+            href="/join/organic"
             className="bg-red hover:bg-red-dark text-xs sm:text-sm font-bold uppercase tracking-wide rounded-md px-3 sm:px-4 py-2 transition-colors"
           >
-            Take the First Step
+            Join Now
           </Link>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
+import BottomNav from "@/components/BottomNav";
 import { createClient } from "@/lib/supabase/server";
 import NotificationSettingsForm from "@/components/NotificationSettingsForm";
 
@@ -30,12 +31,13 @@ export default async function NotificationSettingsPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-[color:var(--paper)]">
+      <main className="flex-1 bg-black text-paper pb-24">
         <div className="max-w-lg mx-auto px-4 py-6">
           <h1 className="text-3xl mb-4">NOTIFICATIONS</h1>
           <NotificationSettingsForm initialPrefs={prefs} devices={devices ?? []} />
         </div>
       </main>
+      <BottomNav />
     </>
   );
 }

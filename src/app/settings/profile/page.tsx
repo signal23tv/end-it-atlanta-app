@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
+import BottomNav from "@/components/BottomNav";
 import { createClient } from "@/lib/supabase/server";
 import ProfileEditForm from "@/components/ProfileEditForm";
 
@@ -21,7 +22,7 @@ export default async function EditProfilePage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-[color:var(--paper)]">
+      <main className="flex-1 bg-black text-paper pb-24">
         <div className="max-w-sm mx-auto px-4 py-6">
           <ProfileEditForm
             displayName={profile.display_name}
@@ -29,6 +30,7 @@ export default async function EditProfilePage() {
           />
         </div>
       </main>
+      <BottomNav />
     </>
   );
 }

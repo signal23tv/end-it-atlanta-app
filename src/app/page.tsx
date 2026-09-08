@@ -29,12 +29,21 @@ export default async function Home() {
                 One city. One mission. One person at a time.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <a
-                  href="#how-it-works"
-                  className="bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
-                >
-                  Get Tested
-                </a>
+                {user ? (
+                  <Link
+                    href="/feed"
+                    className="bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
+                  >
+                    Go to Your Feed
+                  </Link>
+                ) : (
+                  <Link
+                    href="/join/organic"
+                    className="bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
+                  >
+                    Join END IT ATLANTA
+                  </Link>
+                )}
                 <a
                   href="#prep"
                   className="border border-gold text-gold hover:bg-gold hover:text-black font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
@@ -43,14 +52,7 @@ export default async function Home() {
                 </a>
               </div>
 
-              {user ? (
-                <Link
-                  href="/feed"
-                  className="inline-block mt-8 text-sm font-semibold text-gold hover:underline"
-                >
-                  Go to your feed →
-                </Link>
-              ) : (
+              {!user && (
                 <p className="mt-8 text-sm text-muted">
                   Already a member?{" "}
                   <Link href="/login" className="text-gold hover:underline">
@@ -273,7 +275,7 @@ export default async function Home() {
                 </li>
               </ul>
               <Link
-                href="/get-connected"
+                href="/join/organic"
                 className="inline-block mt-8 bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
               >
                 Take the First Step

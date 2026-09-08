@@ -42,7 +42,9 @@ export async function updateSession(request: NextRequest) {
   const isProtectedRoute =
     request.nextUrl.pathname.startsWith("/feed") ||
     request.nextUrl.pathname.startsWith("/settings") ||
-    request.nextUrl.pathname.startsWith("/todd");
+    request.nextUrl.pathname.startsWith("/todd") ||
+    request.nextUrl.pathname.startsWith("/watch") ||
+    request.nextUrl.pathname.startsWith("/more");
 
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone();

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import BottomNav from "@/components/BottomNav";
 import PostCard from "@/components/PostCard";
 import FollowButton from "@/components/FollowButton";
 import { createClient } from "@/lib/supabase/server";
@@ -54,9 +55,9 @@ export default async function ProfilePage({
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-[color:var(--paper)]">
+      <main className="flex-1 bg-black text-paper pb-24">
         <div className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-4">
-          <section className="bg-white border border-black/10 rounded-xl p-6 flex flex-col gap-2">
+          <section className="bg-white text-black border border-black/10 rounded-xl p-6 flex flex-col gap-2">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h1 className="text-4xl">{profile.display_name}</h1>
@@ -101,6 +102,7 @@ export default async function ProfilePage({
           )}
         </div>
       </main>
+      <BottomNav />
     </>
   );
 }
