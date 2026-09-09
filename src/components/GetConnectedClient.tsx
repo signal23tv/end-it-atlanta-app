@@ -23,7 +23,7 @@ import { sendReferralEvent, submitConnectionRequest } from "@/lib/tracking";
 const ClinicMap = dynamic(() => import("@/components/ClinicMap"), {
   ssr: false,
   loading: () => (
-    <div className="rounded-xl border border-black/10 mb-8 h-80 flex items-center justify-center text-muted text-sm bg-black/[0.03]">
+    <div className="rounded-xl border border-[#304055] mb-8 h-80 flex items-center justify-center text-muted text-sm bg-[#0A1422]">
       Loading map…
     </div>
   ),
@@ -58,8 +58,8 @@ function ResourceCard({
 
   return (
     <article
-      className={`rounded-xl border p-5 bg-white ${
-        isRecommended ? "border-gold ring-1 ring-gold" : "border-black/10"
+      className={`rounded-xl border p-5 bg-[#101A28] text-[#F7FAFF] ${
+        isRecommended ? "border-gold ring-1 ring-gold" : "border-[#304055]"
       }`}
     >
       {isRecommended && (
@@ -100,14 +100,14 @@ function ResourceCard({
               action: "directions",
             })
           }
-          className="border border-gold text-black text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
+          className="border border-gold text-[#F7FAFF] text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
         >
           Get Directions
         </a>
         <button
           type="button"
           onClick={() => setShowMap((s) => !s)}
-          className="border border-black/15 text-black text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
+          className="border border-[#304055] text-[#F7FAFF] text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
         >
           {showMap ? "Hide Map" : "Show Map"}
         </button>
@@ -122,7 +122,7 @@ function ResourceCard({
               action: "official_site",
             })
           }
-          className="border border-gold text-black text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
+          className="border border-gold text-[#F7FAFF] text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
         >
           View Official Info ↗
         </a>
@@ -134,7 +134,7 @@ function ResourceCard({
         </a>
       </div>
       {showMap && (
-        <div className="mt-4 rounded-lg overflow-hidden border border-black/10">
+        <div className="mt-4 rounded-lg overflow-hidden border border-[#304055]">
           <iframe
             src={mapEmbedUrl(loc.address)}
             title={`Map showing ${loc.name}`}
@@ -151,7 +151,7 @@ function ResourceCard({
 function MoreResourceCard({ loc }: { loc: MoreResource }) {
   const links = [loc.officialUrl, loc.officialUrl2].filter(Boolean) as string[];
   return (
-    <article className="rounded-xl border border-black/10 p-5 bg-white">
+    <article className="rounded-xl border border-[#304055] p-5 bg-[#101A28] text-[#F7FAFF]">
       <h3 className="font-display text-xl">{loc.name}</h3>
       <p className="text-sm mt-1">{loc.address}</p>
       <p className="text-sm text-muted mt-1">{loc.servicesLabel}</p>
@@ -171,7 +171,7 @@ function MoreResourceCard({ loc }: { loc: MoreResource }) {
           onClick={() =>
             sendReferralEvent("directions_clicked", { provider_id: loc.id, action: "directions" })
           }
-          className="border border-gold text-black text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
+          className="border border-gold text-[#F7FAFF] text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
         >
           Get Directions
         </a>
@@ -184,7 +184,7 @@ function MoreResourceCard({ loc }: { loc: MoreResource }) {
             onClick={() =>
               sendReferralEvent("official_site_clicked", { provider_id: loc.id, action: "official_site" })
             }
-            className="border border-gold text-black text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
+            className="border border-gold text-[#F7FAFF] text-xs font-bold uppercase tracking-wide rounded-md px-3 py-2"
           >
             View Official Info{links.length > 1 ? ` ${i + 1}` : ""} ↗
           </a>
@@ -281,7 +281,15 @@ export default function GetConnectedClient() {
   return (
     <>
       {/* INTRO */}
-      <section className="py-14 md:py-20">
+      <section
+        className="py-14 md:py-20"
+        style={{
+          backgroundImage:
+            "linear-gradient(180deg, rgb(6 11 19 / .3), rgb(6 11 19 / .96)), url(/assets/endit/v1/backgrounds/atmosphere-blue.svg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <div className="max-w-4xl mx-auto px-4">
           <p className="text-red font-bold uppercase tracking-wide text-sm mb-2">
             Take the First Step
@@ -291,8 +299,10 @@ export default function GetConnectedClient() {
             Choose what you need and we&apos;ll connect you with trusted Atlanta-area
             resources. You can view every resource without giving us your name.
           </p>
-          <p className="text-sm text-muted">
-            🔒 Your privacy matters. Selecting an option below does not require you to share
+          <p className="text-sm text-muted flex items-center gap-1.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/endit/v1/icons/lock.svg" alt="" width={14} height={14} />
+            Your privacy matters. Selecting an option below does not require you to share
             personal or medical information.
           </p>
         </div>
@@ -308,9 +318,9 @@ export default function GetConnectedClient() {
           >
             {(
               [
-                { key: "testing", title: "I WANT TO GET TESTED", body: "Find HIV and sexual-health testing options, phone numbers, directions, and official information." },
-                { key: "prep", title: "I WANT TO START PrEP", body: "Connect with providers who can explain PrEP, eligibility, appointments, and payment-assistance options." },
-                { key: "unsure", title: "I'M NOT SURE YET", body: "See all resources or speak with someone who can help you decide on a next step." },
+                { key: "testing", title: "I WANT TO GET TESTED", body: "Find HIV and sexual-health testing options, phone numbers, directions, and official information.", icon: "science" },
+                { key: "prep", title: "I WANT TO START PrEP", body: "Connect with providers who can explain PrEP, eligibility, appointments, and payment-assistance options.", icon: "pill" },
+                { key: "unsure", title: "I'M NOT SURE YET", body: "See all resources or speak with someone who can help you decide on a next step.", icon: "help" },
               ] as const
             ).map((s) => (
               <button
@@ -321,9 +331,17 @@ export default function GetConnectedClient() {
                 className={`text-left rounded-xl border p-5 transition-colors ${
                   selectedService === s.key
                     ? "border-gold bg-gold/10"
-                    : "border-black/15 hover:border-gold"
+                    : "border-[#304055] hover:border-gold"
                 }`}
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`/assets/endit/v1/icons/${s.icon}.svg`}
+                  alt=""
+                  width={22}
+                  height={22}
+                  className="mb-2"
+                />
                 <h2 className="font-display text-xl mb-2">{s.title}</h2>
                 <p className="text-sm text-muted">{s.body}</p>
               </button>
@@ -339,6 +357,8 @@ export default function GetConnectedClient() {
       <section className="py-10 bg-black text-paper">
         <div className="max-w-4xl mx-auto px-4">
           <div className="border border-red rounded-xl p-6">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/endit/v1/icons/warning.svg" alt="" width={26} height={26} className="mb-2" />
             <h2 className="font-display text-2xl md:text-3xl mb-3">
               WAS THE POSSIBLE EXPOSURE WITHIN THE LAST 72 HOURS?
             </h2>
@@ -366,13 +386,20 @@ export default function GetConnectedClient() {
       {/* TODD CONTACT CARD */}
       <section className="py-14">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="rounded-xl border-2 border-gold p-6 md:p-8 bg-white">
-            <p className="text-red font-bold uppercase tracking-wide text-xs mb-2">
-              Need a Human Connection?
-            </p>
-            <h2 className="font-display text-2xl md:text-3xl mb-3">
-              {TODD_CONTACT.name} — {TODD_CONTACT.role}
-            </h2>
+          <div className="rounded-xl border-2 border-gold p-6 md:p-8 bg-[#101A28] text-[#F7FAFF] flex flex-col sm:flex-row gap-5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/endit/v1/todd/todd-avatar.webp"
+              alt="Todd Hall"
+              className="w-16 h-16 rounded-full object-cover shrink-0 ring-2 ring-gold/60"
+            />
+            <div>
+              <p className="text-red font-bold uppercase tracking-wide text-xs mb-2">
+                Need a Human Connection?
+              </p>
+              <h2 className="font-display text-2xl md:text-3xl mb-3">
+                {TODD_CONTACT.name} — {TODD_CONTACT.role}
+              </h2>
             <p className="mb-5">
               Todd is END IT ATLANTA&apos;s point of contact for questions and help connecting
               with public-health resources. You may call, text, or email him directly.
@@ -392,7 +419,7 @@ export default function GetConnectedClient() {
                 onClick={() =>
                   sendReferralEvent("text_clicked", { provider_id: "todd_hall", action: "text" })
                 }
-                className="border border-gold text-black font-bold uppercase tracking-wide rounded-md px-5 py-2.5 text-sm"
+                className="border border-gold text-[#F7FAFF] font-bold uppercase tracking-wide rounded-md px-5 py-2.5 text-sm"
               >
                 Text Todd
               </a>
@@ -403,7 +430,7 @@ export default function GetConnectedClient() {
                 onClick={() =>
                   sendReferralEvent("email_clicked", { provider_id: "todd_hall", action: "email" })
                 }
-                className="border border-gold text-black font-bold uppercase tracking-wide rounded-md px-5 py-2.5 text-sm"
+                className="border border-gold text-[#F7FAFF] font-bold uppercase tracking-wide rounded-md px-5 py-2.5 text-sm"
               >
                 Email Todd
               </a>
@@ -422,12 +449,13 @@ export default function GetConnectedClient() {
               Todd is a connection resource, not an emergency service or a substitute for
               medical care.
             </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* FULTON RESOURCES */}
-      <section className="py-14 bg-black/[0.02]">
+      <section className="py-14 bg-[#0A1422]">
         <div className="max-w-5xl mx-auto px-4">
           <p className="text-red font-bold uppercase tracking-wide text-xs mb-2">
             Fulton County Board of Health
@@ -489,7 +517,7 @@ export default function GetConnectedClient() {
             ))}
           </div>
 
-          <div className="rounded-xl border border-black/15 p-6">
+          <div className="rounded-xl border border-[#304055] p-6">
             <h3 className="font-display text-xl mb-2">Find Testing Near You</h3>
             <p className="text-sm mb-4">
               Search for confidential free or low-cost HIV, STI, and related testing services
@@ -502,7 +530,7 @@ export default function GetConnectedClient() {
               onClick={() =>
                 sendReferralEvent("official_site_clicked", { provider_id: "cdc_locator", action: "official_site" })
               }
-              className="inline-block border border-gold text-black font-bold uppercase tracking-wide rounded-md px-5 py-2.5 text-sm"
+              className="inline-block border border-gold text-[#F7FAFF] font-bold uppercase tracking-wide rounded-md px-5 py-2.5 text-sm"
             >
               Search by ZIP Code ↗
             </a>
@@ -540,7 +568,7 @@ export default function GetConnectedClient() {
                 sendReferralEvent("help_form_started", { source: "get_connected_page" });
               }
             }}
-            className="flex flex-col gap-4 bg-paper text-black rounded-xl p-6"
+            className="flex flex-col gap-4 bg-[#101A28] border border-[#304055] text-[#F7FAFF] rounded-xl p-6"
           >
             {submitResult === "error" && (
               <p role="alert" className="text-red text-sm font-semibold">
@@ -560,7 +588,7 @@ export default function GetConnectedClient() {
                 autoComplete="given-name"
                 required
                 maxLength={100}
-                className="w-full rounded-md border border-black/20 px-3 py-2"
+                className="w-full rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] px-3 py-2"
               />
             </div>
 
@@ -595,7 +623,7 @@ export default function GetConnectedClient() {
                 required
                 maxLength={254}
                 inputMode={contactMethod === "email" ? "email" : "tel"}
-                className="w-full rounded-md border border-black/20 px-3 py-2"
+                className="w-full rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] px-3 py-2"
               />
               <p className="text-xs text-muted mt-1">
                 We&apos;ll use this only to follow up on your request.
@@ -613,7 +641,7 @@ export default function GetConnectedClient() {
                 pattern="[0-9]{5}"
                 maxLength={5}
                 autoComplete="postal-code"
-                className="w-full rounded-md border border-black/20 px-3 py-2"
+                className="w-full rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] px-3 py-2"
               />
             </div>
 
@@ -626,7 +654,7 @@ export default function GetConnectedClient() {
                 name="service_interest"
                 required
                 defaultValue=""
-                className="w-full rounded-md border border-black/20 px-3 py-2"
+                className="w-full rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] px-3 py-2"
               >
                 <option value="" disabled>
                   Select one
@@ -648,7 +676,7 @@ export default function GetConnectedClient() {
                 id="field-time"
                 name="preferred_time"
                 defaultValue=""
-                className="w-full rounded-md border border-black/20 px-3 py-2"
+                className="w-full rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] px-3 py-2"
               >
                 <option value="">No preference</option>
                 <option value="morning">Morning</option>
@@ -675,7 +703,7 @@ export default function GetConnectedClient() {
             </button>
 
             {submitResult === "ok" && (
-              <p role="status" aria-live="polite" className="text-sm font-semibold text-black">
+              <p role="status" aria-live="polite" className="text-sm font-semibold text-[#F7FAFF]">
                 Your request has been received. If you need immediate help, use one of the
                 phone or clinic options above.
               </p>

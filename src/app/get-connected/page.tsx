@@ -13,7 +13,7 @@ export default function GetConnectedPage() {
   return (
     <>
       <MarketingHeader />
-      <main className="flex-1 bg-paper text-black">
+      <main className="eit-app flex-1">
         <GetConnectedClient />
       </main>
       <SiteFooter />

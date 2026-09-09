@@ -46,7 +46,7 @@ export default function ClinicMap({ pins }: { pins: MapPin[] }) {
         ];
 
   return (
-    <div className="rounded-xl overflow-hidden border border-black/10 mb-8 h-80">
+    <div className="rounded-xl overflow-hidden border border-[#304055] mb-8 h-80">
       <MapContainer
         center={center}
         zoom={10}
