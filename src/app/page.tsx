@@ -15,62 +15,123 @@ export default async function Home() {
       <MarketingHeader />
 
       <main className="flex-1 bg-paper text-black">
-        {/* HERO */}
+        {/* SPLASH-STYLE INTRO */}
         <section
-          aria-label="Introduction"
-          className="relative bg-black text-paper overflow-hidden"
+          aria-label="END IT ATLANTA"
+          className="relative bg-black text-paper overflow-hidden flex flex-col items-center justify-center text-center px-4 py-20 md:py-28"
         >
-          <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <h1 className="font-display text-5xl md:text-7xl leading-[0.95] tracking-wide">
-                WE CAN END HIV IN <span className="text-red">ATLANTA.</span>
-              </h1>
-              <p className="mt-4 text-lg text-muted">
-                One city. One mission. One person at a time.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                {user ? (
-                  <Link
-                    href="/feed"
-                    className="bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
-                  >
-                    Go to Your Feed
-                  </Link>
-                ) : (
-                  <Link
-                    href="/join/organic"
-                    className="bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
-                  >
-                    Join END IT ATLANTA
-                  </Link>
-                )}
-                <a
-                  href="#prep"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/graphics/atlanta-skyline.svg"
+            alt=""
+            className="absolute bottom-0 left-0 w-full h-auto opacity-30"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(7,7,7,.55), rgba(7,7,7,.85) 60%, #070707)",
+            }}
+          />
+          <div className="relative z-10 flex flex-col items-center gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/endit/v1/brand/endit-brush-wordmark.webp"
+              alt="END IT ATLANTA"
+              className="w-56 md:w-72 h-auto"
+            />
+            <p className="text-gold text-sm md:text-base font-bold uppercase tracking-[0.3em]">
+              Test. Prevent. Treat. Connect.
+            </p>
+            <p className="text-muted text-sm max-w-xs mt-1">
+              A healthier Atlanta. A stronger tomorrow.
+            </p>
+
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              {user ? (
+                <Link
+                  href="/feed"
+                  className="bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
+                >
+                  Go to Your Feed
+                </Link>
+              ) : (
+                <Link
+                  href="/join/organic"
+                  className="bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
+                >
+                  Get Started
+                </Link>
+              )}
+              {!user && (
+                <Link
+                  href="/login"
                   className="border border-gold text-gold hover:bg-gold hover:text-black font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
                 >
-                  Learn About PrEP
-                </a>
-              </div>
-
-              {!user && (
-                <p className="mt-8 text-sm text-muted">
-                  Already a member?{" "}
-                  <Link href="/login" className="text-gold hover:underline">
-                    Log in
-                  </Link>
-                </p>
+                  Sign In
+                </Link>
               )}
             </div>
+          </div>
+        </section>
 
-            <div className="relative rounded-xl overflow-hidden">
-              <Image
-                src="/images/hero-atlanta-community.png"
-                alt="A group of five Black Atlantans standing together at dusk with the Atlanta skyline behind them"
-                width={1672}
-                height={941}
-                priority
-                className="w-full h-auto rounded-xl"
-              />
+        {/* REAL PEOPLE. REAL CONVERSATIONS. REAL CHANGE. */}
+        <section aria-label="What we help you do" className="bg-black text-paper py-16 md:py-20">
+          <div className="max-w-3xl mx-auto px-4">
+            <h2 className="font-display text-3xl md:text-4xl leading-[0.95] text-center mb-10">
+              REAL PEOPLE.
+              <br />
+              REAL CONVERSATIONS.
+              <br />
+              REAL CHANGE.
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-5">
+              {(
+                [
+                  {
+                    label: "TEST",
+                    body: "Know your status.",
+                    icon: "science",
+                    accent: "bg-blue-500/15 text-blue-300",
+                  },
+                  {
+                    label: "PREVENT",
+                    body: "Explore your options.",
+                    icon: "pill",
+                    accent: "bg-pink-500/15 text-pink-300",
+                  },
+                  {
+                    label: "TREAT",
+                    body: "Find the care you need.",
+                    icon: "hospital",
+                    accent: "bg-gold/15 text-gold",
+                  },
+                  {
+                    label: "CONNECT",
+                    body: "Be part of the movement.",
+                    icon: "users",
+                    accent: "bg-purple-500/15 text-purple-300",
+                  },
+                ] as const
+              ).map((s) => (
+                <div key={s.label} className="flex items-center gap-4">
+                  <span
+                    className={`w-11 h-11 shrink-0 rounded-full flex items-center justify-center ${s.accent}`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`/assets/endit/v1/icons/${s.icon}.svg`}
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
+                  </span>
+                  <div>
+                    <p className="font-display text-lg tracking-wide">{s.label}</p>
+                    <p className="text-muted text-sm">{s.body}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
