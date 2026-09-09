@@ -3,13 +3,23 @@ import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
 import EventsTabs from "@/components/EventsTabs";
 import { EVENTS } from "@/lib/events-data";
+import { getRsvpStates } from "@/app/events/actions";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
   title: "Events | END IT ATLANTA",
   description: "Community events from END IT ATLANTA.",
 };
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const supabase = await createClient();
+  const [
+    rsvps,
+    {
+      data: { user },
+    },
+  ] = await Promise.all([getRsvpStates(), supabase.auth.getUser()]);
+
   return (
     <>
       <Nav />
@@ -29,7 +39,7 @@ export default function EventsPage() {
             </h1>
             <p className="text-sm eit-muted mt-1">Community. Education. Action.</p>
           </div>
-          <EventsTabs events={EVENTS} />
+          <EventsTabs events={EVENTS} rsvps={rsvps} signedIn={Boolean(user)} />
         </div>
       </main>
       <ToddLauncher />

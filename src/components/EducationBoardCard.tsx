@@ -5,7 +5,7 @@ export default function EducationBoardCard({ board }: { board: EducationBoard })
   return (
     <article
       id={board.id}
-      className="rounded-xl border border-black/10 bg-white p-6 md:p-8 scroll-mt-20"
+      className="rounded-xl border border-[#304055] bg-[#101A28] text-[#F7FAFF] p-6 md:p-8 scroll-mt-20"
     >
       <p className="text-red font-bold uppercase tracking-wide text-xs mb-1">{board.eyebrow}</p>
       <h3 className="font-display text-2xl md:text-3xl mb-4">{board.title}</h3>
@@ -17,7 +17,7 @@ export default function EducationBoardCard({ board }: { board: EducationBoard })
       ))}
 
       {board.diagram && (
-        <div className="my-5 rounded-lg bg-black/[0.03] p-4">
+        <div className="my-5 rounded-lg bg-white/5 p-4">
           <ol className="flex flex-wrap items-center gap-2 text-sm font-semibold">
             {board.diagram.mainSteps.map((step, i) => (
               <li key={i} className="flex items-center gap-2">
@@ -80,7 +80,7 @@ export default function EducationBoardCard({ board }: { board: EducationBoard })
       {board.wordBreakdown && (
         <div className="grid sm:grid-cols-3 gap-3 my-5">
           {board.wordBreakdown.map((w) => (
-            <div key={w.part} className="rounded-lg bg-black/[0.03] p-4 text-center">
+            <div key={w.part} className="rounded-lg bg-white/5 p-4 text-center">
               <p className="font-display text-xl">{w.part}</p>
               <p className="text-xs text-muted mt-1">{w.meaning}</p>
             </div>
@@ -110,7 +110,7 @@ export default function EducationBoardCard({ board }: { board: EducationBoard })
             <div
               key={c.name}
               className={`rounded-lg border p-4 ${
-                c.urgent ? "border-red bg-red/5" : "border-black/10"
+                c.urgent ? "border-red bg-red/5" : "border-[#304055]"
               }`}
             >
               <p className="font-display text-xl mb-2">{c.name}</p>
@@ -146,7 +146,7 @@ export default function EducationBoardCard({ board }: { board: EducationBoard })
       {board.branches && (
         <div className="grid sm:grid-cols-2 gap-4 my-5">
           {board.branches.map((b) => (
-            <div key={b.label} className="rounded-lg bg-black/[0.03] p-4">
+            <div key={b.label} className="rounded-lg bg-white/5 p-4">
               <p className="font-semibold text-sm mb-1">{b.label}</p>
               <p className="text-sm text-muted">{b.text}</p>
             </div>
@@ -166,7 +166,7 @@ export default function EducationBoardCard({ board }: { board: EducationBoard })
         <p className="font-display text-lg text-gold-soft mt-4">{board.takeaway}</p>
       )}
 
-      <div className="mt-5 pt-4 border-t border-black/10 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
+      <div className="mt-5 pt-4 border-t border-[#304055] flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
         {board.sources.map((s) => (
           <TrackedLink
             key={s.url}

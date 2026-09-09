@@ -1,4 +1,5 @@
 import MarketingHeader from "@/components/MarketingHeader";
+import BottomNav from "@/components/BottomNav";
 import { TODD_CONTACT, CDC_PEP_URL } from "@/lib/resources-data";
 
 export const metadata = {
@@ -19,7 +20,7 @@ export default function HelpPage() {
   return (
     <>
       <MarketingHeader />
-      <main className="flex-1 bg-black text-paper">
+      <main className="flex-1 bg-black text-paper pb-24">
         <div className="max-w-2xl mx-auto px-4 py-10 flex flex-col gap-6">
           <div>
             <p className="text-red font-bold uppercase tracking-wide text-xs mb-2">
@@ -100,6 +101,7 @@ export default function HelpPage() {
           </p>
         </div>
       </main>
+      <BottomNav />
     </>
   );
 }

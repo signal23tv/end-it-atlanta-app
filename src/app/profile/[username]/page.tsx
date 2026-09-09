@@ -3,8 +3,9 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
-import PostCard from "@/components/PostCard";
+import ProfileTabs from "@/components/ProfileTabs";
 import FollowButton from "@/components/FollowButton";
+import MessageButton from "@/components/MessageButton";
 import BlockButton from "@/components/BlockButton";
 import ReportButton from "@/components/ReportButton";
 import { createClient } from "@/lib/supabase/server";
@@ -65,65 +66,83 @@ export default async function ProfilePage({
     isBlocked = Boolean(existingBlock);
   }
 
+  const joinedLabel = profile.created_at
+    ? new Date(profile.created_at).toLocaleDateString(undefined, {
+        month: "long",
+        year: "numeric",
+      })
+    : null;
+
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-black text-paper pb-24">
-        <div className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-4">
-          <section className="bg-[#101A28] text-[#F7FAFF] border border-[#304055] rounded-xl p-6 flex flex-col gap-2">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-14 h-14 shrink-0 rounded-full bg-gold/20 text-gold flex items-center justify-center font-bold uppercase text-xl">
+      <main className="eit-app flex-1 pb-24">
+        <div className="eit-shell flex flex-col gap-4">
+          <section className="rounded-xl overflow-hidden border border-[#304055] bg-[#101A28]">
+            <div
+              className="h-28 relative"
+              style={{
+                backgroundImage:
+                  "linear-gradient(180deg, rgb(6 11 19 / .35), rgb(6 11 19 / .9)), url(/assets/endit/v1/backgrounds/atmosphere-blue.svg)",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+            <div className="px-5 pb-5 -mt-10 flex flex-col gap-3">
+              <div className="flex items-end justify-between gap-4">
+                <div className="w-20 h-20 rounded-full border-4 border-[#101A28] bg-gold/20 text-gold flex items-center justify-center font-bold uppercase text-2xl shrink-0">
                   {profile.display_name?.[0] ?? profile.username[0]}
                 </div>
-                <div>
-                  <h1 className="text-4xl">{profile.display_name}</h1>
-                  <p className="text-[#B3C2D4]">@{profile.username}</p>
-                </div>
-              </div>
-              {user && !isOwnProfile && (
-                <div className="flex flex-col items-end gap-1.5">
-                  <FollowButton
-                    targetUserId={profile.id}
-                    username={profile.username}
-                    initiallyFollowing={isFollowing}
-                  />
-                  <div className="flex items-center gap-3">
-                    <ReportButton target={{ userId: profile.id }} label="Report user" />
-                    <BlockButton targetUserId={profile.id} initiallyBlocked={isBlocked} />
+                {user && !isOwnProfile && (
+                  <div className="flex flex-col items-end gap-1.5 pb-1">
+                    <div className="flex items-center gap-2">
+                      <FollowButton
+                        targetUserId={profile.id}
+                        username={profile.username}
+                        initiallyFollowing={isFollowing}
+                      />
+                      {!isBlocked && <MessageButton targetUserId={profile.id} />}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <ReportButton target={{ userId: profile.id }} label="Report user" />
+                      <BlockButton targetUserId={profile.id} initiallyBlocked={isBlocked} />
+                    </div>
                   </div>
-                </div>
-              )}
-              {isOwnProfile && (
-                <Link
-                  href="/settings/profile"
-                  className="border border-[#304055] hover:border-gold font-bold uppercase tracking-wide text-sm rounded-md px-5 py-2 transition-colors"
-                >
-                  Edit profile
-                </Link>
-              )}
-            </div>
+                )}
+                {isOwnProfile && (
+                  <Link
+                    href="/settings/profile"
+                    className="border border-[#304055] hover:border-gold text-[#F7FAFF] font-bold uppercase tracking-wide text-sm rounded-md px-5 py-2 transition-colors mb-1"
+                  >
+                    Edit profile
+                  </Link>
+                )}
+              </div>
 
-            {profile.bio && <p>{profile.bio}</p>}
+              <div>
+                <h1 className="text-3xl text-[#F7FAFF]">{profile.display_name}</h1>
+                <p className="text-[#B3C2D4]">@{profile.username}</p>
+              </div>
 
-            <div className="flex gap-4 text-sm mt-1">
-              <span>
-                <strong>{followerCount ?? 0}</strong>{" "}
-                <span className="text-muted">followers</span>
-              </span>
-              <span>
-                <strong>{followingCount ?? 0}</strong>{" "}
-                <span className="text-muted">following</span>
-              </span>
-              <span className="text-muted">{profile.city}</span>
+              <div className="flex gap-4 text-sm">
+                <span className="text-[#F7FAFF]">
+                  <strong>{followerCount ?? 0}</strong>{" "}
+                  <span className="text-[#98ADC7]">followers</span>
+                </span>
+                <span className="text-[#F7FAFF]">
+                  <strong>{followingCount ?? 0}</strong>{" "}
+                  <span className="text-[#98ADC7]">following</span>
+                </span>
+              </div>
             </div>
           </section>
 
-          {posts.length === 0 ? (
-            <p className="text-muted text-center py-12">No posts yet.</p>
-          ) : (
-            posts.map((post) => <PostCard key={post.id} post={post} />)
-          )}
+          <ProfileTabs
+            bio={profile.bio}
+            city={profile.city}
+            joinedLabel={joinedLabel}
+            posts={posts}
+          />
         </div>
       </main>
       <ToddLauncher />

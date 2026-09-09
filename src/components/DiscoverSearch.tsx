@@ -3,12 +3,56 @@
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import FollowButton from "@/components/FollowButton";
-import { searchProfiles, type DiscoverResult } from "@/app/discover/actions";
+import {
+  searchProfiles,
+  listRecentProfiles,
+  type DiscoverResult,
+} from "@/app/discover/actions";
 
-export default function DiscoverSearch() {
-  const [term, setTerm] = useState("");
+function MemberGrid({ results }: { results: DiscoverResult[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {results.map((p) => (
+        <div
+          key={p.id}
+          className="rounded-xl border border-[#304055] bg-[#101A28] p-3 flex flex-col gap-2"
+        >
+          <Link href={`/profile/${p.username}`} className="flex flex-col items-center gap-2 text-center">
+            <div className="w-16 h-16 rounded-full bg-gold/20 text-gold flex items-center justify-center font-bold uppercase text-xl">
+              {p.display_name?.[0] ?? p.username[0]}
+            </div>
+            <div>
+              <p className="font-semibold text-sm truncate hover:text-gold">{p.display_name}</p>
+              <p className="text-[#B3C2D4] text-xs truncate">
+                @{p.username}
+                {p.city ? ` · ${p.city}` : ""}
+              </p>
+            </div>
+          </Link>
+          <FollowButton
+            targetUserId={p.id}
+            username={p.username}
+            initiallyFollowing={p.is_following}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function DiscoverSearch({ initialTerm = "" }: { initialTerm?: string }) {
+  const [term, setTerm] = useState(initialTerm);
+  const [recent, setRecent] = useState<DiscoverResult[] | null>(null);
   const [results, setResults] = useState<DiscoverResult[] | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    startTransition(async () => {
+      const data = await listRecentProfiles();
+      setRecent(data);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const trimmed = term.trim();
@@ -25,6 +69,8 @@ export default function DiscoverSearch() {
     return () => clearTimeout(handle);
   }, [term]);
 
+  const showingSearch = term.trim().length > 0;
+
   return (
     <div className="flex flex-col gap-4">
       <input
@@ -34,38 +80,27 @@ export default function DiscoverSearch() {
         className="w-full rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] placeholder:text-[#98ADC7] px-4 py-3 text-base outline-none focus:border-gold"
       />
 
-      {isPending && (
-        <p className="text-muted text-sm">Searching…</p>
-      )}
+      {isPending && <p className="text-muted text-sm">Loading…</p>}
 
-      {!isPending && term.trim() && results && results.length === 0 && (
-        <p className="text-muted text-sm">No one found matching &quot;{term.trim()}&quot;.</p>
-      )}
-
-      {!isPending && results && results.length > 0 && (
-        <div className="flex flex-col divide-y divide-white/10 rounded-xl border border-white/10 overflow-hidden">
-          {results.map((p) => (
-            <div key={p.id} className="flex items-center gap-3 px-4 py-3">
-              <div className="w-10 h-10 shrink-0 rounded-full bg-gold/20 text-gold flex items-center justify-center font-bold uppercase">
-                {p.display_name?.[0] ?? p.username[0]}
-              </div>
-              <Link href={`/profile/${p.username}`} className="flex-1 min-w-0">
-                <p className="font-semibold text-sm truncate hover:text-gold">
-                  {p.display_name}
-                </p>
-                <p className="text-muted text-xs truncate">
-                  @{p.username}
-                  {p.city ? ` · ${p.city}` : ""}
-                </p>
-              </Link>
-              <FollowButton
-                targetUserId={p.id}
-                username={p.username}
-                initiallyFollowing={p.is_following}
-              />
-            </div>
-          ))}
-        </div>
+      {showingSearch ? (
+        <>
+          {!isPending && results && results.length === 0 && (
+            <p className="text-muted text-sm">No one found matching &quot;{term.trim()}&quot;.</p>
+          )}
+          {!isPending && results && results.length > 0 && <MemberGrid results={results} />}
+        </>
+      ) : (
+        <>
+          {recent && recent.length === 0 && (
+            <p className="text-muted text-sm">No other members have joined yet.</p>
+          )}
+          {recent && recent.length > 0 && (
+            <>
+              <p className="eit-kicker">Recently joined</p>
+              <MemberGrid results={recent} />
+            </>
+          )}
+        </>
       )}
     </div>
   );

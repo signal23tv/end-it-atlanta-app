@@ -13,9 +13,9 @@ const GROUPS: { title: string; links: MenuLink[] }[] = [
     title: "Account",
     links: [
       { href: "/profile", label: "My Profile", description: "View and edit your public profile", icon: `${ICON}/profile.svg` },
-      { href: "/settings/profile", label: "Edit Profile", description: "Name, username, bio, photo", icon: `${ICON}/edit.svg` },
+      { href: "/messages", label: "Messages", description: "Direct messages, Todd, and your Navigator contact", icon: `${ICON}/mail.svg` },
       { href: "/notifications", label: "Notifications", description: "Follows, likes, and comments on your posts", icon: `${ICON}/bell.svg` },
-      { href: "/settings/notifications", label: "Notification Settings", description: "Push alerts and preferences", icon: `${ICON}/settings.svg` },
+      { href: "/settings", label: "Settings", description: "Profile, notification preferences, and privacy", icon: `${ICON}/settings.svg` },
     ],
   },
   {
@@ -33,6 +33,8 @@ const GROUPS: { title: string; links: MenuLink[] }[] = [
       { href: "/get-connected", label: "Get Connected", description: "Find testing and PrEP resources near you", icon: `${ICON}/location.svg` },
       { href: "/events", label: "Events", description: "Upcoming community events", icon: `${ICON}/calendar.svg` },
       { href: "/programs", label: "Community Programs", description: "Where we show up across Atlanta", icon: `${ICON}/users.svg` },
+      { href: "/my-health", label: "My Health", description: "Private appointment and refill reminders", icon: `${ICON}/heart.svg` },
+      { href: "/ambassador", label: "Ambassador", description: "Your referral link and real outreach stats", icon: `${ICON}/crown.svg` },
       { href: "/nut-juice", label: "Nut Juice", description: "Coming soon — join the waitlist", icon: `${ICON}/sparkle.svg` },
       { href: "/rewards", label: "Your Activity", description: "A real, honest count of your activity here", icon: `${ICON}/trophy.svg` },
     ],

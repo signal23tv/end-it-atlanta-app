@@ -3,6 +3,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import MarketingHeader from "@/components/MarketingHeader";
 import SiteFooter from "@/components/SiteFooter";
+import BottomNav from "@/components/BottomNav";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -14,7 +15,7 @@ export default async function Home() {
     <>
       <MarketingHeader />
 
-      <main className="flex-1 bg-paper text-black">
+      <main className="flex-1 bg-paper text-black pb-16">
         {/* SPLASH-STYLE INTRO */}
         <section
           aria-label="END IT ATLANTA"
@@ -347,6 +348,7 @@ export default async function Home() {
       </main>
 
       <SiteFooter />
+      <BottomNav />
     </>
   );
 }

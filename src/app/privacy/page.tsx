@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import MarketingHeader from "@/components/MarketingHeader";
 import SiteFooter from "@/components/SiteFooter";
+import BottomNav from "@/components/BottomNav";
 
 export const metadata: Metadata = {
   title: "Privacy Notice | END IT ATLANTA",
@@ -12,7 +13,7 @@ export default function PrivacyPage() {
   return (
     <>
       <MarketingHeader />
-      <main className="flex-1 bg-paper text-black">
+      <main className="flex-1 bg-paper text-black pb-16">
         <section className="py-16 md:py-20">
           <div className="max-w-3xl mx-auto px-4">
             <p className="text-red font-bold uppercase tracking-wide text-sm mb-2">Privacy</p>
@@ -131,6 +132,7 @@ export default function PrivacyPage() {
         </section>
       </main>
       <SiteFooter />
+      <BottomNav />
     </>
   );
 }

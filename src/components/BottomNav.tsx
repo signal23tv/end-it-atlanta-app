@@ -16,9 +16,12 @@ const TABS = [
     ),
   },
   {
-    href: "/get-connected",
+    href: "/discover",
     label: "Explore",
-    match: (p: string) => p.startsWith("/get-connected") || p.startsWith("/learning-lab"),
+    match: (p: string) =>
+      p.startsWith("/discover") ||
+      p.startsWith("/get-connected") ||
+      p.startsWith("/learning-lab"),
     icon: (active: boolean) => (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
         <circle cx="11" cy="11" r="7" />

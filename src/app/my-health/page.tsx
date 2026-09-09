@@ -1,16 +1,16 @@
 import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
-import DiscoverTabs from "@/components/DiscoverTabs";
-import { getFeedPosts } from "@/lib/posts";
+import HealthReminders from "@/components/HealthReminders";
+import { listReminders } from "@/app/my-health/actions";
 
-export default async function DiscoverPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ q?: string }>;
-}) {
-  const { q } = await searchParams;
-  const recentPosts = await getFeedPosts(6);
+export const metadata = {
+  title: "My Health | END IT ATLANTA",
+  description: "Private appointment and refill reminders, visible only to you.",
+};
+
+export default async function MyHealthPage() {
+  const reminders = await listReminders();
 
   return (
     <>
@@ -18,7 +18,7 @@ export default async function DiscoverPage({
       <main className="eit-app flex-1 pb-24">
         <div className="eit-shell flex flex-col gap-4">
           <div
-            className="rounded-2xl p-5 relative overflow-hidden"
+            className="rounded-2xl p-5"
             style={{
               backgroundImage:
                 "linear-gradient(180deg, rgb(6 11 19 / .55), rgb(6 11 19 / .92)), url(/assets/endit/v1/backgrounds/atmosphere-purple.svg)",
@@ -27,13 +27,19 @@ export default async function DiscoverPage({
             }}
           >
             <h1 className="text-3xl" style={{ fontFamily: "var(--eit-font-display)" }}>
-              Discover
+              My Health
             </h1>
             <p className="eit-muted text-sm">
-              Find people, upcoming events, and what the community&apos;s sharing.
+              Private reminders and appointments -- visible only to you.
             </p>
           </div>
-          <DiscoverTabs recentPosts={recentPosts} initialTerm={q} />
+
+          <div className="rounded-lg border border-white/10 bg-white/5 p-4 text-xs text-[#B3C2D4]">
+            These reminders are private. They&apos;re not shared with your profile, other
+            members, or anyone else -- only you can see them.
+          </div>
+
+          <HealthReminders initial={reminders} />
         </div>
       </main>
       <ToddLauncher />
