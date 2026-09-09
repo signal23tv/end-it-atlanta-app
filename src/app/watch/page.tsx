@@ -1,25 +1,58 @@
 import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
+import { WATCH_VIDEOS } from "@/lib/watch-data";
+
+export const metadata = {
+  title: "Watch | END IT ATLANTA",
+  description: "Real videos from END IT ATLANTA -- education, stories, and community.",
+};
 
 export default function WatchPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-black text-paper pb-24">
-        <div className="max-w-2xl mx-auto px-4 py-16 flex flex-col items-center text-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth={2} className="text-gold">
-              <rect x="3" y="5" width="18" height="13" rx="2" />
-              <path d="M10 9.5v4l3.5-2-3.5-2Z" fill="currentColor" stroke="none" />
-            </svg>
+      <main className="eit-app flex-1 pb-24">
+        <div className="eit-shell flex flex-col gap-4">
+          <div
+            className="rounded-2xl p-5"
+            style={{
+              backgroundImage:
+                "linear-gradient(180deg, rgb(6 11 19 / .55), rgb(6 11 19 / .92)), url(/assets/endit/v1/backgrounds/atmosphere-blue.svg)",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <h1 className="text-3xl" style={{ fontFamily: "var(--eit-font-display)" }}>
+              Watch
+            </h1>
+            <p className="text-sm eit-muted mt-1">
+              Real videos from END IT ATLANTA -- education, stories, and community.
+            </p>
           </div>
-          <h1 className="font-display text-3xl">PrEP TV</h1>
-          <p className="text-muted max-w-sm">
-            Video content, episodes, and short-form education pieces aren&apos;t built yet.
-            This is honestly a placeholder — nothing here is faked to look finished.
-          </p>
-          <p className="text-xs text-muted">Planned for a later phase of the build.</p>
+
+          <div className="flex flex-col gap-5">
+            {WATCH_VIDEOS.map((video) => (
+              <div
+                key={video.id}
+                className="rounded-xl overflow-hidden border border-[#304055] bg-[#101A28]"
+              >
+                <div className="relative w-full aspect-video bg-black">
+                  <iframe
+                    src={`https://iframe.videodelivery.net/${video.streamId}`}
+                    className="absolute inset-0 w-full h-full border-0"
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                    allowFullScreen
+                    loading="lazy"
+                    title={video.title}
+                  />
+                </div>
+                <div className="p-4">
+                  <p className="font-display text-xl text-[#F7FAFF]">{video.title}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </main>
       <ToddLauncher />
