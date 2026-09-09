@@ -77,20 +77,30 @@ export default function JoinFlow({
     AVATAR_SWATCHES.find((s) => s.value === avatarColor)?.hex ?? "#d5a94b";
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-black text-paper px-4 py-12">
+    <main
+      className="min-h-screen flex items-center justify-center bg-black text-paper px-4 py-12 relative"
+      style={{
+        backgroundImage:
+          "linear-gradient(180deg, rgb(6 11 19 / .85), rgb(6 11 19 / .97)), url(/assets/endit/v1/backgrounds/atmosphere-blue.svg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="w-full max-w-sm">
-        <Link
-          href="/"
-          className="block text-center font-display text-3xl tracking-wide mb-2"
-        >
-          END IT ATLANTA
+        <Link href="/" className="flex justify-center mb-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/endit/v1/brand/endit-wordmark-vector.svg"
+            alt="END IT ATLANTA"
+            className="h-8 w-auto"
+          />
         </Link>
         <p className="text-center text-muted text-sm mb-8">{campaignName}</p>
 
         {step === "age_gate" && (
-          <div className="bg-paper text-black rounded-xl p-6 flex flex-col gap-4">
+          <div className="bg-[#101A28] border border-[#304055] text-[#F7FAFF] rounded-xl p-6 flex flex-col gap-4">
             <h1 className="text-2xl">Before we get started</h1>
-            <p className="text-sm">
+            <p className="text-sm text-[#B3C2D4]">
               What&apos;s your age? This helps us show you the right
               experience.
             </p>
@@ -103,13 +113,13 @@ export default function JoinFlow({
               </button>
               <button
                 onClick={() => chooseAge("13_17")}
-                className="border border-black/20 hover:border-gold font-bold uppercase tracking-wide rounded-md py-3"
+                className="border border-[#304055] hover:border-gold text-[#F7FAFF] font-bold uppercase tracking-wide rounded-md py-3"
               >
                 13–17
               </button>
               <button
                 onClick={() => chooseAge("under_13")}
-                className="border border-black/20 hover:border-gold font-bold uppercase tracking-wide rounded-md py-3"
+                className="border border-[#304055] hover:border-gold text-[#F7FAFF] font-bold uppercase tracking-wide rounded-md py-3"
               >
                 Under 13
               </button>
@@ -118,9 +128,9 @@ export default function JoinFlow({
         )}
 
         {step === "blocked" && (
-          <div className="bg-paper text-black rounded-xl p-6 flex flex-col gap-3 text-center">
+          <div className="bg-[#101A28] border border-[#304055] text-[#F7FAFF] rounded-xl p-6 flex flex-col gap-3 text-center">
             <h1 className="text-2xl">Thanks for stopping by</h1>
-            <p className="text-sm">
+            <p className="text-sm text-[#B3C2D4]">
               This account experience isn&apos;t available yet for this age
               group. You can still explore public education and resources
               without an account.
@@ -137,7 +147,7 @@ export default function JoinFlow({
         {step === "form" && (
           <form
             action={startAction}
-            className="bg-paper text-black rounded-xl p-6 flex flex-col gap-4"
+            className="bg-[#101A28] border border-[#304055] text-[#F7FAFF] rounded-xl p-6 flex flex-col gap-4"
           >
             <h1 className="text-2xl">Create your account</h1>
 
@@ -147,7 +157,7 @@ export default function JoinFlow({
 
             <div className="flex items-center gap-3">
               <div
-                className="w-14 h-14 rounded-full flex items-center justify-center font-display text-xl text-white shrink-0"
+                className="w-14 h-14 rounded-full flex items-center justify-center font-display text-xl text-white shrink-0 ring-2 ring-white/10"
                 style={{ backgroundColor: swatchHex }}
                 aria-hidden="true"
               >
@@ -163,7 +173,7 @@ export default function JoinFlow({
                     aria-pressed={avatarColor === s.value}
                     className={`w-6 h-6 rounded-full border-2 ${
                       avatarColor === s.value
-                        ? "border-black"
+                        ? "border-[#7DD3FC]"
                         : "border-transparent"
                     }`}
                     style={{ backgroundColor: s.hex }}
@@ -181,7 +191,7 @@ export default function JoinFlow({
                 maxLength={60}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="rounded-md border border-black/15 px-3 py-2 text-base font-normal outline-none focus:border-gold"
+                className="rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] px-3 py-2 text-base font-normal outline-none focus:border-gold"
               />
             </label>
 
@@ -192,27 +202,27 @@ export default function JoinFlow({
                 type="email"
                 required
                 autoComplete="email"
-                className="rounded-md border border-black/15 px-3 py-2 text-base font-normal outline-none focus:border-gold"
+                className="rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] px-3 py-2 text-base font-normal outline-none focus:border-gold"
               />
             </label>
 
             <label className="flex flex-col gap-1 text-sm font-semibold">
-              Phone <span className="font-normal text-muted">(optional)</span>
+              Phone <span className="font-normal text-[#B3C2D4]">(optional)</span>
               <input
                 name="phone"
                 type="tel"
                 autoComplete="tel"
-                className="rounded-md border border-black/15 px-3 py-2 text-base font-normal outline-none focus:border-gold"
+                className="rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] px-3 py-2 text-base font-normal outline-none focus:border-gold"
               />
             </label>
 
-            <p className="text-xs text-muted">
+            <p className="text-xs text-[#B3C2D4]">
               Your email and phone are private contact info, never shown on
               your profile.
             </p>
 
             {startState?.error && (
-              <p role="alert" className="text-red-dark text-sm font-semibold">
+              <p role="alert" className="text-[#FF91A2] text-sm font-semibold">
                 {startState.error}
               </p>
             )}
@@ -228,9 +238,9 @@ export default function JoinFlow({
         )}
 
         {step === "success" && (
-          <div className="bg-paper text-black rounded-xl p-6 flex flex-col gap-3 text-center">
+          <div className="bg-[#101A28] border border-[#304055] text-[#F7FAFF] rounded-xl p-6 flex flex-col gap-3 text-center">
             <h1 className="text-2xl">You&apos;re in.</h1>
-            <p className="text-sm">Welcome to END IT ATLANTA.</p>
+            <p className="text-sm text-[#B3C2D4]">Welcome to END IT ATLANTA.</p>
             <button
               onClick={() => setStep("install")}
               className="mt-2 bg-red hover:bg-red-dark text-paper font-bold uppercase tracking-wide rounded-md py-3"

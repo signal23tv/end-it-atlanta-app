@@ -13,7 +13,7 @@
      handler below) so nothing lingers after a session ends.
    ===================================================== */
 
-const CACHE_VERSION = "eia-shell-v1";
+const CACHE_VERSION = "eia-shell-v2";
 const SHELL_ASSETS = [
   "/manifest.json",
   "/icon-192.png",

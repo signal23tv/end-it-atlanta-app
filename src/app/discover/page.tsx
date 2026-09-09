@@ -7,11 +7,21 @@ export default function DiscoverPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-black text-paper pb-24">
-        <div className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-4">
-          <div>
-            <h1 className="font-display text-3xl">Find People</h1>
-            <p className="text-muted text-sm">
+      <main className="eit-app flex-1 pb-24">
+        <div className="eit-shell flex flex-col gap-4">
+          <div
+            className="rounded-2xl p-5 relative overflow-hidden"
+            style={{
+              backgroundImage:
+                "linear-gradient(180deg, rgb(6 11 19 / .55), rgb(6 11 19 / .92)), url(/assets/endit/v1/backgrounds/atmosphere-purple.svg)",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <h1 className="text-3xl" style={{ fontFamily: "var(--eit-font-display)" }}>
+              Find People
+            </h1>
+            <p className="eit-muted text-sm">
               Search for other members by name or username.
             </p>
           </div>

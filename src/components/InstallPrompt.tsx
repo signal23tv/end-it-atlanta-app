@@ -61,7 +61,7 @@ export default function InstallPrompt({ onContinue }: { onContinue: () => void }
 
   if (standalone) {
     return (
-      <div className="bg-paper text-black rounded-xl p-6 flex flex-col gap-3 text-center">
+      <div className="bg-[#101A28] border border-[#304055] text-[#F7FAFF] rounded-xl p-6 flex flex-col gap-3 text-center">
         <h1 className="text-2xl">You&apos;re already set up</h1>
         <p className="text-sm">
           You&apos;re using the installed app already.
@@ -77,7 +77,7 @@ export default function InstallPrompt({ onContinue }: { onContinue: () => void }
   }
 
   return (
-    <div className="bg-paper text-black rounded-xl p-6 flex flex-col gap-3 text-center">
+    <div className="bg-[#101A28] border border-[#304055] text-[#F7FAFF] rounded-xl p-6 flex flex-col gap-3 text-center">
       <h1 className="text-2xl">Add to your home screen</h1>
 
       {deferredPrompt && (
@@ -120,7 +120,7 @@ export default function InstallPrompt({ onContinue }: { onContinue: () => void }
 
       <button
         onClick={onContinue}
-        className="mt-1 border border-black/20 hover:border-gold font-bold uppercase tracking-wide rounded-md py-3"
+        className="mt-1 border border-[#304055] hover:border-gold text-[#F7FAFF] font-bold uppercase tracking-wide rounded-md py-3"
       >
         Skip for now
       </button>

@@ -88,7 +88,7 @@ export default function NotificationSetup({
   }
 
   return (
-    <div className="bg-paper text-black rounded-xl p-6 flex flex-col gap-3 text-center">
+    <div className="bg-[#101A28] border border-[#304055] text-[#F7FAFF] rounded-xl p-6 flex flex-col gap-3 text-center">
       <h1 className="text-2xl">Stay connected</h1>
       <p className="text-sm">
         Get messages, events, and reminders you choose. Change this anytime
@@ -137,7 +137,7 @@ export default function NotificationSetup({
 
       <button
         onClick={onDone}
-        className="mt-1 border border-black/20 hover:border-gold font-bold uppercase tracking-wide rounded-md py-3"
+        className="mt-1 border border-[#304055] hover:border-gold text-[#F7FAFF] font-bold uppercase tracking-wide rounded-md py-3"
       >
         {status === "active" ? "Continue" : "Skip for now"}
       </button>

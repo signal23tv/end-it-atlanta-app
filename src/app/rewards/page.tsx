@@ -49,16 +49,28 @@ export default async function RewardsPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-black text-paper pb-24">
-        <div className="max-w-2xl mx-auto px-4 py-8 flex flex-col gap-6">
-          <div>
-            <h1 className="font-display text-3xl">Your Activity</h1>
-            <p className="text-sm text-muted mt-1">Get involved. See your impact.</p>
+      <main className="eit-app flex-1 pb-24">
+        <div className="eit-shell flex flex-col gap-6">
+          <div
+            className="rounded-2xl p-5"
+            style={{
+              backgroundImage:
+                "linear-gradient(180deg, rgb(6 11 19 / .55), rgb(6 11 19 / .92)), url(/assets/endit/v1/backgrounds/atmosphere-gold.svg)",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <h1 className="text-3xl" style={{ fontFamily: "var(--eit-font-display)" }}>
+              Your Activity
+            </h1>
+            <p className="text-sm eit-muted mt-1">Get involved. See your impact.</p>
           </div>
 
-          <div className="rounded-xl border border-gold bg-gold/10 p-6 text-center flex flex-col items-center gap-1">
+          <div className="rounded-xl border border-gold bg-gold/10 p-6 text-center flex flex-col items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/endit/v1/icons/trophy.svg" alt="" width={28} height={28} />
             <span className="text-5xl font-display text-gold">{total}</span>
-            <span className="text-xs uppercase tracking-wide text-muted">
+            <span className="text-xs uppercase tracking-wide eit-muted">
               Activity points, calculated from what you've actually done here
             </span>
           </div>

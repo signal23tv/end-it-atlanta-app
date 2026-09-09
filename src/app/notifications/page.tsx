@@ -36,35 +36,45 @@ export default async function NotificationsPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-black text-paper pb-24">
-        <div className="max-w-2xl mx-auto px-4 py-8 flex flex-col gap-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="font-display text-3xl">Notifications</h1>
-              <p className="text-sm text-muted mt-1">
-                Real activity on your account — follows, likes, and comments.
-              </p>
+      <main className="eit-app flex-1 pb-24">
+        <div className="eit-shell flex flex-col gap-5">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="eit-menu-icon">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/endit/v1/icons/bell.svg" alt="" width={20} height={20} />
+              </span>
+              <div>
+                <h1 className="text-3xl" style={{ fontFamily: "var(--eit-font-display)" }}>
+                  Notifications
+                </h1>
+                <p className="text-sm eit-muted mt-1">
+                  Real activity on your account — follows, likes, and comments.
+                </p>
+              </div>
             </div>
             {notifications.some((n) => !n.read) && <MarkAllReadButton />}
           </div>
 
           {notifications.length === 0 ? (
-            <p className="text-muted text-center py-16">
-              Nothing here yet. When someone follows you, likes, or comments on your posts,
-              it'll show up here.
-            </p>
+            <div className="eit-card eit-empty">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/assets/endit/v1/empty-states/notifications.svg" alt="" />
+              <p>
+                Nothing here yet. When someone follows you, likes, or comments on your posts,
+                it&apos;ll show up here.
+              </p>
+            </div>
           ) : (
-            <div className="flex flex-col divide-y divide-white/10 rounded-xl border border-white/10 overflow-hidden">
+            <div className="eit-menu-group">
               {notifications.map((n) => (
                 <Link
                   key={n.id}
                   href={n.actor ? `/profile/${n.actor.username}` : "/feed"}
-                  className={`flex items-center justify-between gap-3 px-4 py-3.5 hover:bg-white/5 ${
-                    !n.read ? "bg-gold/5" : ""
-                  }`}
+                  className={`eit-menu-row justify-between ${!n.read ? "bg-gold/5" : ""}`}
                 >
                   <span className="text-sm">{describeNotification(n)}</span>
-                  <span className="text-xs text-muted whitespace-nowrap">
+                  <span className="text-xs eit-muted whitespace-nowrap">
                     {timeAgo(n.created_at)}
                   </span>
                 </Link>

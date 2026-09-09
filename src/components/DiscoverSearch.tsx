@@ -31,7 +31,7 @@ export default function DiscoverSearch() {
         value={term}
         onChange={(e) => setTerm(e.target.value)}
         placeholder="Search by name or @username"
-        className="w-full rounded-md border border-black/15 bg-white text-black px-4 py-3 text-base outline-none focus:border-gold"
+        className="w-full rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] placeholder:text-[#98ADC7] px-4 py-3 text-base outline-none focus:border-gold"
       />
 
       {isPending && (
