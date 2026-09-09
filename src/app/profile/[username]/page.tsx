@@ -70,11 +70,16 @@ export default async function ProfilePage({
       <Nav />
       <main className="flex-1 bg-black text-paper pb-24">
         <div className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-4">
-          <section className="bg-white text-black border border-black/10 rounded-xl p-6 flex flex-col gap-2">
+          <section className="bg-[#101A28] text-[#F7FAFF] border border-[#304055] rounded-xl p-6 flex flex-col gap-2">
             <div className="flex items-start justify-between gap-4">
-              <div>
-                <h1 className="text-4xl">{profile.display_name}</h1>
-                <p className="text-muted">@{profile.username}</p>
+              <div className="flex items-center gap-3">
+                <div className="w-14 h-14 shrink-0 rounded-full bg-gold/20 text-gold flex items-center justify-center font-bold uppercase text-xl">
+                  {profile.display_name?.[0] ?? profile.username[0]}
+                </div>
+                <div>
+                  <h1 className="text-4xl">{profile.display_name}</h1>
+                  <p className="text-[#B3C2D4]">@{profile.username}</p>
+                </div>
               </div>
               {user && !isOwnProfile && (
                 <div className="flex flex-col items-end gap-1.5">
@@ -92,7 +97,7 @@ export default async function ProfilePage({
               {isOwnProfile && (
                 <Link
                   href="/settings/profile"
-                  className="border border-black/20 hover:border-gold font-bold uppercase tracking-wide text-sm rounded-md px-5 py-2 transition-colors"
+                  className="border border-[#304055] hover:border-gold font-bold uppercase tracking-wide text-sm rounded-md px-5 py-2 transition-colors"
                 >
                   Edit profile
                 </Link>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -16,8 +17,15 @@ export default async function Nav() {
   return (
     <header className="bg-black text-paper sticky top-0 z-10 border-b border-white/10">
       <div className="max-w-2xl mx-auto flex items-center justify-between px-4 py-3">
-        <Link href="/feed" className="font-display text-xl tracking-wide">
-          END IT ATLANTA
+        <Link href="/feed" aria-label="END IT ATLANTA home" className="flex items-center">
+          <Image
+            src="/assets/endit/v1/brand/endit-wordmark-vector.svg"
+            alt="END IT ATLANTA"
+            width={150}
+            height={28}
+            priority
+            className="h-6 w-auto"
+          />
         </Link>
         <Link
           href="/discover"

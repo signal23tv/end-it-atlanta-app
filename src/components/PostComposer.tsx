@@ -19,7 +19,7 @@ export default function PostComposer() {
         await formAction(formData);
         formRef.current?.reset();
       }}
-      className="bg-white text-black border border-black/10 rounded-xl p-4 flex flex-col gap-3"
+      className="bg-[#101A28] text-[#F7FAFF] border border-[#304055] rounded-xl p-4 flex flex-col gap-3"
     >
       <textarea
         name="content"
@@ -27,7 +27,7 @@ export default function PostComposer() {
         maxLength={2000}
         rows={3}
         placeholder="What's happening in Atlanta?"
-        className="resize-none rounded-md border border-black/15 px-3 py-2 text-base outline-none focus:border-gold"
+        className="resize-none rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] placeholder:text-[#98ADC7] px-3 py-2 text-base outline-none focus:border-gold"
       />
       {state?.error && (
         <p role="alert" className="text-red-dark text-sm font-semibold">

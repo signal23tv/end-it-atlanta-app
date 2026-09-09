@@ -19,24 +19,24 @@ export default function ReportButton({ target, label = "Report" }: { target: Rep
   const [isPending, startTransition] = useTransition();
 
   if (status === "done") {
-    return <span className="text-xs text-muted">Report filed. Thank you.</span>;
+    return <span className="text-xs text-[#B3C2D4]">Report filed. Thank you.</span>;
   }
 
   if (!open) {
     return (
-      <button onClick={() => setOpen(true)} className="text-muted text-xs hover:text-red">
+      <button onClick={() => setOpen(true)} className="text-[#B3C2D4] text-xs hover:text-red">
         {label}
       </button>
     );
   }
 
   return (
-    <div className="mt-2 flex flex-col gap-2 rounded-md border border-black/10 p-3 bg-black/[0.02] text-sm">
+    <div className="mt-2 flex flex-col gap-2 rounded-md border border-[#304055] p-3 bg-[#0A1422] text-sm text-[#F7FAFF]">
       <p className="text-xs font-semibold">Why are you reporting this?</p>
       <select
         value={reason}
         onChange={(e) => setReason(e.target.value as ReportReason)}
-        className="rounded-md border border-black/15 px-2 py-1.5 text-sm"
+        className="rounded-md border border-[#304055] bg-[#101A28] text-[#F7FAFF] px-2 py-1.5 text-sm"
       >
         {REASONS.map((r) => (
           <option key={r.value} value={r.value}>
@@ -49,7 +49,7 @@ export default function ReportButton({ target, label = "Report" }: { target: Rep
         onChange={(e) => setDetails(e.target.value)}
         placeholder="Anything else we should know? (optional)"
         rows={2}
-        className="rounded-md border border-black/15 px-2 py-1.5 text-sm resize-none"
+        className="rounded-md border border-[#304055] bg-[#101A28] text-[#F7FAFF] placeholder:text-[#98ADC7] px-2 py-1.5 text-sm resize-none"
       />
       {status === "error" && (
         <p className="text-red-dark text-xs font-semibold">Couldn&apos;t file that — try again.</p>
@@ -57,7 +57,7 @@ export default function ReportButton({ target, label = "Report" }: { target: Rep
       <div className="flex gap-2 justify-end">
         <button
           onClick={() => setOpen(false)}
-          className="text-xs text-muted hover:text-black"
+          className="text-xs text-[#B3C2D4] hover:text-[#F7FAFF]"
         >
           Cancel
         </button>

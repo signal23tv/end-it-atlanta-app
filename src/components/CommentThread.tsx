@@ -49,18 +49,18 @@ export default function CommentThread({ postId }: { postId: string }) {
     <div className="mt-1">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="text-muted text-sm hover:text-black"
+        className="text-[#B3C2D4] text-sm hover:text-gold"
       >
         {open ? "Hide comments" : "View comments"}
       </button>
 
       {open && (
-        <div className="mt-2 flex flex-col gap-3 border-t border-black/10 pt-3">
+        <div className="mt-2 flex flex-col gap-3 border-t border-[#304055] pt-3">
           {isLoading && comments === null && (
-            <p className="text-xs text-muted">Loading comments…</p>
+            <p className="text-xs text-[#B3C2D4]">Loading comments…</p>
           )}
           {comments && comments.length === 0 && (
-            <p className="text-xs text-muted">No comments yet — be the first to reply.</p>
+            <p className="text-xs text-[#B3C2D4]">No comments yet — be the first to reply.</p>
           )}
           {comments?.map((c) => (
             <div key={c.id} className="text-sm">
@@ -71,7 +71,7 @@ export default function CommentThread({ postId }: { postId: string }) {
                 >
                   {c.author?.display_name ?? "Someone"}
                 </Link>
-                <span className="text-muted text-xs">{timeAgo(c.created_at)}</span>
+                <span className="text-[#B3C2D4] text-xs">{timeAgo(c.created_at)}</span>
                 <span className="ml-auto">
                   <ReportButton target={{ commentId: c.id }} />
                 </span>
@@ -86,7 +86,7 @@ export default function CommentThread({ postId }: { postId: string }) {
               required
               maxLength={1000}
               placeholder="Write a reply…"
-              className="flex-1 rounded-md border border-black/15 px-3 py-1.5 text-sm outline-none focus:border-gold"
+              className="flex-1 rounded-md border border-[#304055] bg-[#0A1422] text-[#F7FAFF] placeholder:text-[#98ADC7] px-3 py-1.5 text-sm outline-none focus:border-gold"
             />
             <button
               type="submit"

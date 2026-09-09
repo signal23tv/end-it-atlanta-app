@@ -29,7 +29,7 @@ export default function PostCard({ post }: { post: Post }) {
   );
 
   return (
-    <article className="bg-white text-black border border-black/10 rounded-xl p-4 flex flex-col gap-2">
+    <article className="bg-[#101A28] text-[#F7FAFF] border border-[#304055] rounded-xl p-4 flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Link
           href={`/profile/${post.author.username}`}
@@ -39,11 +39,11 @@ export default function PostCard({ post }: { post: Post }) {
         </Link>
         <Link
           href={`/profile/${post.author.username}`}
-          className="text-muted text-sm hover:underline"
+          className="text-[#B3C2D4] text-sm hover:underline"
         >
           @{post.author.username}
         </Link>
-        <span className="text-muted text-sm">· {timeAgo(post.created_at)}</span>
+        <span className="text-[#B3C2D4] text-sm">· {timeAgo(post.created_at)}</span>
       </div>
 
       <p className="whitespace-pre-wrap break-words">{post.content}</p>
@@ -58,12 +58,12 @@ export default function PostCard({ post }: { post: Post }) {
             })
           }
           className={`font-semibold ${
-            optimistic.liked ? "text-red" : "text-muted hover:text-red"
+            optimistic.liked ? "text-red" : "text-[#B3C2D4] hover:text-red"
           }`}
         >
           ♥ {optimistic.count}
         </button>
-        <span className="text-muted">
+        <span className="text-[#B3C2D4]">
           {post.comment_count} {post.comment_count === 1 ? "comment" : "comments"}
         </span>
         <span className="ml-auto">

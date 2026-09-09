@@ -29,7 +29,7 @@ export default function FollowButton({
       }
       className={
         following
-          ? "border border-black/20 hover:border-red hover:text-red font-bold uppercase tracking-wide text-sm rounded-md px-5 py-2 transition-colors"
+          ? "border border-[#304055] hover:border-red hover:text-red font-bold uppercase tracking-wide text-sm rounded-md px-5 py-2 transition-colors"
           : "bg-red hover:bg-red-dark disabled:opacity-60 text-paper font-bold uppercase tracking-wide text-sm rounded-md px-5 py-2 transition-colors"
       }
     >

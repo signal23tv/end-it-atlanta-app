@@ -1,6 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
+/* End It Atlanta asset-kit design system (2026-09-09) -- scoped to
+   elements inside .eit-app, so it can't leak into or break the
+   marketing pages/forms that intentionally keep their own look.
+   Tokens must load before components. */
+@import "../styles/endit-tokens.css";
+@import "../styles/endit-components.css";
+
 :root {
   --black: #070707;
   --paper: #fbf8f1;

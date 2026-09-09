@@ -20,26 +20,31 @@ export default async function ToddPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-black text-paper pb-24">
-        <div className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-4">
-          <div className="flex flex-col items-center text-center gap-2 py-2">
-            <div className="relative w-20 h-20">
-              <div className="absolute inset-0 rounded-full bg-gold/30 blur-xl" aria-hidden="true" />
-              <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-gold to-red flex items-center justify-center ring-2 ring-gold/50">
-                <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="black" strokeWidth={1.5}>
-                  <path d="M12 2 9.5 8H4l4.5 4L7 18l5-3.5L17 18l-1.5-6L20 8h-5.5L12 2Z" strokeLinejoin="round" fill="black" />
-                </svg>
-              </div>
-            </div>
-            <h1 className="text-2xl font-[var(--font-display)] text-paper mt-1">
+      <main className="eit-app flex-1 pb-24">
+        <div className="eit-shell flex flex-col gap-4">
+          <div className="eit-card flex flex-col items-center text-center gap-2 py-6 px-4 relative overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/endit/v1/backgrounds/atmosphere-blue.svg"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover -z-10 opacity-70"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/endit/v1/todd/todd-portrait.webp"
+              alt="Todd the PrEP God"
+              className="eit-avatar"
+              style={{ width: 88, height: 88, boxShadow: "0 0 0 3px var(--eit-blue), 0 0 32px rgb(0 130 255 / .28)" }}
+            />
+            <h1 className="text-2xl mt-1" style={{ fontFamily: "var(--eit-font-display)" }}>
               Todd the PrEP God
             </h1>
             <p className="text-xs text-gold uppercase tracking-wide font-semibold">
-              Your 24/7 Sexual Health Assistant
+              Your Sexual Health Assistant
             </p>
-            <p className="text-sm text-muted max-w-sm">
-              Health education and navigation — not a clinician, not an
-              emergency service.
+            <p className="text-sm eit-muted max-w-sm">
+              AI education and navigation — not a clinician or an emergency
+              service.
             </p>
           </div>
 
@@ -50,7 +55,7 @@ export default async function ToddPage() {
               configured={isToddConfigured()}
             />
           ) : (
-            <p className="text-muted">
+            <p className="eit-muted">
               Please log in to chat with Todd.
             </p>
           )}

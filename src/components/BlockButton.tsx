@@ -24,7 +24,7 @@ export default function BlockButton({
             setBlocked(false);
           })
         }
-        className="text-xs text-muted hover:text-black underline"
+        className="text-xs text-[#B3C2D4] hover:text-[#F7FAFF] underline"
       >
         Unblock
       </button>

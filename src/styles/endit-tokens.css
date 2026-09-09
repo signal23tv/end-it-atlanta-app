@@ -1,0 +1,34 @@
+/* End It Atlanta | Theme tokens. Import before endit-components.css.
+   Scoped to .eit-app: this is not a global reset for unrelated pages. */
+.eit-app {
+  color-scheme: dark;
+  --eit-background: #060B13;
+  --eit-surface: #101A28;
+  --eit-surface-raised: #142133;
+  --eit-input: #0A1422;
+  --eit-border: #304055;
+  --eit-foreground: #F7FAFF;
+  --eit-muted: #B3C2D4;
+  --eit-subtle: #98ADC7;
+  --eit-red: #FF203A;
+  --eit-red-action: #D70F31;
+  --eit-blue: #0082FF;
+  --eit-blue-action: #0064CA;
+  --eit-purple: #8B5CF6;
+  --eit-purple-action: #7440CA;
+  --eit-pink: #EC1273;
+  --eit-pink-action: #C50B60;
+  --eit-gold: #FFC629;
+  --eit-green: #22C55E;
+  --eit-focus: #7DD3FC;
+  --eit-danger: #FF6B81;
+  --eit-font-display: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
+  --eit-font-body: Montserrat, Inter, ui-sans-serif, system-ui, sans-serif;
+  --eit-space-1: 4px; --eit-space-2: 8px; --eit-space-3: 12px;
+  --eit-space-4: 16px; --eit-space-5: 20px; --eit-space-6: 24px;
+  --eit-space-8: 32px; --eit-space-10: 40px; --eit-space-12: 48px;
+  --eit-radius-control: 12px; --eit-radius-card: 20px; --eit-radius-hero: 28px;
+  --eit-shadow: 0 16px 42px rgb(0 0 0 / .28);
+  --eit-nav-height: 76px;
+  --eit-ease: cubic-bezier(.2,.8,.2,1);
+}
