@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { addComment, getComments, type CommentItem, type CommentState } from "@/app/feed/actions";
+import ReportButton from "@/components/ReportButton";
 
 const initialState: CommentState = {};
 
@@ -63,13 +64,18 @@ export default function CommentThread({ postId }: { postId: string }) {
           )}
           {comments?.map((c) => (
             <div key={c.id} className="text-sm">
-              <Link
-                href={`/profile/${c.author?.username}`}
-                className="font-semibold hover:text-red"
-              >
-                {c.author?.display_name ?? "Someone"}
-              </Link>{" "}
-              <span className="text-muted text-xs">{timeAgo(c.created_at)}</span>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/profile/${c.author?.username}`}
+                  className="font-semibold hover:text-red"
+                >
+                  {c.author?.display_name ?? "Someone"}
+                </Link>
+                <span className="text-muted text-xs">{timeAgo(c.created_at)}</span>
+                <span className="ml-auto">
+                  <ReportButton target={{ commentId: c.id }} />
+                </span>
+              </div>
               <p className="whitespace-pre-wrap break-words">{c.content}</p>
             </div>
           ))}

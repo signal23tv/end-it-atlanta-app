@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useOptimistic, useTransition } from "react";
 import { toggleLike } from "@/app/feed/actions";
 import CommentThread from "@/components/CommentThread";
+import ReportButton from "@/components/ReportButton";
 import type { Post } from "@/lib/types";
 
 function timeAgo(iso: string): string {
@@ -28,7 +29,7 @@ export default function PostCard({ post }: { post: Post }) {
   );
 
   return (
-    <article className="bg-white border border-black/10 rounded-xl p-4 flex flex-col gap-2">
+    <article className="bg-white text-black border border-black/10 rounded-xl p-4 flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Link
           href={`/profile/${post.author.username}`}
@@ -64,6 +65,9 @@ export default function PostCard({ post }: { post: Post }) {
         </button>
         <span className="text-muted">
           {post.comment_count} {post.comment_count === 1 ? "comment" : "comments"}
+        </span>
+        <span className="ml-auto">
+          <ReportButton target={{ postId: post.id }} />
         </span>
       </div>
 

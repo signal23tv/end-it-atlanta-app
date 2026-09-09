@@ -19,7 +19,7 @@ export default function PostComposer() {
         await formAction(formData);
         formRef.current?.reset();
       }}
-      className="bg-white border border-black/10 rounded-xl p-4 flex flex-col gap-3"
+      className="bg-white text-black border border-black/10 rounded-xl p-4 flex flex-col gap-3"
     >
       <textarea
         name="content"

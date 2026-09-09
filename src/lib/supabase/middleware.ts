@@ -50,7 +50,8 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/programs") ||
     request.nextUrl.pathname.startsWith("/nut-juice") ||
     request.nextUrl.pathname.startsWith("/notifications") ||
-    request.nextUrl.pathname.startsWith("/rewards");
+    request.nextUrl.pathname.startsWith("/rewards") ||
+    request.nextUrl.pathname.startsWith("/discover");
   // Intentionally NOT protected: /help (crisis resources -- must work
   // with no login) and /about (public marketing-style content).
 

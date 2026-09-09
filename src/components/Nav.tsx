@@ -19,6 +19,16 @@ export default async function Nav() {
         <Link href="/feed" className="font-display text-xl tracking-wide">
           END IT ATLANTA
         </Link>
+        <Link
+          href="/discover"
+          aria-label="Find people"
+          className="text-paper/70 hover:text-gold transition-colors"
+        >
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth={2}>
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+          </svg>
+        </Link>
       </div>
     </header>
   );

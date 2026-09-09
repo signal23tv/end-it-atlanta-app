@@ -7,6 +7,7 @@ import { logout } from "@/app/login/actions";
 const LINKS: { href: string; label: string; description: string }[] = [
   { href: "/profile", label: "My Profile", description: "View and edit your public profile" },
   { href: "/settings/profile", label: "Edit Profile", description: "Name, username, bio, photo" },
+  { href: "/discover", label: "Find People", description: "Search for other members by name or username" },
   { href: "/notifications", label: "Notifications", description: "Follows, likes, and comments on your posts" },
   { href: "/settings/notifications", label: "Notification Settings", description: "Push alerts and preferences" },
   { href: "/todd", label: "Todd the PrEP God", description: "Chat about PrEP, testing, and prevention" },

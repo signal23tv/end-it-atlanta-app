@@ -62,12 +62,32 @@ const POST_SELECT =
 
 export async function getFeedPosts(limit = 50): Promise<Post[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let query = supabase
     .from("posts")
     .select(POST_SELECT)
     .is("deleted_at", null)
     .order("created_at", { ascending: false })
     .limit(limit);
+
+  // Quietly drop posts from anyone the viewer has blocked -- a real
+  // safety feature, not cosmetic. Blocking is one-directional here
+  // (see moderation/actions.ts for why); this is the read side of it.
+  if (user) {
+    const { data: blocked } = await supabase
+      .from("blocks")
+      .select("blocked_id")
+      .eq("blocker_id", user.id);
+    const blockedIds = (blocked ?? []).map((b) => b.blocked_id);
+    if (blockedIds.length > 0) {
+      query = query.not("author_id", "in", `(${blockedIds.join(",")})`);
+    }
+  }
+
+  const { data, error } = await query;
 
   if (error || !data) return [];
   return hydratePosts(supabase, data as never);

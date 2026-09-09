@@ -5,6 +5,8 @@ import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
 import PostCard from "@/components/PostCard";
 import FollowButton from "@/components/FollowButton";
+import BlockButton from "@/components/BlockButton";
+import ReportButton from "@/components/ReportButton";
 import { createClient } from "@/lib/supabase/server";
 import { getPostsByAuthor } from "@/lib/posts";
 
@@ -42,15 +44,25 @@ export default async function ProfilePage({
   } = await supabase.auth.getUser();
 
   let isFollowing = false;
+  let isBlocked = false;
   const isOwnProfile = user?.id === profile.id;
   if (user && !isOwnProfile) {
-    const { data: existingFollow } = await supabase
-      .from("follows")
-      .select("follower_id")
-      .eq("follower_id", user.id)
-      .eq("following_id", profile.id)
-      .maybeSingle();
+    const [{ data: existingFollow }, { data: existingBlock }] = await Promise.all([
+      supabase
+        .from("follows")
+        .select("follower_id")
+        .eq("follower_id", user.id)
+        .eq("following_id", profile.id)
+        .maybeSingle(),
+      supabase
+        .from("blocks")
+        .select("id")
+        .eq("blocker_id", user.id)
+        .eq("blocked_id", profile.id)
+        .maybeSingle(),
+    ]);
     isFollowing = Boolean(existingFollow);
+    isBlocked = Boolean(existingBlock);
   }
 
   return (
@@ -65,11 +77,17 @@ export default async function ProfilePage({
                 <p className="text-muted">@{profile.username}</p>
               </div>
               {user && !isOwnProfile && (
-                <FollowButton
-                  targetUserId={profile.id}
-                  username={profile.username}
-                  initiallyFollowing={isFollowing}
-                />
+                <div className="flex flex-col items-end gap-1.5">
+                  <FollowButton
+                    targetUserId={profile.id}
+                    username={profile.username}
+                    initiallyFollowing={isFollowing}
+                  />
+                  <div className="flex items-center gap-3">
+                    <ReportButton target={{ userId: profile.id }} label="Report user" />
+                    <BlockButton targetUserId={profile.id} initiallyBlocked={isBlocked} />
+                  </div>
+                </div>
               )}
               {isOwnProfile && (
                 <Link
