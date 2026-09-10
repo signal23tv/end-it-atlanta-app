@@ -1,9 +1,8 @@
 import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
-import WatchHero from "@/components/WatchHero";
 import NowPlayingSection from "@/components/NowPlayingSection";
-import { ContentRow, ComingSoonCard, SupportModuleCard } from "@/components/WatchRows";
+import { ContentRow, ClinicOriginalCard, SupportModuleCard } from "@/components/WatchRows";
 import { WATCH_VIDEOS } from "@/lib/watch-data";
 
 export const metadata = {
@@ -12,18 +11,21 @@ export const metadata = {
 };
 
 /**
- * Streaming-app layout. Henderson's feedback (2026-09-10): the real videos
- * were only playable small, inline inside a 160px row card -- "there
- * should be a player on the page that plays the videos up top." Fixed:
- * a real, large video player is now the first thing on the page.
- * Selecting a different video from the row below it updates that same
- * top player instead of playing small inline. "The Clinic" key art
- * (no real episode yet) is a secondary promo below the real player, not
- * the top element anymore. We only have 3 real videos and no
- * watch-history/category data today, so per Henderson's earlier
- * direction: every row still renders, but any row with nothing real
- * behind it shows an honest "Coming Soon" placeholder instead of fake
- * thumbnails pretending to be real content.
+ * Streaming-app layout (redesigned 2026-09-10 per Henderson's structure
+ * spec). One player, pinned at the top, is the whole point of the page --
+ * everything else is real playlist rows underneath it, never a second
+ * large hero/promo block competing with the player.
+ *
+ * We only have 3 real videos and no watch-history/category data today.
+ * Earlier drafts filled the empty rows ("Continue Watching," "Todd
+ * Explains," "PSAs & Shorts," "Community Stories") with 3x repeated
+ * dashed "Coming Soon" placeholder tiles each -- Henderson's spec calls
+ * this out directly ("repeated coming soon cards feel unfinished... do
+ * not show multiple repetitive dead tiles"). Those rows are hidden
+ * entirely until there's real content behind them. "PrEP TV Originals"
+ * keeps exactly one honest, well-styled tile for "The Clinic" (real key
+ * art, genuinely in production) instead of a giant duplicate hero lower
+ * on the page.
  */
 export default function WatchPage() {
   return (
@@ -33,38 +35,8 @@ export default function WatchPage() {
         <div className="flex flex-col gap-7 pt-3">
           <NowPlayingSection videos={WATCH_VIDEOS} />
 
-          <div className="px-4">
-            <WatchHero />
-          </div>
-
-          <ContentRow title="Continue Watching">
-            <ComingSoonCard label="Continue Watching" />
-            <ComingSoonCard label="Continue Watching" />
-            <ComingSoonCard label="Continue Watching" />
-          </ContentRow>
-
           <ContentRow title="PrEP TV Originals">
-            <ComingSoonCard label="PrEP TV Originals" />
-            <ComingSoonCard label="PrEP TV Originals" />
-            <ComingSoonCard label="PrEP TV Originals" />
-          </ContentRow>
-
-          <ContentRow title="Todd Explains">
-            <ComingSoonCard label="Todd Explains" />
-            <ComingSoonCard label="Todd Explains" />
-            <ComingSoonCard label="Todd Explains" />
-          </ContentRow>
-
-          <ContentRow title="PSAs & Shorts">
-            <ComingSoonCard label="PSAs & Shorts" />
-            <ComingSoonCard label="PSAs & Shorts" />
-            <ComingSoonCard label="PSAs & Shorts" />
-          </ContentRow>
-
-          <ContentRow title="Community Stories">
-            <ComingSoonCard label="Community Stories" />
-            <ComingSoonCard label="Community Stories" />
-            <ComingSoonCard label="Community Stories" />
+            <ClinicOriginalCard />
           </ContentRow>
 
           <div className="flex flex-col gap-2.5 px-4">

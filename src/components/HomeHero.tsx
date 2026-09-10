@@ -23,6 +23,17 @@ const ASSET = "/assets/endit/v1";
  *   art's own built-in left-side gradient blends into the card
  *   background so overlaid text stays readable without an extra scrim
  *   fighting the image).
+ *
+ * The desktop container is `aspect-[1600/586]` -- the exact pixel ratio
+ * of the saved `home_hero_atlanta_banner.webp` -- not a fixed min-height.
+ * A fixed height with `object-cover` was cropping the top/bottom of the
+ * banner on wide screens (Henderson caught this live, 2026-09-10):
+ * `min-h-[240px]` was shallower than the image's real 2.73:1 ratio at
+ * the shell's max content width, so `object-cover` chopped the mural
+ * text and tagline. Matching the container to the image's exact ratio
+ * (same fix already used for the Watch hero and Home tiles) eliminates
+ * the crop entirely -- if the banner image is ever replaced with a
+ * different exact size, update this `aspect-[...]` value to match it.
  */
 export default function HomeHero({ firstName }: { firstName: string }) {
   const greeting = firstName ? `Hey there, ${firstName}.` : "Hey there.";
@@ -50,15 +61,14 @@ export default function HomeHero({ firstName }: { firstName: string }) {
       </div>
 
       {/* Tablet/desktop layout */}
-      <div className="hidden md:block relative min-h-[240px]">
+      <div className="hidden md:block relative aspect-[1600/586]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`${ASSET}/home/home_hero_atlanta_banner.webp`}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectPosition: "78% center" }}
         />
-        <div className="relative z-10 flex flex-col justify-center gap-3 h-full min-h-[240px] px-8 py-6 max-w-md">
+        <div className="relative z-10 flex flex-col justify-center gap-3 h-full px-8 py-6 max-w-md">
           <div>
             <p className="eit-kicker text-gold">Test. Prevent. Treat. Connect.</p>
             <h2 className="text-4xl mt-1 text-[#F7FAFF] font-display break-words">{greeting}</h2>
