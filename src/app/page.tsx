@@ -15,7 +15,7 @@ export default async function Home() {
     <>
       <MarketingHeader />
 
-      <main className="flex-1 bg-paper text-black pb-16">
+      <main className="flex-1 bg-black text-paper pb-16">
         {/* SPLASH-STYLE INTRO */}
         <section
           aria-label="END IT ATLANTA"
@@ -234,7 +234,7 @@ export default async function Home() {
               </p>
               <Link
                 href="/learning-lab"
-                className="inline-block bg-black text-paper hover:bg-black/80 font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
+                className="inline-block border border-gold text-gold hover:bg-gold hover:text-black font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
               >
                 Connect With Resources
               </Link>
