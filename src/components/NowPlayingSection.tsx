@@ -8,9 +8,20 @@ import { watchThumbnail, type WatchVideo } from "@/lib/watch-data";
  * standing requirement: "there should be a player on the page that plays
  * the videos up top," and it must stay the single top element with no
  * second large hero/promo block competing with it further down the page
- * (2026-09-10 redesign spec). Selecting a different video from the row
- * below updates this same large player in place -- title, poster, and
- * playback all swap together, no separate hero card appears.
+ * (2026-09-10 redesign spec). Selecting a different video from the
+ * playlist below updates this same large player in place -- title,
+ * poster, and playback all swap together, no separate hero card appears.
+ *
+ * The playlist always lists every video, including whichever one is
+ * currently playing. Henderson caught a real bug here (2026-09-10):
+ * "you keep taking away one of the videos and putting it in the player
+ * and its not in the playlist at all. so once you switch to another
+ * player its gone also" -- the row used to filter out the active video
+ * (a common "up next" pattern), which made it look like a video had
+ * vanished every time you picked something else. Now nothing is ever
+ * removed from the list; the currently-playing video is instead marked
+ * with a highlighted ring and a "Now Playing" label so it stays visibly
+ * present and identifiable at the same time.
  */
 export default function NowPlayingSection({ videos }: { videos: WatchVideo[] }) {
   const [activeId, setActiveId] = useState(videos[0]?.id);
@@ -28,8 +39,6 @@ export default function NowPlayingSection({ videos }: { videos: WatchVideo[] }) 
     setShowInfo(false);
     playerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-
-  const others = videos.filter((v) => v.id !== active.id);
 
   return (
     <div id="latest-videos" ref={playerRef} className="flex flex-col gap-3 px-4">
@@ -127,49 +136,64 @@ export default function NowPlayingSection({ videos }: { videos: WatchVideo[] }) 
         )}
       </div>
 
-      {others.length > 0 && (
+      {videos.length > 1 && (
         <div className="flex flex-col gap-2.5 mt-1">
-          <p className="text-sm font-bold text-[#F7FAFF]">More from END IT ATLANTA</p>
+          <p className="text-sm font-bold text-[#F7FAFF]">Playlist</p>
           <div className="flex gap-3 overflow-x-auto pb-1 snap-x snap-mandatory scrollbar-none">
-            {others.map((video) => (
-              <button
-                key={video.id}
-                onClick={() => selectVideo(video.id)}
-                className="shrink-0 snap-start w-40 text-left group"
-              >
-                <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-black">
-                  {!thumbFailed[video.id] ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={watchThumbnail(video.streamId, 480)}
-                      alt=""
-                      onError={() => setThumbFailed((f) => ({ ...f, [video.id]: true }))}
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity group-hover:opacity-80"
-                    />
-                  ) : (
-                    <div
-                      className="absolute inset-0"
-                      style={{ background: "linear-gradient(135deg, var(--eit-surface-raised), var(--eit-surface))" }}
-                    />
-                  )}
-                  <span className="absolute inset-0 flex items-center justify-center">
-                    <span
-                      className="rounded-full flex items-center justify-center"
-                      style={{
-                        width: 32,
-                        height: 32,
-                        background: "linear-gradient(135deg, var(--eit-purple), var(--eit-pink))",
-                      }}
-                    >
-                      <svg viewBox="0 0 24 24" width={12} height={12} fill="white">
-                        <path d="M8 5.5v13l11-6.5-11-6.5Z" />
-                      </svg>
-                    </span>
-                  </span>
-                </div>
-                <p className="text-xs font-semibold text-[#F7FAFF] leading-tight mt-1.5">{video.title}</p>
-              </button>
-            ))}
+            {videos.map((video) => {
+              const isActive = video.id === active.id;
+              return (
+                <button
+                  key={video.id}
+                  onClick={() => selectVideo(video.id)}
+                  className="shrink-0 snap-start w-40 text-left group"
+                  aria-current={isActive ? "true" : undefined}
+                >
+                  <div
+                    className="relative w-full aspect-video rounded-lg overflow-hidden bg-black"
+                    style={isActive ? { boxShadow: "0 0 0 2px var(--eit-gold, #FFC629)" } : undefined}
+                  >
+                    {!thumbFailed[video.id] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={watchThumbnail(video.streamId, 480)}
+                        alt=""
+                        onError={() => setThumbFailed((f) => ({ ...f, [video.id]: true }))}
+                        className="absolute inset-0 w-full h-full object-cover transition-opacity group-hover:opacity-80"
+                      />
+                    ) : (
+                      <div
+                        className="absolute inset-0"
+                        style={{ background: "linear-gradient(135deg, var(--eit-surface-raised), var(--eit-surface))" }}
+                      />
+                    )}
+                    {isActive ? (
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/35">
+                        <span className="text-[10px] font-bold uppercase tracking-wide text-gold bg-black/70 rounded-full px-2.5 py-1">
+                          Now Playing
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="absolute inset-0 flex items-center justify-center">
+                        <span
+                          className="rounded-full flex items-center justify-center"
+                          style={{
+                            width: 32,
+                            height: 32,
+                            background: "linear-gradient(135deg, var(--eit-purple), var(--eit-pink))",
+                          }}
+                        >
+                          <svg viewBox="0 0 24 24" width={12} height={12} fill="white">
+                            <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+                          </svg>
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs font-semibold text-[#F7FAFF] leading-tight mt-1.5">{video.title}</p>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

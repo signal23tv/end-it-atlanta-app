@@ -2,7 +2,7 @@ import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
 import NowPlayingSection from "@/components/NowPlayingSection";
-import { ContentRow, ClinicOriginalCard, SupportModuleCard } from "@/components/WatchRows";
+import { ClinicOriginalCard, SupportModuleCard } from "@/components/WatchRows";
 import { WATCH_VIDEOS } from "@/lib/watch-data";
 
 export const metadata = {
@@ -22,10 +22,16 @@ export const metadata = {
  * dashed "Coming Soon" placeholder tiles each -- Henderson's spec calls
  * this out directly ("repeated coming soon cards feel unfinished... do
  * not show multiple repetitive dead tiles"). Those rows are hidden
- * entirely until there's real content behind them. "PrEP TV Originals"
- * keeps exactly one honest, well-styled tile for "The Clinic" (real key
- * art, genuinely in production) instead of a giant duplicate hero lower
- * on the page.
+ * entirely until there's real content behind them.
+ *
+ * "PrEP TV Originals" is a full-width card for "The Clinic" (real key
+ * art, genuinely in production), directly under the player -- not
+ * wrapped in a horizontally-scrolling row anymore. Henderson caught
+ * that treatment live (2026-09-10): shrinking it to a small thumbnail
+ * inside a scroll row made it disappear visually; he wants it prominent
+ * near the top of the page. Still just one honest card, though -- not a
+ * second hero with its own Play/More Info buttons competing with the
+ * real player above it.
  */
 export default function WatchPage() {
   return (
@@ -35,9 +41,10 @@ export default function WatchPage() {
         <div className="flex flex-col gap-7 pt-3">
           <NowPlayingSection videos={WATCH_VIDEOS} />
 
-          <ContentRow title="PrEP TV Originals">
+          <div className="flex flex-col gap-2.5 px-4">
+            <p className="text-sm font-bold text-[#F7FAFF]">PrEP TV Originals</p>
             <ClinicOriginalCard />
-          </ContentRow>
+          </div>
 
           <div className="flex flex-col gap-2.5 px-4">
             <p className="text-sm font-bold text-[#F7FAFF]">Because You Care About Your Health</p>
