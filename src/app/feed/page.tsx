@@ -119,20 +119,21 @@ export default async function FeedPage() {
       <main className="eit-app flex-1 pb-24">
         <div className="eit-shell flex flex-col gap-2">
           <ImageBackdrop
-            realSrc={`${ASSET}/home/home_hero_atlanta_banner.png`}
+            realSrc={`${ASSET}/home/home_hero_atlanta_banner.webp`}
             fallbackSrc={`${ASSET}/backgrounds/atlanta-light-trails.webp`}
-            scrim="linear-gradient(0deg, rgb(6 11 19 / .95) 0%, rgb(6 11 19 / .45) 55%, rgb(6 11 19 / .12) 100%)"
-            className="rounded-2xl min-h-[248px] flex flex-col justify-end p-5 shadow-2xl shadow-black/40"
+            scrim="transparent"
+            className="rounded-2xl aspect-[1600/586] shadow-2xl shadow-black/40"
           >
-            <p className="eit-kicker text-gold">Test. Prevent. Treat. Connect.</p>
-            <h2 className="text-3xl sm:text-4xl mt-1 mb-2 text-[#F7FAFF] font-display">
-              {firstName ? `Hey there, ${firstName}.` : "Hey there."}
-            </h2>
-            <p className="text-sm text-[#B3C2D4] mb-3 max-w-xs">
-              Let&apos;s make a healthier, stronger Atlanta together.
+            {null}
+          </ImageBackdrop>
+
+          <div className="flex flex-col gap-2 px-1">
+            <p className="text-sm text-[#B3C2D4]">
+              {firstName ? `Hey there, ${firstName} — ` : "Hey there — "}
+              let&apos;s make a healthier, stronger Atlanta together.
             </p>
             <HomeSearchBar />
-          </ImageBackdrop>
+          </div>
 
           <div className="eit-section">
             <div className="eit-grid">
