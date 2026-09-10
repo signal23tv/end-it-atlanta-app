@@ -6,6 +6,8 @@ import PostComposer from "@/components/PostComposer";
 import PostCard from "@/components/PostCard";
 import ImageBackdrop from "@/components/ImageBackdrop";
 import QuickActionTile from "@/components/QuickActionTile";
+import HomeHero from "@/components/HomeHero";
+import FeedEmptyState from "@/components/FeedEmptyState";
 import { getFeedPosts } from "@/lib/posts";
 import { createClient } from "@/lib/supabase/server";
 import { EVENTS } from "@/lib/events-data";
@@ -117,19 +119,7 @@ export default async function FeedPage() {
       <Nav />
       <main className="eit-app flex-1 pb-24">
         <div className="eit-shell flex flex-col gap-2">
-          <ImageBackdrop
-            realSrc={`${ASSET}/home/home_hero_atlanta_banner.webp`}
-            fallbackSrc={`${ASSET}/backgrounds/atlanta-light-trails.webp`}
-            scrim="transparent"
-            className="rounded-2xl aspect-[1600/586] shadow-2xl shadow-black/40"
-          >
-            {null}
-          </ImageBackdrop>
-
-          <p className="text-sm text-[#B3C2D4] px-1">
-            {firstName ? `Hey there, ${firstName} — ` : "Hey there — "}
-            let&apos;s make a healthier, stronger Atlanta together.
-          </p>
+          <HomeHero firstName={firstName} />
 
           <div className="eit-section">
             <div className="eit-grid">
@@ -172,28 +162,30 @@ export default async function FeedPage() {
               </Link>
             ) : (
               <ImageBackdrop
-                realSrc={`${ASSET}/home/coming_for_you_events_state.png`}
+                realSrc={`${ASSET}/home/coming_for_you_events_state.webp`}
                 fallbackSrc={`${ASSET}/backgrounds/atmosphere-pink.svg`}
-                scrim="linear-gradient(180deg, rgb(6 11 19 / .4) 0%, rgb(6 11 19 / .88) 100%)"
-                className="rounded-2xl min-h-[190px] flex flex-col items-center justify-center text-center gap-3 px-6 py-8 shadow-lg shadow-black/30"
+                scrim="transparent"
+                className="rounded-2xl min-h-[150px] flex items-center px-5 py-5 shadow-lg shadow-black/30"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`${ASSET}/empty-states/events.svg`}
-                  alt=""
-                  width={68}
-                  height={68}
-                  className="opacity-90"
-                />
-                <p className="text-sm text-[#F7FAFF] max-w-[26ch] font-medium">
-                  No upcoming events on the calendar right now — check back soon.
-                </p>
-                <Link
-                  href="/events"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/30 text-[#F7FAFF] text-xs font-bold uppercase tracking-wide px-4 py-2 hover:bg-white/10 transition-colors"
-                >
-                  Browse Events
-                </Link>
+                <div className="flex flex-col gap-3 max-w-[75%] sm:max-w-[60%]">
+                  <p className="text-sm text-[#F7FAFF] font-medium">
+                    No upcoming events right now. Check back for new dates.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <Link
+                      href="/events"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/30 text-[#F7FAFF] text-xs font-bold uppercase tracking-wide px-4 py-2 hover:bg-white/10 transition-colors"
+                    >
+                      Browse Events
+                    </Link>
+                    <Link
+                      href="/discover?tab=community"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/30 text-[#F7FAFF] text-xs font-bold uppercase tracking-wide px-4 py-2 hover:bg-white/10 transition-colors"
+                    >
+                      Explore Community
+                    </Link>
+                  </div>
+                </div>
               </ImageBackdrop>
             )}
           </div>
@@ -207,15 +199,12 @@ export default async function FeedPage() {
 
               {posts.length === 0 ? (
                 <ImageBackdrop
-                  realSrc={`${ASSET}/home/community_feed_placeholder.png`}
+                  realSrc={`${ASSET}/home/community_feed_placeholder.webp`}
                   fallbackSrc={`${ASSET}/backgrounds/crown-graffiti.webp`}
-                  scrim="linear-gradient(180deg, rgb(6 11 19 / .35) 0%, rgb(6 11 19 / .9) 100%)"
-                  className="rounded-2xl min-h-[170px] flex flex-col items-center justify-center text-center gap-2 px-6 py-8 shadow-lg shadow-black/30"
+                  scrim="linear-gradient(90deg, rgb(6 11 19 / .55) 0%, rgb(6 11 19 / .25) 60%)"
+                  className="rounded-2xl min-h-[150px] flex items-center px-5 py-5 shadow-lg shadow-black/30"
                 >
-                  <p className="text-sm font-semibold text-[#F7FAFF]">Start the conversation.</p>
-                  <p className="text-xs text-[#B3C2D4] max-w-[30ch]">
-                    Share what&apos;s going on in your city — be the first to post.
-                  </p>
+                  <FeedEmptyState />
                 </ImageBackdrop>
               ) : (
                 posts.map((post) => <PostCard key={post.id} post={post} />)
