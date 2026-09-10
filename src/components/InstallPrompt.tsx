@@ -1,26 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-type BeforeInstallPromptEvent = Event & {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
-};
-
-function isStandalone() {
-  if (typeof window === "undefined") return false;
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    // iOS Safari's own standalone flag
-    (window.navigator as unknown as { standalone?: boolean }).standalone ===
-      true
-  );
-}
-
-function isIOS() {
-  if (typeof navigator === "undefined") return false;
-  return /iphone|ipad|ipod/i.test(navigator.userAgent);
-}
+import { isStandalone, isIOS, type BeforeInstallPromptEvent } from "@/lib/pwa";
 
 /**
  * Feature-detected install guidance (Section 4). Chrome/Android gets

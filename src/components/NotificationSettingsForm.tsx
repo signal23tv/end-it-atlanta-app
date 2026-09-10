@@ -7,6 +7,7 @@ import {
   type NotificationPreferences,
 } from "@/app/notifications/actions";
 import { sendTestNotification } from "@/app/settings/notifications/actions";
+import EnablePushButton from "@/components/EnablePushButton";
 
 type Device = {
   endpoint: string;
@@ -82,6 +83,8 @@ export default function NotificationSettingsForm({
 
   return (
     <div className="flex flex-col gap-6">
+      <EnablePushButton />
+
       <section className="bg-white border border-black/10 rounded-xl p-5">
         <Toggle
           checked={prefs.master}

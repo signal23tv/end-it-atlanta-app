@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AutoPushEnable from "@/components/AutoPushEnable";
 
 const TABS = [
   {
@@ -79,10 +80,12 @@ export default function BottomNav() {
   const pathname = usePathname() || "";
 
   return (
-    <nav
-      aria-label="Primary"
-      className="fixed bottom-0 inset-x-0 z-30 bg-black border-t border-white/10 pb-[env(safe-area-inset-bottom)]"
-    >
+    <>
+      <AutoPushEnable />
+      <nav
+        aria-label="Primary"
+        className="fixed bottom-0 inset-x-0 z-30 bg-black border-t border-white/10 pb-[env(safe-area-inset-bottom)]"
+      >
       <div className="max-w-2xl mx-auto grid grid-cols-6">
         {TABS.map((tab) => {
           const active = tab.match(pathname);
@@ -100,6 +103,7 @@ export default function BottomNav() {
           );
         })}
       </div>
-    </nav>
+      </nav>
+    </>
   );
 }

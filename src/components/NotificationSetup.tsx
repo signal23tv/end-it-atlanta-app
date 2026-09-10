@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { urlBase64ToUint8Array } from "@/lib/vapid";
-import { subscribeToPush } from "@/app/notifications/actions";
+import { subscribeThisDeviceToPush } from "@/lib/push-client";
 import { logJoinEvent } from "@/app/join/actions";
 
 type Status =
   | "idle"
   | "requesting"
-  | "granted_subscribing"
   | "active"
   | "denied"
   | "dismissed"
@@ -32,59 +30,15 @@ export default function NotificationSetup({
 }) {
   const [status, setStatus] = useState<Status>("idle");
 
-  const supported =
-    typeof window !== "undefined" &&
-    "serviceWorker" in navigator &&
-    "PushManager" in window &&
-    "Notification" in window;
-
   async function handleEnable() {
-    if (!supported) {
-      setStatus("unsupported");
-      return;
-    }
-
     setStatus("requesting");
-    const permission = await Notification.requestPermission();
+    const result = await subscribeThisDeviceToPush(campaignCode);
 
     if (campaignCode) {
       await logJoinEvent("notification_permission_result", campaignCode);
     }
 
-    if (permission === "denied") {
-      setStatus("denied");
-      return;
-    }
-    if (permission !== "granted") {
-      setStatus("dismissed");
-      return;
-    }
-
-    setStatus("granted_subscribing");
-    try {
-      const registration = await navigator.serviceWorker.ready;
-      const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-      if (!publicKey) {
-        setStatus("failed");
-        return;
-      }
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(publicKey) as BufferSource,
-      });
-
-      const result = await subscribeToPush(
-        subscription.toJSON() as {
-          endpoint: string;
-          keys: { p256dh: string; auth: string };
-        },
-        campaignCode
-      );
-
-      setStatus(result.ok ? "active" : "failed");
-    } catch {
-      setStatus("failed");
-    }
+    setStatus(result === "not_authenticated" ? "failed" : result);
   }
 
   return (
@@ -104,7 +58,7 @@ export default function NotificationSetup({
         </button>
       )}
 
-      {(status === "requesting" || status === "granted_subscribing") && (
+      {status === "requesting" && (
         <p className="text-sm text-muted">Setting up…</p>
       )}
 

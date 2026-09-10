@@ -8,32 +8,29 @@ const ASSET = "/assets/endit/v1";
  * The greeting/search are always real, live UI rendered from the current
  * signed-in user's data (`firstName` comes from the caller, which reads
  * it fresh from Supabase per request -- never hard-coded, never baked
- * into an image). The artwork here is purely decorative brand atmosphere
- * with real negative space built in on the left side -- it has no baked
- * headline, search box, or personal name, so there's nothing for the
- * real copy to collide or duplicate with.
+ * into an image). The art itself carries no baked headline, tagline, or
+ * search box -- the only baked text is real branded merch in the photo
+ * itself ("END IT ATLANTA" embroidered on the jacket, a real chain
+ * reading "GEO") -- so there's nothing for the live copy to duplicate.
  *
- * Two responsive layouts, per spec:
- * - Phone (default): a short ~128px art strip on top (using the
- *   phone-specific crop, so the subject's face stays visible instead of
- *   being dictated by the source's tall 1000x750 ratio), with the real
- *   greeting + search stacked below in the same dark card.
- * - md and up: side-by-side -- real greeting/search on the dark left,
- *   the wide banner art filling the right/full width behind it (the
- *   art's own built-in left-side gradient blends into the card
- *   background so overlaid text stays readable without an extra scrim
- *   fighting the image).
- *
- * The desktop container is `aspect-[1600/586]` -- the exact pixel ratio
- * of the saved `home_hero_atlanta_banner.webp` -- not a fixed min-height.
- * A fixed height with `object-cover` was cropping the top/bottom of the
- * banner on wide screens (Henderson caught this live, 2026-09-10):
- * `min-h-[240px]` was shallower than the image's real 2.73:1 ratio at
- * the shell's max content width, so `object-cover` chopped the mural
- * text and tagline. Matching the container to the image's exact ratio
- * (same fix already used for the Watch hero and Home tiles) eliminates
- * the crop entirely -- if the banner image is ever replaced with a
- * different exact size, update this `aspect-[...]` value to match it.
+ * Both breakpoints use the same real source photo, `home_hero_atlanta_
+ * banner.webp` (2048x768, supplied 2026-09-10 -- replaces the earlier
+ * banner), just framed differently:
+ * - Phone (default): a short ~112-128px art strip on top, cropped via
+ *   `object-position` to keep the subject's face in frame (the strip is
+ *   far shorter than the photo's native 2.667:1 ratio, so *some*
+ *   vertical crop there is an intentional design choice, not a bug --
+ *   the real greeting + search sit below it in the same solid dark
+ *   card, never on top of the image, so there's no text-legibility
+ *   concern on phone).
+ * - md and up: the container is `aspect-[2048/768]` -- the exact pixel
+ *   ratio of the saved file -- so the full photo always shows with zero
+ *   crop (same fix already applied here once before, 2026-09-10, after
+ *   a fixed-height container cropped the previous banner). The real
+ *   greeting/search sit on top of the image's left side, over a real
+ *   gradient scrim (not baked into the photo) that darkens just enough
+ *   for the text to stay readable against the sunset sky without
+ *   covering the subject on the right.
  */
 export default function HomeHero({ firstName }: { firstName: string }) {
   const greeting = firstName ? `Hey there, ${firstName}.` : "Hey there.";
@@ -45,10 +42,10 @@ export default function HomeHero({ firstName }: { firstName: string }) {
         <div className="relative w-full h-28 sm:h-32">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`${ASSET}/home/home_hero_atlanta_mobile.webp`}
+            src={`${ASSET}/home/home_hero_atlanta_banner.webp`}
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectPosition: "68% 22%" }}
+            style={{ objectPosition: "center 24%" }}
           />
         </div>
         <div className="p-4 flex flex-col gap-3">
@@ -61,12 +58,19 @@ export default function HomeHero({ firstName }: { firstName: string }) {
       </div>
 
       {/* Tablet/desktop layout */}
-      <div className="hidden md:block relative aspect-[1600/586]">
+      <div className="hidden md:block relative aspect-[2048/768]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`${ASSET}/home/home_hero_atlanta_banner.webp`}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, rgb(6 11 19 / .82) 0%, rgb(6 11 19 / .55) 32%, rgb(6 11 19 / .15) 55%, transparent 72%)",
+          }}
         />
         <div className="relative z-10 flex flex-col justify-center gap-3 h-full px-8 py-6 max-w-md">
           <div>

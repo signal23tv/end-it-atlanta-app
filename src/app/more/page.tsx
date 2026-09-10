@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
+import GetAppMenuRow from "@/components/GetAppMenuRow";
 import { createClient } from "@/lib/supabase/server";
 import { logout } from "@/app/login/actions";
 
@@ -113,6 +114,7 @@ export default async function MorePage() {
                     />
                   </Link>
                 ))}
+                {group.title === "Account" && <GetAppMenuRow />}
               </div>
             </div>
           ))}

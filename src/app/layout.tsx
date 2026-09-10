@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import GetAppSheet from "@/components/GetAppSheet";
 
 export const metadata: Metadata = {
   title: "END IT ATLANTA",
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {children}
         <ServiceWorkerRegister />
+        <GetAppSheet />
       </body>
     </html>
   );
