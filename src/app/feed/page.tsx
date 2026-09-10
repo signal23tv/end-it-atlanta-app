@@ -4,7 +4,6 @@ import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
 import PostComposer from "@/components/PostComposer";
 import PostCard from "@/components/PostCard";
-import HomeSearchBar from "@/components/HomeSearchBar";
 import ImageBackdrop from "@/components/ImageBackdrop";
 import QuickActionTile from "@/components/QuickActionTile";
 import { getFeedPosts } from "@/lib/posts";
@@ -127,13 +126,10 @@ export default async function FeedPage() {
             {null}
           </ImageBackdrop>
 
-          <div className="flex flex-col gap-2 px-1">
-            <p className="text-sm text-[#B3C2D4]">
-              {firstName ? `Hey there, ${firstName} — ` : "Hey there — "}
-              let&apos;s make a healthier, stronger Atlanta together.
-            </p>
-            <HomeSearchBar />
-          </div>
+          <p className="text-sm text-[#B3C2D4] px-1">
+            {firstName ? `Hey there, ${firstName} — ` : "Hey there — "}
+            let&apos;s make a healthier, stronger Atlanta together.
+          </p>
 
           <div className="eit-section">
             <div className="eit-grid">
