@@ -6,11 +6,14 @@ import PostComposer from "@/components/PostComposer";
 import PostCard from "@/components/PostCard";
 import HomeSearchBar from "@/components/HomeSearchBar";
 import ImageBackdrop from "@/components/ImageBackdrop";
+import QuickActionTile from "@/components/QuickActionTile";
 import { getFeedPosts } from "@/lib/posts";
 import { createClient } from "@/lib/supabase/server";
 import { EVENTS } from "@/lib/events-data";
 
 const ASSET = "/assets/endit/v1";
+
+const TILES = `${ASSET}/home/tiles`;
 
 const QUICK_ACTIONS: {
   href: string;
@@ -18,6 +21,7 @@ const QUICK_ACTIONS: {
   sub: string;
   tone: "blue" | "pink" | "green" | "purple";
   icon: string;
+  image: string;
 }[] = [
   {
     href: "/get-connected?service=prep",
@@ -25,6 +29,7 @@ const QUICK_ACTIONS: {
     sub: "Learn. Start. Protect.",
     tone: "blue",
     icon: `${ASSET}/icons/pill.svg`,
+    image: `${TILES}/find-prep.webp`,
   },
   {
     href: "/get-connected?service=testing",
@@ -32,6 +37,7 @@ const QUICK_ACTIONS: {
     sub: "Know your status.",
     tone: "pink",
     icon: `${ASSET}/icons/science.svg`,
+    image: `${TILES}/get-tested.webp`,
   },
   {
     href: "/get-connected",
@@ -39,6 +45,7 @@ const QUICK_ACTIONS: {
     sub: "Care is closer than you think.",
     tone: "green",
     icon: `${ASSET}/icons/location.svg`,
+    image: `${TILES}/find-a-clinic.webp`,
   },
   {
     href: "/todd",
@@ -46,6 +53,7 @@ const QUICK_ACTIONS: {
     sub: "Real answers, no judgment.",
     tone: "purple",
     icon: `${ASSET}/icons/chat.svg`,
+    image: `${TILES}/ask-todd.webp`,
   },
   {
     href: "/watch",
@@ -53,6 +61,7 @@ const QUICK_ACTIONS: {
     sub: "Educate. Entertain. Empower.",
     tone: "blue",
     icon: `${ASSET}/icons/watch.svg`,
+    image: `${TILES}/prep-tv.webp`,
   },
   {
     href: "/events",
@@ -60,6 +69,7 @@ const QUICK_ACTIONS: {
     sub: "What's happening.",
     tone: "pink",
     icon: `${ASSET}/icons/calendar.svg`,
+    image: `${TILES}/events.webp`,
   },
   {
     href: "/discover?tab=community",
@@ -67,6 +77,7 @@ const QUICK_ACTIONS: {
     sub: "See who's here.",
     tone: "green",
     icon: `${ASSET}/icons/users.svg`,
+    image: `${TILES}/community.webp`,
   },
   {
     href: "/my-health",
@@ -74,6 +85,7 @@ const QUICK_ACTIONS: {
     sub: "Private, just for you.",
     tone: "purple",
     icon: `${ASSET}/icons/heart.svg`,
+    image: `${TILES}/my-health.webp`,
   },
 ];
 
@@ -125,19 +137,15 @@ export default async function FeedPage() {
           <div className="eit-section">
             <div className="eit-grid">
               {QUICK_ACTIONS.map((action) => (
-                <Link
+                <QuickActionTile
                   key={action.label}
                   href={action.href}
-                  className="eit-action-card"
-                  data-tone={action.tone}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={action.icon} alt="" className="eit-icon" width={22} height={22} />
-                  <div>
-                    <strong>{action.label}</strong>
-                    <span>{action.sub}</span>
-                  </div>
-                </Link>
+                  label={action.label}
+                  sub={action.sub}
+                  tone={action.tone}
+                  icon={action.icon}
+                  image={action.image}
+                />
               ))}
             </div>
           </div>
