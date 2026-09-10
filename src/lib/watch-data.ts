@@ -3,7 +3,9 @@
  * (same videos already live on Signal 23 Universe). Public/free streams,
  * no auth needed -- `https://iframe.videodelivery.net/<id>`. Copy ported
  * verbatim from the source embed Henderson supplied; do not add
- * placeholder or invented videos here.
+ * placeholder or invented videos, series, or categories here -- if we
+ * don't have real content for a section (episodes, PSAs, reels), we
+ * don't fake one.
  */
 
 export type WatchVideo = {
@@ -29,3 +31,12 @@ export const WATCH_VIDEOS: WatchVideo[] = [
     title: "End It Atlanta March!",
   },
 ];
+
+/**
+ * Cloudflare Stream auto-generates a thumbnail from the actual video --
+ * this is a real frame of the real content, not a placeholder image.
+ * Docs: https://developers.cloudflare.com/stream/viewing-videos/displaying-thumbnails/
+ */
+export function watchThumbnail(streamId: string, height = 480) {
+  return `https://videodelivery.net/${streamId}/thumbnails/thumbnail.jpg?time=1s&height=${height}`;
+}
