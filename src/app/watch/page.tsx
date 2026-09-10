@@ -2,8 +2,8 @@ import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
 import WatchHero from "@/components/WatchHero";
+import NowPlayingSection from "@/components/NowPlayingSection";
 import { ContentRow, ComingSoonCard, SupportModuleCard } from "@/components/WatchRows";
-import { VideoCard } from "@/components/WatchPlayer";
 import { WATCH_VIDEOS } from "@/lib/watch-data";
 
 export const metadata = {
@@ -12,12 +12,18 @@ export const metadata = {
 };
 
 /**
- * Streaming-app layout: hero banner up top, horizontal content rows below.
- * We only have 3 real videos and no watch-history/category data today, so
- * per Henderson's direction (2026-09-10): every row renders, but any row
- * with nothing real behind it shows an honest "Coming Soon" placeholder
- * instead of fake thumbnails pretending to be real content. He'll supply
- * real thumbnails/videos to swap in per row as they're ready.
+ * Streaming-app layout. Henderson's feedback (2026-09-10): the real videos
+ * were only playable small, inline inside a 160px row card -- "there
+ * should be a player on the page that plays the videos up top." Fixed:
+ * a real, large video player is now the first thing on the page.
+ * Selecting a different video from the row below it updates that same
+ * top player instead of playing small inline. "The Clinic" key art
+ * (no real episode yet) is a secondary promo below the real player, not
+ * the top element anymore. We only have 3 real videos and no
+ * watch-history/category data today, so per Henderson's earlier
+ * direction: every row still renders, but any row with nothing real
+ * behind it shows an honest "Coming Soon" placeholder instead of fake
+ * thumbnails pretending to be real content.
  */
 export default function WatchPage() {
   return (
@@ -25,6 +31,8 @@ export default function WatchPage() {
       <Nav />
       <main className="eit-app flex-1 pb-24">
         <div className="flex flex-col gap-7 pt-3">
+          <NowPlayingSection videos={WATCH_VIDEOS} />
+
           <div className="px-4">
             <WatchHero />
           </div>
@@ -33,14 +41,6 @@ export default function WatchPage() {
             <ComingSoonCard label="Continue Watching" />
             <ComingSoonCard label="Continue Watching" />
             <ComingSoonCard label="Continue Watching" />
-          </ContentRow>
-
-          <ContentRow title="Latest From END IT ATLANTA" id="latest-videos">
-            {WATCH_VIDEOS.map((video) => (
-              <div key={video.id} className="shrink-0 snap-start w-40">
-                <VideoCard video={video} />
-              </div>
-            ))}
           </ContentRow>
 
           <ContentRow title="PrEP TV Originals">

@@ -15,13 +15,12 @@ export default function WatchHero() {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative w-full aspect-[8/5] sm:aspect-[2.4/1] rounded-2xl overflow-hidden">
+      <div className="relative w-full aspect-[8/3] rounded-2xl overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/assets/endit/v1/watch/the-clinic-hero.webp"
           alt="The Clinic -- a new PrEP TV original series from END IT ATLANTA"
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectPosition: "62% center" }}
         />
         <div
           className="absolute inset-0"

@@ -11,18 +11,19 @@ const TONE_GRADIENT: Record<string, string> = {
 };
 
 /**
- * Home's 8 quick-action tiles, now backed by the real branded key art
- * Henderson supplied for each one (Find PrEP, Get Tested, Find a Clinic,
- * Ask Todd, PrEP TV, Events, Community, My Health). Falls back to the
- * original tone gradient if a photo ever fails to load -- never a broken
- * image or empty tile.
+ * Home's 8 quick-action tiles, backed by the real branded key art
+ * Henderson supplied for each one. The art is square and already has its
+ * own real title/subtitle baked in -- so the tile is sized to match the
+ * image's own aspect ratio (square) instead of cropping the artwork down
+ * to fit a short rectangle, and there's no duplicate text laid over top
+ * of it. Falls back to the original tone gradient (with a real text
+ * label) if a photo ever fails to load.
  */
 export default function QuickActionTile({
   href,
   label,
   sub,
   tone,
-  icon,
   image,
 }: {
   href: string;
@@ -34,46 +35,32 @@ export default function QuickActionTile({
 }) {
   const [failed, setFailed] = useState(false);
 
+  if (failed) {
+    return (
+      <Link
+        href={href}
+        className="relative overflow-hidden rounded-[18px] aspect-square flex flex-col justify-end gap-1 p-4 border border-white/15 shadow-lg shadow-black/30 text-white"
+        style={{ background: TONE_GRADIENT[tone] }}
+      >
+        <strong className="text-[1.05rem] leading-tight">{label}</strong>
+        <span className="text-white/85 text-[0.78rem] leading-snug">{sub}</span>
+      </Link>
+    );
+  }
+
   return (
     <Link
       href={href}
-      className="group relative overflow-hidden isolate rounded-[18px] min-h-[142px] flex flex-col justify-end gap-1 p-4 border border-white/15 shadow-lg shadow-black/30"
-      style={!failed ? undefined : { background: TONE_GRADIENT[tone] }}
+      aria-label={`${label} -- ${sub}`}
+      className="group relative overflow-hidden rounded-[18px] aspect-square border border-white/15 shadow-lg shadow-black/30 transition-transform duration-200 hover:scale-[1.02] focus-visible:scale-[1.02]"
     >
-      {!failed && (
-        <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={image}
-            onError={() => setFailed(true)}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover -z-20 transition-transform duration-300 group-hover:scale-105"
-          />
-          <div
-            className="absolute inset-0 -z-10"
-            style={{
-              background:
-                tone === "blue"
-                  ? "linear-gradient(180deg, rgb(0 100 202 / .18) 0%, rgb(6 11 19 / .55) 45%, rgb(6 11 19 / .94) 100%)"
-                  : tone === "pink"
-                  ? "linear-gradient(180deg, rgb(197 11 96 / .18) 0%, rgb(6 11 19 / .55) 45%, rgb(6 11 19 / .94) 100%)"
-                  : tone === "green"
-                  ? "linear-gradient(180deg, rgb(8 124 85 / .18) 0%, rgb(6 11 19 / .55) 45%, rgb(6 11 19 / .94) 100%)"
-                  : "linear-gradient(180deg, rgb(116 64 202 / .18) 0%, rgb(6 11 19 / .55) 45%, rgb(6 11 19 / .94) 100%)",
-            }}
-          />
-        </>
-      )}
-
-      <span
-        className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mb-1"
-        style={{ background: "rgb(0 0 0 / .4)", backdropFilter: "blur(4px)" }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={icon} alt="" width={16} height={16} />
-      </span>
-      <strong className="text-white text-[1.05rem] leading-tight">{label}</strong>
-      <span className="text-white/85 text-[0.78rem] leading-snug">{sub}</span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={image}
+        onError={() => setFailed(true)}
+        alt={`${label} -- ${sub}`}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
     </Link>
   );
 }
