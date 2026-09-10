@@ -67,6 +67,7 @@ function renderContent(content: string): ReactNode[] {
 }
 
 const ASSET = "/assets/endit/v1";
+const TODD_ASSET = "/assets/endit/v1/todd";
 
 const TOPIC_STARTERS = [
   "What is PrEP?",
@@ -76,14 +77,6 @@ const TOPIC_STARTERS = [
   "What's PEP?",
   "What does U=U mean?",
   "Where can I get tested?",
-];
-
-// Decorative only -- these are the kit's promotional sticker art, not
-// clickable controls. The real topic buttons below are plain HTML.
-const STICKERS = [
-  { src: `${ASSET}/todd/todd-sticker-ask-todd.webp`, alt: "" },
-  { src: `${ASSET}/todd/todd-sticker-knowledge.webp`, alt: "" },
-  { src: `${ASSET}/todd/todd-sticker-stay-protected.webp`, alt: "" },
 ];
 
 export default function ToddChat({
@@ -125,44 +118,68 @@ export default function ToddChat({
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-19rem)] min-h-[22rem] max-h-[38rem] bg-[#101A28] text-[#F7FAFF] border border-[#304055] rounded-xl overflow-hidden">
+    <div className="relative flex flex-col h-[calc(100dvh-24rem)] min-h-[24rem] max-h-[40rem] text-[#F7FAFF] border border-gold/20 rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
+      {/* Sanctuary lounge backdrop -- real photo, kept subtle (low
+          opacity + dark wash) so it reads as atmosphere behind the
+          conversation, never competing with message legibility. */}
+      <div className="absolute inset-0 -z-10">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`${TODD_ASSET}/todd-chat-sanctuary-bg.webp`}
+          alt=""
+          className="w-full h-full object-cover opacity-[0.16]"
+        />
+        <div className="absolute inset-0 bg-[#060B13]/88" />
+      </div>
+
       {!configured && (
-        <div className="bg-gold/20 border-b border-gold text-black text-xs px-4 py-2">
+        <div className="bg-gold/20 border-b border-gold text-black text-xs px-4 py-2 relative z-10">
           Demo mode: Todd&apos;s AI backend isn&apos;t connected yet. Messages
           are saved, but replies are placeholders until the site owner
           finishes setup.
         </div>
       )}
 
-      <div ref={listRef} className="flex-1 min-h-0 overflow-y-auto p-4 flex flex-col gap-3">
+      <div ref={listRef} className="relative z-10 flex-1 min-h-0 overflow-y-auto p-4 flex flex-col gap-3.5">
         {messages.length === 0 && (
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-2" aria-hidden="true">
-              {STICKERS.map((s) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={s.src}
-                  src={s.src}
-                  alt=""
-                  className="w-14 h-16 object-contain rounded-md opacity-90"
-                />
-              ))}
+          <div className="flex flex-col gap-5 items-center text-center py-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${TODD_ASSET}/todd-avatar-premium.webp`}
+              alt=""
+              className="w-20 h-20 rounded-full object-cover"
+              style={{ boxShadow: "0 0 0 2px var(--eit-gold, #FFC629), 0 0 30px rgb(255 198 41 / .28)" }}
+            />
+            <div className="flex flex-col gap-1.5 max-w-xs">
+              <p className="font-display text-xl text-[#F7FAFF]">Welcome to the sanctuary.</p>
+              <p className="text-sm text-[#B3C2D4] leading-relaxed">
+                Ask Todd anything about PrEP, testing, or prevention — real, sourced answers,
+                no judgment.
+              </p>
             </div>
-            <div className="flex items-center gap-1.5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`${ASSET}/icons/book.svg`} alt="" width={14} height={14} />
-              <p className="text-sm text-[#B3C2D4]">Try asking:</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {TOPIC_STARTERS.map((t) => (
-                <button
-                  key={t}
-                  onClick={() => send(t)}
-                  className="text-xs text-[#F7FAFF] bg-[#0A1422] border border-[#304055] hover:border-[#0082FF] rounded-full px-3 py-1.5"
-                >
-                  {t}
-                </button>
-              ))}
+
+            <div className="w-full flex flex-col gap-2.5 items-center">
+              <div className="flex items-center gap-1.5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`${ASSET}/icons/book.svg`} alt="" width={13} height={13} />
+                <p className="text-xs font-semibold text-[#98ADC7] uppercase tracking-wide">
+                  Try asking
+                </p>
+              </div>
+              <div
+                className="w-full rounded-2xl px-3 py-3 flex flex-wrap justify-center gap-2"
+                style={{ background: "linear-gradient(90deg, rgb(139 92 246 / .10), rgb(0 130 255 / .06) 55%, rgb(255 198 41 / .08))" }}
+              >
+                {TOPIC_STARTERS.map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => send(t)}
+                    className="text-xs font-semibold text-[#F7FAFF] bg-[#0A1422]/90 border border-white/15 hover:border-gold hover:text-gold transition-colors rounded-full px-3.5 py-2"
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -177,19 +194,19 @@ export default function ToddChat({
             {m.role === "assistant" && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={`${ASSET}/todd/todd-avatar.webp`}
+                src={`${TODD_ASSET}/todd-avatar-premium.webp`}
                 alt=""
                 className="w-7 h-7 rounded-full shrink-0 object-cover"
-                style={{ boxShadow: "0 0 0 1.5px var(--eit-blue, #0082FF)" }}
+                style={{ boxShadow: "0 0 0 1.5px var(--eit-gold, #FFC629)" }}
               />
             )}
             <div
-              className={`rounded-2xl px-3.5 py-2.5 text-sm overflow-wrap-anywhere ${
+              className={`rounded-2xl px-4 py-2.5 text-sm overflow-wrap-anywhere shadow-lg shadow-black/20 ${
                 m.role === "user"
-                  ? "rounded-br-md bg-[#0064CA] text-white"
+                  ? "rounded-br-md bg-gradient-to-br from-[#0082FF] to-[#0064CA] text-white"
                   : m.is_urgent_routing
-                  ? "rounded-bl-md bg-[#3A0F16] border border-[#FF6B81] text-[#F7FAFF]"
-                  : "rounded-bl-md bg-[#142133] border border-[#304055] text-[#F7FAFF]"
+                  ? "rounded-bl-md bg-[#3A0F16]/95 border border-[#FF6B81] text-[#F7FAFF]"
+                  : "rounded-bl-md bg-[#142133]/92 border border-white/10 text-[#F7FAFF]"
               }`}
             >
               {renderContent(m.content)}
@@ -201,12 +218,12 @@ export default function ToddChat({
           <div className="flex items-end gap-2 max-w-[90%] self-start">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`${ASSET}/todd/todd-avatar-listening.webp`}
+              src={`${TODD_ASSET}/todd-avatar-premium.webp`}
               alt=""
-              className="w-7 h-7 rounded-full shrink-0 object-cover"
-              style={{ boxShadow: "0 0 0 1.5px var(--eit-blue, #0082FF)" }}
+              className="w-7 h-7 rounded-full shrink-0 object-cover animate-pulse"
+              style={{ boxShadow: "0 0 0 1.5px var(--eit-gold, #FFC629), 0 0 10px rgb(255 198 41 / .5)" }}
             />
-            <div className="rounded-2xl rounded-bl-md bg-[#142133] border border-[#304055] px-3.5 py-2.5 text-sm text-[#98ADC7]">
+            <div className="rounded-2xl rounded-bl-md bg-[#142133]/92 border border-white/10 px-4 py-2.5 text-sm text-[#98ADC7]">
               Thinking…
             </div>
           </div>
@@ -218,23 +235,27 @@ export default function ToddChat({
           e.preventDefault();
           send(input);
         }}
-        className="shrink-0 border-t border-[#304055] p-3 flex gap-2"
+        className="relative z-10 shrink-0 border-t border-white/10 bg-[#060B13]/70 p-3 flex gap-2"
       >
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask Todd anything..."
           disabled={isPending}
-          className="flex-1 rounded-full border border-[#304055] bg-[#0A1422] px-4 py-2 text-sm text-[#F7FAFF] placeholder:text-[#98ADC7] outline-none focus:border-[#0082FF]"
+          className="flex-1 rounded-full border border-white/15 bg-[#0A1422] px-4 py-2.5 text-sm text-[#F7FAFF] placeholder:text-[#98ADC7] outline-none focus:border-gold transition-colors"
         />
         <button
           type="submit"
           disabled={isPending}
           aria-label="Send"
-          className="bg-red hover:bg-red-dark disabled:opacity-60 text-paper rounded-full w-10 h-10 flex items-center justify-center shrink-0"
+          className="disabled:opacity-60 text-white rounded-full w-11 h-11 flex items-center justify-center shrink-0 transition-transform hover:scale-105"
+          style={{
+            background: "linear-gradient(135deg, var(--eit-purple, #8B5CF6), var(--eit-pink, #EC4899))",
+            boxShadow: "0 4px 18px rgb(139 92 246 / .4)",
+          }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`${ASSET}/icons/send.svg`} alt="" width={16} height={16} />
+          <img src={`${ASSET}/icons/send.svg`} alt="" width={16} height={16} style={{ filter: "invert(1)" }} />
         </button>
       </form>
     </div>

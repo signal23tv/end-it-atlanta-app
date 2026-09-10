@@ -389,7 +389,7 @@ export default function GetConnectedClient() {
           <div className="rounded-xl border-2 border-gold p-6 md:p-8 bg-[#101A28] text-[#F7FAFF] flex flex-col sm:flex-row gap-5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/assets/endit/v1/todd/todd-avatar.webp"
+              src="/assets/endit/v1/todd/todd-avatar-premium.webp"
               alt="Todd Hall"
               className="w-16 h-16 rounded-full object-cover shrink-0 ring-2 ring-gold/60"
             />
