@@ -2,15 +2,17 @@ import Nav from "@/components/Nav";
 import BottomNav from "@/components/BottomNav";
 import ToddLauncher from "@/components/ToddLauncher";
 import HealthReminders from "@/components/HealthReminders";
-import { listReminders } from "@/app/my-health/actions";
+import { listReminders, listPillCheckIns } from "@/app/my-health/actions";
 
 export const metadata = {
   title: "My Health | END IT ATLANTA",
-  description: "Private appointment and refill reminders, visible only to you.",
+  description: "Private testing-date and daily-pill reminders, visible only to you.",
 };
 
 export default async function MyHealthPage() {
   const reminders = await listReminders();
+  const pillReminderIds = reminders.filter((r) => r.kind === "pill").map((r) => r.id);
+  const checkIns = await listPillCheckIns(pillReminderIds);
 
   return (
     <>
@@ -30,7 +32,7 @@ export default async function MyHealthPage() {
               My Health
             </h1>
             <p className="eit-muted text-sm">
-              Private reminders and appointments -- visible only to you.
+              Testing dates and daily pill reminders -- visible only to you.
             </p>
           </div>
 
@@ -39,7 +41,7 @@ export default async function MyHealthPage() {
             members, or anyone else -- only you can see them.
           </div>
 
-          <HealthReminders initial={reminders} />
+          <HealthReminders initial={reminders} initialCheckIns={checkIns} />
         </div>
       </main>
       <ToddLauncher />

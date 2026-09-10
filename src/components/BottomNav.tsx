@@ -30,8 +30,19 @@ const TABS = [
     ),
   },
   {
+    href: "/messages",
+    label: "Messages",
+    match: (p: string) => p.startsWith("/messages"),
+    icon: (active: boolean) => (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
+        <rect x="3" y="5" width="18" height="14" rx="2" strokeLinejoin="round" />
+        <path d="m4 6.5 8 6.5 8-6.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
     href: "/todd",
-    label: "Chat",
+    label: "Todd",
     match: (p: string) => p.startsWith("/todd"),
     icon: (active: boolean) => (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
@@ -72,14 +83,14 @@ export default function BottomNav() {
       aria-label="Primary"
       className="fixed bottom-0 inset-x-0 z-30 bg-black border-t border-white/10 pb-[env(safe-area-inset-bottom)]"
     >
-      <div className="max-w-2xl mx-auto grid grid-cols-5">
+      <div className="max-w-2xl mx-auto grid grid-cols-6">
         {TABS.map((tab) => {
           const active = tab.match(pathname);
           return (
             <Link
               key={tab.href}
               href={tab.href}
-              className={`flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold uppercase tracking-wide ${
+              className={`flex flex-col items-center gap-1 py-2.5 text-[10px] font-semibold uppercase tracking-wide ${
                 active ? "text-gold" : "text-paper/60 hover:text-paper"
               }`}
             >

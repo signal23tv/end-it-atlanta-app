@@ -6,7 +6,7 @@ import { listConversations } from "@/app/messages/actions";
 
 export const metadata = {
   title: "Messages | END IT ATLANTA",
-  description: "Direct messages, Todd, and your Navigator contact.",
+  description: "Direct messages with members and your Navigator contact.",
 };
 
 export default async function MessagesPage() {
@@ -30,7 +30,7 @@ export default async function MessagesPage() {
               Messages
             </h1>
             <p className="text-sm eit-muted mt-1">
-              Members, Todd, and your Navigator contact -- all in one place.
+              Direct messages with members, plus your real Navigator contact.
             </p>
           </div>
           <InboxTabs conversations={conversations} />

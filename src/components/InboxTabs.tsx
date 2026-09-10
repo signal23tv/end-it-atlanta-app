@@ -7,7 +7,7 @@ import type { ConversationSummary } from "@/app/messages/actions";
 
 const ASSET = "/assets/endit/v1";
 
-type Tab = "direct" | "todd" | "navigator";
+type Tab = "direct" | "navigator";
 
 function timeAgo(iso: string) {
   const diffMs = Date.now() - new Date(iso).getTime();
@@ -64,25 +64,6 @@ function DirectPanel({ conversations }: { conversations: ConversationSummary[] }
   );
 }
 
-function ToddPanel() {
-  return (
-    <Link href="/todd" className="eit-card eit-todd-card">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={`${ASSET}/todd/todd-avatar.webp`}
-        alt="Todd the PrEP God"
-        className="eit-avatar"
-      />
-      <div>
-        <h3>Todd the PrEP God</h3>
-        <p className="eit-muted">
-          Your 24/7 sexual health assistant. Ask him anything, any time.
-        </p>
-      </div>
-    </Link>
-  );
-}
-
 function NavigatorPanel() {
   return (
     <div className="rounded-xl border border-[#304055] bg-[#101A28] p-5 flex flex-col gap-4">
@@ -135,7 +116,6 @@ export default function InboxTabs({ conversations }: { conversations: Conversati
         {(
           [
             { key: "direct", label: unreadCount > 0 ? `Direct (${unreadCount})` : "Direct" },
-            { key: "todd", label: "Todd" },
             { key: "navigator", label: "Navigator" },
           ] as { key: Tab; label: string }[]
         ).map((t) => (
@@ -154,7 +134,6 @@ export default function InboxTabs({ conversations }: { conversations: Conversati
       </div>
 
       {tab === "direct" && <DirectPanel conversations={conversations} />}
-      {tab === "todd" && <ToddPanel />}
       {tab === "navigator" && <NavigatorPanel />}
     </div>
   );

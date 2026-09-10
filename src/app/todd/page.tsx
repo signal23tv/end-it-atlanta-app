@@ -36,8 +36,15 @@ export default async function ToddPage() {
               className="eit-avatar"
               style={{ width: 88, height: 88, boxShadow: "0 0 0 3px var(--eit-blue), 0 0 32px rgb(0 130 255 / .28)" }}
             />
-            <h1 className="text-2xl mt-1" style={{ fontFamily: "var(--eit-font-display)" }}>
-              Todd the PrEP God
+            <h1 className="mt-1">
+              <span className="sr-only">Todd the PrEP God</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/assets/endit/v1/brand/todd-wordmark.svg"
+                alt=""
+                aria-hidden="true"
+                className="h-10 w-auto mx-auto"
+              />
             </h1>
             <p className="text-xs text-gold uppercase tracking-wide font-semibold">
               Your Sexual Health Assistant

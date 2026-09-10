@@ -5,6 +5,7 @@ import ToddLauncher from "@/components/ToddLauncher";
 import PostComposer from "@/components/PostComposer";
 import PostCard from "@/components/PostCard";
 import HomeSearchBar from "@/components/HomeSearchBar";
+import ImageBackdrop from "@/components/ImageBackdrop";
 import { getFeedPosts } from "@/lib/posts";
 import { createClient } from "@/lib/supabase/server";
 import { EVENTS } from "@/lib/events-data";
@@ -105,24 +106,21 @@ export default async function FeedPage() {
       <Nav />
       <main className="eit-app flex-1 pb-24">
         <div className="eit-shell flex flex-col gap-2">
-          <section className="eit-hero">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`${ASSET}/backgrounds/atlanta-skyline-strip.webp`}
-              alt=""
-              className="eit-hero-scene"
-            />
-            <div className="eit-hero-content flex flex-col gap-3">
-              <div>
-                <p className="eit-kicker">Test. Prevent. Treat. Connect.</p>
-                <h2>{firstName ? `Hey there, ${firstName}.` : "Hey there."}</h2>
-                <p className="eit-muted text-sm">
-                  Let&apos;s make a healthier, stronger Atlanta together.
-                </p>
-              </div>
-              <HomeSearchBar />
-            </div>
-          </section>
+          <ImageBackdrop
+            realSrc={`${ASSET}/home/home_hero_atlanta_banner.png`}
+            fallbackSrc={`${ASSET}/backgrounds/atlanta-light-trails.webp`}
+            scrim="linear-gradient(0deg, rgb(6 11 19 / .95) 0%, rgb(6 11 19 / .45) 55%, rgb(6 11 19 / .12) 100%)"
+            className="rounded-2xl min-h-[248px] flex flex-col justify-end p-5 shadow-2xl shadow-black/40"
+          >
+            <p className="eit-kicker text-gold">Test. Prevent. Treat. Connect.</p>
+            <h2 className="text-3xl sm:text-4xl mt-1 mb-2 text-[#F7FAFF] font-display">
+              {firstName ? `Hey there, ${firstName}.` : "Hey there."}
+            </h2>
+            <p className="text-sm text-[#B3C2D4] mb-3 max-w-xs">
+              Let&apos;s make a healthier, stronger Atlanta together.
+            </p>
+            <HomeSearchBar />
+          </ImageBackdrop>
 
           <div className="eit-section">
             <div className="eit-grid">
@@ -151,7 +149,7 @@ export default async function FeedPage() {
             {nextEvent ? (
               <Link
                 href="/events"
-                className="rounded-xl overflow-hidden border border-[#304055] bg-[#101A28] flex gap-3"
+                className="rounded-2xl overflow-hidden border border-[#304055] bg-[#101A28] flex gap-3 shadow-lg shadow-black/30 hover:border-gold transition-colors"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -168,11 +166,30 @@ export default async function FeedPage() {
                 </div>
               </Link>
             ) : (
-              <div className="eit-card eit-empty">
+              <ImageBackdrop
+                realSrc={`${ASSET}/home/coming_for_you_events_state.png`}
+                fallbackSrc={`${ASSET}/backgrounds/atmosphere-pink.svg`}
+                scrim="linear-gradient(180deg, rgb(6 11 19 / .4) 0%, rgb(6 11 19 / .88) 100%)"
+                className="rounded-2xl min-h-[190px] flex flex-col items-center justify-center text-center gap-3 px-6 py-8 shadow-lg shadow-black/30"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${ASSET}/empty-states/events.svg`} alt="" />
-                <p>No upcoming events on the calendar right now -- check back soon.</p>
-              </div>
+                <img
+                  src={`${ASSET}/empty-states/events.svg`}
+                  alt=""
+                  width={68}
+                  height={68}
+                  className="opacity-90"
+                />
+                <p className="text-sm text-[#F7FAFF] max-w-[26ch] font-medium">
+                  No upcoming events on the calendar right now — check back soon.
+                </p>
+                <Link
+                  href="/events"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/30 text-[#F7FAFF] text-xs font-bold uppercase tracking-wide px-4 py-2 hover:bg-white/10 transition-colors"
+                >
+                  Browse Events
+                </Link>
+              </ImageBackdrop>
             )}
           </div>
 
@@ -184,11 +201,17 @@ export default async function FeedPage() {
               <PostComposer />
 
               {posts.length === 0 ? (
-                <div className="eit-card eit-empty">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`${ASSET}/empty-states/messages.svg`} alt="" />
-                  <p>No posts yet — be the first to share something.</p>
-                </div>
+                <ImageBackdrop
+                  realSrc={`${ASSET}/home/community_feed_placeholder.png`}
+                  fallbackSrc={`${ASSET}/backgrounds/crown-graffiti.webp`}
+                  scrim="linear-gradient(180deg, rgb(6 11 19 / .35) 0%, rgb(6 11 19 / .9) 100%)"
+                  className="rounded-2xl min-h-[170px] flex flex-col items-center justify-center text-center gap-2 px-6 py-8 shadow-lg shadow-black/30"
+                >
+                  <p className="text-sm font-semibold text-[#F7FAFF]">Start the conversation.</p>
+                  <p className="text-xs text-[#B3C2D4] max-w-[30ch]">
+                    Share what&apos;s going on in your city — be the first to post.
+                  </p>
+                </ImageBackdrop>
               ) : (
                 posts.map((post) => <PostCard key={post.id} post={post} />)
               )}

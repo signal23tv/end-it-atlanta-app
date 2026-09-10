@@ -46,3 +46,14 @@ h3 {
   line-height: 0.92;
   letter-spacing: 0.3px;
 }
+
+/* Hides the scrollbar on horizontally-scrolling rows (PrEP TV rails,
+   etc.) while keeping real scroll/swipe behavior -- content isn't
+   clipped, just the scrollbar chrome. */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

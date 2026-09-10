@@ -66,6 +66,8 @@ function renderContent(content: string): ReactNode[] {
   return blocks;
 }
 
+const ASSET = "/assets/endit/v1";
+
 const TOPIC_STARTERS = [
   "What is PrEP?",
   "What are my PrEP options?",
@@ -74,6 +76,14 @@ const TOPIC_STARTERS = [
   "What's PEP?",
   "What does U=U mean?",
   "Where can I get tested?",
+];
+
+// Decorative only -- these are the kit's promotional sticker art, not
+// clickable controls. The real topic buttons below are plain HTML.
+const STICKERS = [
+  { src: `${ASSET}/todd/todd-sticker-ask-todd.webp`, alt: "" },
+  { src: `${ASSET}/todd/todd-sticker-knowledge.webp`, alt: "" },
+  { src: `${ASSET}/todd/todd-sticker-stay-protected.webp`, alt: "" },
 ];
 
 export default function ToddChat({
@@ -126,8 +136,23 @@ export default function ToddChat({
 
       <div ref={listRef} className="flex-1 min-h-0 overflow-y-auto p-4 flex flex-col gap-3">
         {messages.length === 0 && (
-          <div className="flex flex-col gap-2">
-            <p className="text-sm text-[#B3C2D4]">Try asking:</p>
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-2" aria-hidden="true">
+              {STICKERS.map((s) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={s.src}
+                  src={s.src}
+                  alt=""
+                  className="w-14 h-16 object-contain rounded-md opacity-90"
+                />
+              ))}
+            </div>
+            <div className="flex items-center gap-1.5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`${ASSET}/icons/book.svg`} alt="" width={14} height={14} />
+              <p className="text-sm text-[#B3C2D4]">Try asking:</p>
+            </div>
             <div className="flex flex-wrap gap-2">
               {TOPIC_STARTERS.map((t) => (
                 <button
@@ -145,17 +170,47 @@ export default function ToddChat({
         {messages.map((m) => (
           <div
             key={m.id}
-            className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm overflow-wrap-anywhere ${
-              m.role === "user"
-                ? "self-end rounded-br-md bg-[#0064CA] text-white"
-                : m.is_urgent_routing
-                ? "self-start rounded-bl-md bg-[#3A0F16] border border-[#FF6B81] text-[#F7FAFF]"
-                : "self-start rounded-bl-md bg-[#142133] border border-[#304055] text-[#F7FAFF]"
+            className={`flex items-end gap-2 max-w-[90%] ${
+              m.role === "user" ? "self-end flex-row-reverse" : "self-start"
             }`}
           >
-            {renderContent(m.content)}
+            {m.role === "assistant" && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={`${ASSET}/todd/todd-avatar.webp`}
+                alt=""
+                className="w-7 h-7 rounded-full shrink-0 object-cover"
+                style={{ boxShadow: "0 0 0 1.5px var(--eit-blue, #0082FF)" }}
+              />
+            )}
+            <div
+              className={`rounded-2xl px-3.5 py-2.5 text-sm overflow-wrap-anywhere ${
+                m.role === "user"
+                  ? "rounded-br-md bg-[#0064CA] text-white"
+                  : m.is_urgent_routing
+                  ? "rounded-bl-md bg-[#3A0F16] border border-[#FF6B81] text-[#F7FAFF]"
+                  : "rounded-bl-md bg-[#142133] border border-[#304055] text-[#F7FAFF]"
+              }`}
+            >
+              {renderContent(m.content)}
+            </div>
           </div>
         ))}
+
+        {isPending && (
+          <div className="flex items-end gap-2 max-w-[90%] self-start">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${ASSET}/todd/todd-avatar-listening.webp`}
+              alt=""
+              className="w-7 h-7 rounded-full shrink-0 object-cover"
+              style={{ boxShadow: "0 0 0 1.5px var(--eit-blue, #0082FF)" }}
+            />
+            <div className="rounded-2xl rounded-bl-md bg-[#142133] border border-[#304055] px-3.5 py-2.5 text-sm text-[#98ADC7]">
+              Thinking…
+            </div>
+          </div>
+        )}
       </div>
 
       <form
@@ -175,9 +230,11 @@ export default function ToddChat({
         <button
           type="submit"
           disabled={isPending}
-          className="bg-red hover:bg-red-dark disabled:opacity-60 text-paper font-bold uppercase tracking-wide text-xs rounded-full px-4"
+          aria-label="Send"
+          className="bg-red hover:bg-red-dark disabled:opacity-60 text-paper rounded-full w-10 h-10 flex items-center justify-center shrink-0"
         >
-          Send
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={`${ASSET}/icons/send.svg`} alt="" width={16} height={16} />
         </button>
       </form>
     </div>

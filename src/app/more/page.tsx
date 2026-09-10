@@ -13,7 +13,7 @@ const GROUPS: { title: string; links: MenuLink[] }[] = [
     title: "Account",
     links: [
       { href: "/profile", label: "My Profile", description: "View and edit your public profile", icon: `${ICON}/profile.svg` },
-      { href: "/messages", label: "Messages", description: "Direct messages, Todd, and your Navigator contact", icon: `${ICON}/mail.svg` },
+      { href: "/messages", label: "Messages", description: "Direct messages with members and your Navigator contact", icon: `${ICON}/mail.svg` },
       { href: "/notifications", label: "Notifications", description: "Follows, likes, and comments on your posts", icon: `${ICON}/bell.svg` },
       { href: "/settings", label: "Settings", description: "Profile, notification preferences, and privacy", icon: `${ICON}/settings.svg` },
     ],
