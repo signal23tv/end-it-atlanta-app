@@ -5,6 +5,7 @@ import { useOptimistic, useTransition } from "react";
 import { toggleLike } from "@/app/feed/actions";
 import CommentThread from "@/components/CommentThread";
 import ReportButton from "@/components/ReportButton";
+import Avatar from "@/components/Avatar";
 import type { Post } from "@/lib/types";
 
 function timeAgo(iso: string): string {
@@ -30,20 +31,30 @@ export default function PostCard({ post }: { post: Post }) {
 
   return (
     <article className="bg-[#101A28] text-[#F7FAFF] border border-[#304055] rounded-xl p-4 flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <Link
-          href={`/profile/${post.author.username}`}
-          className="font-bold hover:text-red"
-        >
-          {post.author.display_name}
+      <div className="flex items-center gap-2.5">
+        <Link href={`/profile/${post.author.username}`} className="shrink-0">
+          <Avatar
+            src={post.author.avatar_url}
+            color={post.author.avatar_color}
+            name={post.author.display_name || post.author.username}
+            size={40}
+          />
         </Link>
-        <Link
-          href={`/profile/${post.author.username}`}
-          className="text-[#B3C2D4] text-sm hover:underline"
-        >
-          @{post.author.username}
-        </Link>
-        <span className="text-[#B3C2D4] text-sm">· {timeAgo(post.created_at)}</span>
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+          <Link
+            href={`/profile/${post.author.username}`}
+            className="font-bold hover:text-red"
+          >
+            {post.author.display_name}
+          </Link>
+          <Link
+            href={`/profile/${post.author.username}`}
+            className="text-[#B3C2D4] text-sm hover:underline"
+          >
+            @{post.author.username}
+          </Link>
+          <span className="text-[#B3C2D4] text-sm">· {timeAgo(post.created_at)}</span>
+        </div>
       </div>
 
       <p className="whitespace-pre-wrap break-words">{post.content}</p>

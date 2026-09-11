@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { TODD_CONTACT } from "@/lib/resources-data";
+import Avatar from "@/components/Avatar";
 import type { ConversationSummary } from "@/app/messages/actions";
 
 const ASSET = "/assets/endit/v1";
@@ -43,9 +44,12 @@ function DirectPanel({ conversations }: { conversations: ConversationSummary[] }
           href={`/messages/${c.id}`}
           className="flex items-center gap-3 px-4 py-3.5 bg-[#101A28] hover:bg-[#142133] transition-colors"
         >
-          <div className="w-11 h-11 shrink-0 rounded-full bg-gold/20 text-gold flex items-center justify-center font-bold uppercase">
-            {c.otherUser.display_name?.[0] ?? c.otherUser.username[0]}
-          </div>
+          <Avatar
+            src={c.otherUser.avatar_url}
+            color={c.otherUser.avatar_color}
+            name={c.otherUser.display_name || c.otherUser.username}
+            size={44}
+          />
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2">
               <p className="font-semibold text-sm text-[#F7FAFF] truncate">

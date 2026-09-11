@@ -13,7 +13,7 @@ export default async function EditProfilePage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("username, display_name, bio")
+    .select("username, display_name, bio, avatar_url, avatar_color")
     .eq("id", user.id)
     .single();
 
@@ -22,11 +22,13 @@ export default async function EditProfilePage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 bg-black text-paper pb-24">
-        <div className="max-w-sm mx-auto px-4 py-6">
+      <main className="eit-app flex-1 pb-24">
+        <div className="eit-shell max-w-sm mx-auto">
           <ProfileEditForm
             displayName={profile.display_name}
             bio={profile.bio ?? ""}
+            avatarUrl={profile.avatar_url}
+            avatarColor={profile.avatar_color}
           />
         </div>
       </main>

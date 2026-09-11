@@ -3,6 +3,7 @@ export type Profile = {
   username: string;
   display_name: string;
   avatar_url: string | null;
+  avatar_color: string | null;
   bio: string | null;
   city: string;
   created_at: string;
@@ -14,7 +15,7 @@ export type Post = {
   content: string;
   image_url: string | null;
   created_at: string;
-  author: Pick<Profile, "id" | "username" | "display_name" | "avatar_url">;
+  author: Pick<Profile, "id" | "username" | "display_name" | "avatar_url" | "avatar_color">;
   like_count: number;
   comment_count: number;
   liked_by_me: boolean;

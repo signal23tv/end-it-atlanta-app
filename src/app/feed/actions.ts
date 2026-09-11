@@ -95,7 +95,12 @@ export type CommentItem = {
   id: string;
   content: string;
   created_at: string;
-  author: { username: string; display_name: string } | null;
+  author: {
+    username: string;
+    display_name: string;
+    avatar_url: string | null;
+    avatar_color: string | null;
+  } | null;
 };
 
 export async function getComments(postId: string): Promise<CommentItem[]> {
@@ -103,7 +108,7 @@ export async function getComments(postId: string): Promise<CommentItem[]> {
   const { data } = await supabase
     .from("comments")
     .select(
-      "id, content, created_at, author:profiles!comments_author_id_fkey(username, display_name)"
+      "id, content, created_at, author:profiles!comments_author_id_fkey(username, display_name, avatar_url, avatar_color)"
     )
     .eq("post_id", postId)
     .is("deleted_at", null)

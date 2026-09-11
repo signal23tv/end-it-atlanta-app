@@ -8,6 +8,7 @@ import FollowButton from "@/components/FollowButton";
 import MessageButton from "@/components/MessageButton";
 import BlockButton from "@/components/BlockButton";
 import ReportButton from "@/components/ReportButton";
+import Avatar from "@/components/Avatar";
 import { createClient } from "@/lib/supabase/server";
 import { getPostsByAuthor } from "@/lib/posts";
 
@@ -21,7 +22,7 @@ export default async function ProfilePage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, username, display_name, avatar_url, bio, city, created_at")
+    .select("id, username, display_name, avatar_url, avatar_color, bio, city, created_at")
     .eq("username", username)
     .single();
 
@@ -90,8 +91,30 @@ export default async function ProfilePage({
             />
             <div className="px-5 pb-5 -mt-10 flex flex-col gap-3">
               <div className="flex items-end justify-between gap-4">
-                <div className="w-20 h-20 rounded-full border-4 border-[#101A28] bg-gold/20 text-gold flex items-center justify-center font-bold uppercase text-2xl shrink-0">
-                  {profile.display_name?.[0] ?? profile.username[0]}
+                <div className="relative shrink-0">
+                  <Avatar
+                    src={profile.avatar_url}
+                    color={profile.avatar_color}
+                    name={profile.display_name || profile.username}
+                    size={80}
+                    className="border-4 border-[#101A28]"
+                  />
+                  {isOwnProfile && (
+                    <Link
+                      href="/settings/profile"
+                      aria-label="Change your photo"
+                      className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#0A1422] border border-[#304055] flex items-center justify-center hover:border-gold transition-colors"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/assets/endit/v1/icons/camera.svg"
+                        alt=""
+                        width={13}
+                        height={13}
+                        style={{ filter: "invert(1)" }}
+                      />
+                    </Link>
+                  )}
                 </div>
                 {user && !isOwnProfile && (
                   <div className="flex flex-col items-end gap-1.5 pb-1">

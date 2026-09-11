@@ -66,6 +66,7 @@ export async function startJoin(
   const phone = String(formData.get("phone") || "").trim();
   const ageBand = String(formData.get("age_band") || "");
   const avatarColor = String(formData.get("avatar_color") || "gold");
+  const avatarDataUrl = String(formData.get("avatar_data_url") || "").trim();
   const campaignCode = String(formData.get("campaign_code") || "").trim();
 
   if (!displayName || !email) {
@@ -137,6 +138,39 @@ export async function startJoin(
       error:
         "Your account was created, but we couldn't sign you in automatically. Try logging in.",
     };
+  }
+
+  // Optional real photo, captured as a resized data URL by the
+  // client (canvas-resized before it ever hits the wire). Uploaded
+  // via the admin client -- it bypasses RLS, which is fine here
+  // since this is the one-shot account-creation path and we already
+  // used the admin client to create the auth user above.
+  if (avatarDataUrl.startsWith("data:image/")) {
+    const match = avatarDataUrl.match(/^data:(image\/\w+);base64,(.+)$/);
+    if (match) {
+      const [, contentType, base64] = match;
+      const ext = contentType === "image/png" ? "png" : "jpg";
+      try {
+        const bytes = Buffer.from(base64, "base64");
+        const path = `${created.user.id}/avatar.${ext}`;
+        const { error: uploadError } = await admin.storage
+          .from("avatars")
+          .upload(path, bytes, { contentType, upsert: true });
+        if (!uploadError) {
+          const {
+            data: { publicUrl },
+          } = admin.storage.from("avatars").getPublicUrl(path);
+          await admin
+            .from("profiles")
+            .update({ avatar_url: `${publicUrl}?v=${Date.now()}` })
+            .eq("id", created.user.id);
+        }
+      } catch {
+        // Non-fatal -- the account is already created. Worst case
+        // the new member falls back to their color+initials avatar
+        // and can add a photo later from Settings.
+      }
+    }
   }
 
   await logJoinEvent("form_submitted", campaignCode);

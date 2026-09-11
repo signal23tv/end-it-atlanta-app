@@ -20,6 +20,7 @@ async function hydratePosts(
       username: string;
       display_name: string;
       avatar_url: string | null;
+      avatar_color: string | null;
     } | null;
     likes: { count: number }[];
     comments: { count: number }[];
@@ -58,7 +59,7 @@ async function hydratePosts(
 }
 
 const POST_SELECT =
-  "id, author_id, content, image_url, created_at, author:profiles!posts_author_id_fkey(id, username, display_name, avatar_url), likes(count), comments(count)";
+  "id, author_id, content, image_url, created_at, author:profiles!posts_author_id_fkey(id, username, display_name, avatar_url, avatar_color), likes(count), comments(count)";
 
 export async function getFeedPosts(limit = 50): Promise<Post[]> {
   const supabase = await createClient();

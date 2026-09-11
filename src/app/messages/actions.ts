@@ -10,6 +10,8 @@ export type ConversationSummary = {
     id: string;
     username: string;
     display_name: string | null;
+    avatar_url: string | null;
+    avatar_color: string | null;
   };
   lastMessageBody: string | null;
   lastMessageAt: string;
@@ -41,7 +43,10 @@ export async function listConversations(): Promise<ConversationSummary[]> {
 
   const otherIds = convos.map((c) => (c.user_a === user.id ? c.user_b : c.user_a));
   const [{ data: profiles }, { data: lastMessages }] = await Promise.all([
-    supabase.from("profiles").select("id, username, display_name").in("id", otherIds),
+    supabase
+      .from("profiles")
+      .select("id, username, display_name, avatar_url, avatar_color")
+      .in("id", otherIds),
     supabase
       .from("dm_messages")
       .select("conversation_id, body, sender_id, created_at, read_at")

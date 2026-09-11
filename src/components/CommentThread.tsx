@@ -4,6 +4,7 @@ import { useActionState, useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { addComment, getComments, type CommentItem, type CommentState } from "@/app/feed/actions";
 import ReportButton from "@/components/ReportButton";
+import Avatar from "@/components/Avatar";
 
 const initialState: CommentState = {};
 
@@ -63,20 +64,30 @@ export default function CommentThread({ postId }: { postId: string }) {
             <p className="text-xs text-[#B3C2D4]">No comments yet — be the first to reply.</p>
           )}
           {comments?.map((c) => (
-            <div key={c.id} className="text-sm">
-              <div className="flex items-center gap-2">
-                <Link
-                  href={`/profile/${c.author?.username}`}
-                  className="font-semibold hover:text-red"
-                >
-                  {c.author?.display_name ?? "Someone"}
-                </Link>
-                <span className="text-[#B3C2D4] text-xs">{timeAgo(c.created_at)}</span>
-                <span className="ml-auto">
-                  <ReportButton target={{ commentId: c.id }} />
-                </span>
+            <div key={c.id} className="flex items-start gap-2 text-sm">
+              <Link href={`/profile/${c.author?.username}`} className="shrink-0 mt-0.5">
+                <Avatar
+                  src={c.author?.avatar_url}
+                  color={c.author?.avatar_color}
+                  name={c.author?.display_name ?? c.author?.username ?? "?"}
+                  size={28}
+                />
+              </Link>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/profile/${c.author?.username}`}
+                    className="font-semibold hover:text-red"
+                  >
+                    {c.author?.display_name ?? "Someone"}
+                  </Link>
+                  <span className="text-[#B3C2D4] text-xs">{timeAgo(c.created_at)}</span>
+                  <span className="ml-auto">
+                    <ReportButton target={{ commentId: c.id }} />
+                  </span>
+                </div>
+                <p className="whitespace-pre-wrap break-words">{c.content}</p>
               </div>
-              <p className="whitespace-pre-wrap break-words">{c.content}</p>
             </div>
           ))}
 

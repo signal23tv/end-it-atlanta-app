@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, type ChangeEvent } from "react";
 import Link from "next/link";
 import {
   startJoin,
@@ -9,6 +9,7 @@ import {
 } from "@/app/join/actions";
 import InstallPrompt from "@/components/InstallPrompt";
 import NotificationSetup from "@/components/NotificationSetup";
+import { resizeImageToDataUrl } from "@/lib/resizeImage";
 
 type Step =
   | "age_gate"
@@ -47,7 +48,26 @@ export default function JoinFlow({
   const [step, setStep] = useState<Step>("age_gate");
   const [displayName, setDisplayName] = useState("");
   const [avatarColor, setAvatarColor] = useState("gold");
+  const [avatarDataUrl, setAvatarDataUrl] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
   const [ageBand, setAgeBand] = useState<"" | "13_17" | "18_plus">("");
+
+  async function onPhotoPicked(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setPhotoError("Please choose an image file.");
+      return;
+    }
+    try {
+      setPhotoError(null);
+      const dataUrl = await resizeImageToDataUrl(file);
+      setAvatarDataUrl(dataUrl);
+    } catch {
+      setPhotoError("Couldn't use that photo -- try a different one.");
+    }
+  }
 
   const [startState, startAction, startPending] = useActionState(
     startJoin,
@@ -154,33 +174,72 @@ export default function JoinFlow({
             <input type="hidden" name="age_band" value={ageBand} />
             <input type="hidden" name="campaign_code" value={campaignCode} />
             <input type="hidden" name="avatar_color" value={avatarColor} />
+            <input type="hidden" name="avatar_data_url" value={avatarDataUrl ?? ""} />
 
             <div className="flex items-center gap-3">
-              <div
-                className="w-14 h-14 rounded-full flex items-center justify-center font-display text-xl text-white shrink-0 ring-2 ring-white/10"
-                style={{ backgroundColor: swatchHex }}
-                aria-hidden="true"
-              >
-                {initials(displayName) || "?"}
-              </div>
-              <div className="flex gap-2">
-                {AVATAR_SWATCHES.map((s) => (
-                  <button
-                    key={s.value}
-                    type="button"
-                    onClick={() => setAvatarColor(s.value)}
-                    aria-label={`Use ${s.label} avatar`}
-                    aria-pressed={avatarColor === s.value}
-                    className={`w-6 h-6 rounded-full border-2 ${
-                      avatarColor === s.value
-                        ? "border-[#7DD3FC]"
-                        : "border-transparent"
-                    }`}
-                    style={{ backgroundColor: s.hex }}
+              <label className="relative shrink-0 cursor-pointer group">
+                {avatarDataUrl ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={avatarDataUrl}
+                    alt=""
+                    className="w-14 h-14 rounded-full object-cover ring-2 ring-white/10"
                   />
-                ))}
+                ) : (
+                  <div
+                    className="w-14 h-14 rounded-full flex items-center justify-center font-display text-xl text-white ring-2 ring-white/10"
+                    style={{ backgroundColor: swatchHex }}
+                    aria-hidden="true"
+                  >
+                    {initials(displayName) || "?"}
+                  </div>
+                )}
+                <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#0A1422] border border-[#304055] flex items-center justify-center group-hover:border-gold transition-colors">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/assets/endit/v1/icons/camera.svg"
+                    alt=""
+                    width={10}
+                    height={10}
+                    style={{ filter: "invert(1)" }}
+                  />
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={onPhotoPicked}
+                  className="sr-only"
+                />
+              </label>
+              <div className="flex flex-col gap-1.5">
+                <p className="text-xs text-[#98ADC7]">
+                  {avatarDataUrl ? "Photo added -- tap to change" : "Add a photo, or pick a color"}
+                </p>
+                <div className="flex gap-2">
+                  {AVATAR_SWATCHES.map((s) => (
+                    <button
+                      key={s.value}
+                      type="button"
+                      onClick={() => {
+                        setAvatarColor(s.value);
+                        setAvatarDataUrl(null);
+                      }}
+                      aria-label={`Use ${s.label} avatar`}
+                      aria-pressed={!avatarDataUrl && avatarColor === s.value}
+                      className={`w-6 h-6 rounded-full border-2 ${
+                        !avatarDataUrl && avatarColor === s.value
+                          ? "border-[#7DD3FC]"
+                          : "border-transparent"
+                      }`}
+                      style={{ backgroundColor: s.hex }}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
+            {photoError && (
+              <p className="text-[#FF91A2] text-xs font-semibold -mt-2">{photoError}</p>
+            )}
 
             <label className="flex flex-col gap-1 text-sm font-semibold">
               Name (a nickname is fine)

@@ -8,6 +8,7 @@ export type DiscoverResult = {
   username: string;
   display_name: string;
   avatar_url: string | null;
+  avatar_color: string | null;
   bio: string | null;
   city: string | null;
   is_following: boolean;
@@ -18,6 +19,7 @@ type RawProfile = {
   username: string;
   display_name: string;
   avatar_url: string | null;
+  avatar_color: string | null;
   bio: string | null;
   city: string | null;
 };
@@ -62,7 +64,7 @@ export async function searchProfiles(rawQuery: string): Promise<DiscoverResult[]
   const escaped = query.replace(/[%_]/g, (m) => `\\${m}`);
   let dbQuery = supabase
     .from("profiles")
-    .select("id, username, display_name, avatar_url, bio, city")
+    .select("id, username, display_name, avatar_url, avatar_color, bio, city")
     .or(`username.ilike.%${escaped}%,display_name.ilike.%${escaped}%`)
     .limit(20);
 
@@ -91,7 +93,7 @@ export async function listRecentProfiles(): Promise<DiscoverResult[]> {
 
   let dbQuery = supabase
     .from("profiles")
-    .select("id, username, display_name, avatar_url, bio, city")
+    .select("id, username, display_name, avatar_url, avatar_color, bio, city")
     .order("created_at", { ascending: false })
     .limit(12);
 

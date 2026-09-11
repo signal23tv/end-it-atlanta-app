@@ -3,6 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import FollowButton from "@/components/FollowButton";
+import Avatar from "@/components/Avatar";
 import {
   searchProfiles,
   listRecentProfiles,
@@ -18,9 +19,12 @@ function MemberGrid({ results }: { results: DiscoverResult[] }) {
           className="rounded-xl border border-[#304055] bg-[#101A28] p-3 flex flex-col gap-2"
         >
           <Link href={`/profile/${p.username}`} className="flex flex-col items-center gap-2 text-center">
-            <div className="w-16 h-16 rounded-full bg-gold/20 text-gold flex items-center justify-center font-bold uppercase text-xl">
-              {p.display_name?.[0] ?? p.username[0]}
-            </div>
+            <Avatar
+              src={p.avatar_url}
+              color={p.avatar_color}
+              name={p.display_name || p.username}
+              size={64}
+            />
             <div>
               <p className="font-semibold text-sm truncate hover:text-gold">{p.display_name}</p>
               <p className="text-[#B3C2D4] text-xs truncate">
