@@ -63,7 +63,7 @@ export default function LoginPage() {
 
           <p className="text-sm text-center mt-2">
             No account yet?{" "}
-            <Link href="/signup" className="font-semibold underline">
+            <Link href="/join/organic" className="font-semibold underline">
               Sign up
             </Link>
           </p>
