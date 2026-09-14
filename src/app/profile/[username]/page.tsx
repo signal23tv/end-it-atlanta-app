@@ -81,7 +81,7 @@ export default async function ProfilePage({
         <div className="eit-shell flex flex-col gap-4">
           <section className="rounded-xl overflow-hidden border border-[#304055] bg-[#101A28]">
             <div
-              className="h-28 relative"
+              className="h-28"
               style={{
                 backgroundImage:
                   "linear-gradient(180deg, rgb(6 11 19 / .35), rgb(6 11 19 / .9)), url(/assets/endit/v1/backgrounds/atmosphere-blue.svg)",

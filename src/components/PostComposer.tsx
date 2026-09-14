@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useRef } from "react";
+import { useActionState, useRef, useState } from "react";
 import { createPost, type PostState } from "@/app/feed/actions";
+import { resizeImageForPost } from "@/lib/resizeImage";
 import ImageBackdrop from "@/components/ImageBackdrop";
 
 const initialState: PostState = {};
@@ -12,6 +13,25 @@ export default function PostComposer() {
     initialState
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageError, setImageError] = useState<string | null>(null);
+
+  async function onPhotoPicked(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImageError(null);
+    try {
+      const dataUrl = await resizeImageForPost(file);
+      setImagePreview(dataUrl);
+    } catch (err) {
+      setImageError(err instanceof Error ? err.message : "Couldn't use that photo.");
+    }
+  }
+
+  function clearImage() {
+    setImagePreview(null);
+    setImageError(null);
+  }
 
   return (
     <ImageBackdrop
@@ -25,6 +45,7 @@ export default function PostComposer() {
         action={async (formData) => {
           await formAction(formData);
           formRef.current?.reset();
+          clearImage();
         }}
         className="text-[#F7FAFF] p-4 flex flex-col gap-3"
       >
@@ -34,12 +55,47 @@ export default function PostComposer() {
         <textarea
           id="post-composer-textarea"
           name="content"
-          required
           maxLength={2000}
           rows={3}
           placeholder="What's happening in Atlanta?"
           className="resize-none rounded-lg border border-white/15 bg-[#060B13]/95 text-[#F7FAFF] placeholder:text-[#98ADC7] px-3 py-2.5 text-base outline-none focus:border-gold"
         />
+
+        <input type="hidden" name="image_data_url" value={imagePreview ?? ""} />
+
+        {imagePreview ? (
+          <div className="relative rounded-lg overflow-hidden border border-white/15 w-fit max-w-full">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={imagePreview} alt="" className="max-h-64 w-auto" />
+            <button
+              type="button"
+              onClick={clearImage}
+              aria-label="Remove photo"
+              className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/70 border border-white/30 flex items-center justify-center text-[#F7FAFF] hover:border-gold transition-colors"
+            >
+              ×
+            </button>
+          </div>
+        ) : (
+          <label className="inline-flex items-center gap-2 self-start text-sm text-[#98ADC7] hover:text-gold cursor-pointer transition-colors">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/endit/v1/icons/camera.svg"
+              alt=""
+              width={16}
+              height={16}
+              style={{ filter: "invert(1)", opacity: 0.8 }}
+            />
+            Add a photo
+            <input type="file" accept="image/*" className="sr-only" onChange={onPhotoPicked} />
+          </label>
+        )}
+
+        {imageError && (
+          <p role="alert" className="text-red-dark text-sm font-semibold">
+            {imageError}
+          </p>
+        )}
         {state?.error && (
           <p role="alert" className="text-red-dark text-sm font-semibold">
             {state.error}

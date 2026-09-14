@@ -57,7 +57,18 @@ export default function PostCard({ post }: { post: Post }) {
         </div>
       </div>
 
-      <p className="whitespace-pre-wrap break-words">{post.content}</p>
+      {post.content && (
+        <p className="whitespace-pre-wrap break-words">{post.content}</p>
+      )}
+
+      {post.image_url && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={post.image_url}
+          alt=""
+          className="rounded-lg w-full h-auto border border-[#304055]"
+        />
+      )}
 
       <div className="flex items-center gap-4 mt-1 text-sm">
         <button

@@ -12,8 +12,9 @@ export async function createPost(
   formData: FormData
 ): Promise<PostState> {
   const content = String(formData.get("content") || "").trim();
+  const imageDataUrl = String(formData.get("image_data_url") || "").trim();
 
-  if (!content) {
+  if (!content && !imageDataUrl) {
     return { error: "Write something before posting." };
   }
   if (content.length > 2000) {
@@ -42,9 +43,35 @@ export async function createPost(
     };
   }
 
+  // Photo attach is optional -- a failed upload shouldn't block posting
+  // the text, so this is best-effort, same pattern as the avatar upload.
+  let imageUrl: string | null = null;
+  if (imageDataUrl.startsWith("data:image/")) {
+    try {
+      const [meta, base64] = imageDataUrl.split(",");
+      const contentType = meta.match(/data:(.*);base64/)?.[1] || "image/jpeg";
+      const ext = contentType.split("/")[1] || "jpg";
+      const bytes = Buffer.from(base64, "base64");
+      const path = `${user.id}/${Date.now()}.${ext}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("post-images")
+        .upload(path, bytes, { contentType, upsert: true });
+
+      if (!uploadError) {
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("post-images").getPublicUrl(path);
+        imageUrl = publicUrl;
+      }
+    } catch {
+      // Non-fatal -- post the text without the photo.
+    }
+  }
+
   const { error } = await supabase
     .from("posts")
-    .insert({ author_id: user.id, content });
+    .insert({ author_id: user.id, content, image_url: imageUrl });
 
   if (error) {
     return { error: "Couldn't post that — try again." };
