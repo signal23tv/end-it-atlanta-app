@@ -47,9 +47,9 @@ export default async function Home() {
           <div className="relative z-10 flex flex-col items-center gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/assets/endit/v1/brand/endit-brush-wordmark.webp"
-              alt="END IT ATLANTA"
-              className="w-56 md:w-72 h-auto"
+              src="/assets/endit/v1/brand/endit-crest-badge.webp"
+              alt="END IT ATLANTA -- Educate. Empower. End the HIV Epidemic."
+              className="w-64 sm:w-80 md:w-96 h-auto"
             />
             <p className="text-gold text-sm md:text-base font-bold uppercase tracking-[0.3em]">
               Test. Prevent. Treat. Connect.
