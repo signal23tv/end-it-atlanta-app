@@ -38,9 +38,9 @@ export const EVENTS: EventItem[] = [
     subtitle: "Powerful performances. Real conversations. A brighter tomorrow.",
     description:
       "Same people, brighter futures. Good health looks good on you -- safe, sexier, stronger, together. Community, culture, prevention, all of us.",
-    dateISO: "2026-10-10T00:00:00-04:00",
+    dateISO: "2026-10-10T18:00:00-04:00",
     dateLabel: "Saturday, October 10, 2026",
-    timeLabel: "Time TBA",
+    timeLabel: "6:00 PM",
     detailLine: "Powerful performances. Real conversations. A brighter tomorrow.",
     locationLine: "MIXX ATL, Atlanta, Georgia",
     imageSrc: "/assets/endit/v1/events/prep-rally-2026.webp",
