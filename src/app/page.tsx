@@ -4,12 +4,22 @@ import { createClient } from "@/lib/supabase/server";
 import MarketingHeader from "@/components/MarketingHeader";
 import SiteFooter from "@/components/SiteFooter";
 import BottomNav from "@/components/BottomNav";
+import { EVENTS } from "@/lib/events-data";
 
 export default async function Home() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Real next upcoming event, computed at render time -- same pattern
+  // used on /feed's "Coming for you" card, so this section never goes
+  // stale the way the old hardcoded "A Night to Reign" copy did (that
+  // event's date quietly passed while it was still the featured one).
+  const now = Date.now();
+  const nextEvent = EVENTS.filter((e) => new Date(e.dateISO).getTime() >= now).sort(
+    (a, b) => new Date(a.dateISO).getTime() - new Date(b.dateISO).getTime()
+  )[0];
 
   return (
     <>
@@ -61,7 +71,7 @@ export default async function Home() {
                   href="/join/organic"
                   className="bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
                 >
-                  Get Started
+                  Join Now
                 </Link>
               )}
               {!user && (
@@ -242,61 +252,54 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* EVENT */}
-        <section id="events" className="py-16 md:py-24 bg-black text-paper">
-          <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <p className="text-gold font-bold uppercase tracking-wide text-sm mb-2">
-                Featured Community Event
-              </p>
-              <Image
-                src="/graphics/crown.svg"
-                alt=""
-                aria-hidden="true"
-                width={48}
-                height={48}
-                className="mb-3"
-              />
-              <h2 className="font-display text-4xl md:text-5xl">A NIGHT TO REIGN</h2>
-              <p className="text-gold font-semibold mt-1">THE 2026 SIGNAL FEST GAY PROM</p>
-              <p className="text-muted mt-3">
-                An unforgettable evening of purpose, elegance, and community presented by End
-                It Atlanta.
-              </p>
+        {/* EVENT -- real next upcoming event, computed above, not hardcoded */}
+        {nextEvent && (
+          <section id="events" className="py-16 md:py-24 bg-black text-paper">
+            <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+              <div>
+                <p className="text-gold font-bold uppercase tracking-wide text-sm mb-2">
+                  Upcoming Event
+                </p>
+                <h2 className="font-display text-4xl md:text-5xl">{nextEvent.title}</h2>
+                {nextEvent.subtitle && (
+                  <p className="text-gold font-semibold mt-1">{nextEvent.subtitle}</p>
+                )}
+                <p className="text-muted mt-3">{nextEvent.description}</p>
 
-              <ul className="mt-5 space-y-1 text-sm text-muted">
-                <li>📅 Sunday, September 6, 2026</li>
-                <li>🕕 6:00 PM</li>
-                <li>👑 Atlanta Black Pride Weekend</li>
-                <li>Atlanta, Georgia • Official venue reveal coming soon</li>
-              </ul>
+                <ul className="mt-5 space-y-1 text-sm text-muted">
+                  <li>📅 {nextEvent.dateLabel}</li>
+                  <li>🕕 {nextEvent.timeLabel}</li>
+                  <li>📍 {nextEvent.locationLine}</li>
+                </ul>
 
-              <div className="mt-6 flex flex-wrap gap-3">
-                <span className="bg-red/60 text-paper font-bold uppercase tracking-wide rounded-md px-6 py-3 cursor-not-allowed">
-                  Details Coming Soon
-                </span>
-                <span className="border border-gold text-gold font-bold uppercase tracking-wide rounded-md px-6 py-3">
-                  Honorees Announced August 2026
-                </span>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link
+                    href={user ? "/events" : "/join/organic"}
+                    className="bg-red hover:bg-red-dark font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
+                  >
+                    {user ? "RSVP" : "Join to RSVP"}
+                  </Link>
+                  <Link
+                    href="/events"
+                    className="border border-gold text-gold hover:bg-gold hover:text-black font-bold uppercase tracking-wide rounded-md px-6 py-3 transition-colors"
+                  >
+                    See All Events
+                  </Link>
+                </div>
               </div>
-
-              <p className="mt-6 text-sm text-muted">
-                Celebrating authenticity, resilience, leadership, and the people strengthening
-                our community.
-              </p>
+              <div className="rounded-xl overflow-hidden">
+                <Image
+                  src={nextEvent.imageSrc}
+                  alt={nextEvent.imageAlt}
+                  width={nextEvent.imageWidth}
+                  height={nextEvent.imageHeight}
+                  loading="lazy"
+                  className="w-full h-auto rounded-xl"
+                />
+              </div>
             </div>
-            <div className="rounded-xl overflow-hidden">
-              <Image
-                src="/images/night-to-reign-prom.png"
-                alt="Guests in formal black-tie attire beneath an illuminated gold crown at a gala"
-                width={1672}
-                height={941}
-                loading="lazy"
-                className="w-full h-auto rounded-xl"
-              />
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* COMMUNITY CTA */}
         <section className="py-16 md:py-24">

@@ -19,9 +19,37 @@ export type EventItem = {
   locationLine: string;
   imageSrc: string;
   imageAlt: string;
+  // Real intrinsic pixel dimensions of imageSrc -- required so
+  // <Image> renders at the image's true aspect ratio instead of
+  // stretching/squishing it to a hardcoded ratio that doesn't match.
+  imageWidth: number;
+  imageHeight: number;
+  // Aspect ratio the /events grid card crops its thumbnail to.
+  // Defaults to "16/9" (the original event-photo shape) when
+  // omitted; set to "1/1" for a square flyer/poster asset so
+  // object-cover doesn't crop it.
+  cardAspect?: "16/9" | "1/1";
 };
 
 export const EVENTS: EventItem[] = [
+  {
+    id: "prep-rally-2026",
+    title: "PrEP Rally Atlanta",
+    subtitle: "Powerful performances. Real conversations. A brighter tomorrow.",
+    description:
+      "Same people, brighter futures. Good health looks good on you -- safe, sexier, stronger, together. Community, culture, prevention, all of us.",
+    dateISO: "2026-10-10T00:00:00-04:00",
+    dateLabel: "Saturday, October 10, 2026",
+    timeLabel: "Time TBA",
+    detailLine: "Powerful performances. Real conversations. A brighter tomorrow.",
+    locationLine: "MIXX ATL, Atlanta, Georgia",
+    imageSrc: "/assets/endit/v1/events/prep-rally-2026.webp",
+    imageAlt:
+      "PrEP Rally Atlanta flyer -- End It Atlanta presents, October 10, 2026 at MIXX ATL, over an Atlanta skyline at night",
+    imageWidth: 1200,
+    imageHeight: 1200,
+    cardAspect: "1/1",
+  },
   {
     id: "night-to-reign-2026",
     title: "A Night to Reign",
@@ -35,5 +63,7 @@ export const EVENTS: EventItem[] = [
     locationLine: "Atlanta, Georgia — official venue reveal coming soon",
     imageSrc: "/images/night-to-reign-prom.png",
     imageAlt: "Guests in formal black-tie attire beneath an illuminated gold crown at a gala",
+    imageWidth: 1672,
+    imageHeight: 941,
   },
 ];

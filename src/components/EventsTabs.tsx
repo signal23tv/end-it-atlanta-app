@@ -66,7 +66,11 @@ export default function EventsTabs({
                 key={e.id}
                 className="rounded-xl border border-[#304055] bg-[#101A28] overflow-hidden"
               >
-                <div className="relative aspect-[16/9]">
+                <div
+                  className={`relative ${
+                    e.cardAspect === "1/1" ? "aspect-square" : "aspect-[16/9]"
+                  }`}
+                >
                   <Image src={e.imageSrc} alt={e.imageAlt} fill className="object-cover" />
                 </div>
                 <div className="p-5 flex flex-col gap-3">
