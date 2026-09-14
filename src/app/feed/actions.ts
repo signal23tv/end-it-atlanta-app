@@ -78,6 +78,7 @@ export async function createPost(
   }
 
   revalidatePath("/feed");
+  revalidatePath("/profile/[username]", "page");
   return {};
 }
 

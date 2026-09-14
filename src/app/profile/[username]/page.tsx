@@ -165,6 +165,7 @@ export default async function ProfilePage({
             city={profile.city}
             joinedLabel={joinedLabel}
             posts={posts}
+            isOwnProfile={isOwnProfile}
           />
         </div>
       </main>

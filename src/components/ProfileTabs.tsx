@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import PostCard from "@/components/PostCard";
+import PostComposer from "@/components/PostComposer";
 import type { Post } from "@/lib/types";
 
 type Tab = "posts" | "about";
@@ -11,11 +12,13 @@ export default function ProfileTabs({
   city,
   joinedLabel,
   posts,
+  isOwnProfile,
 }: {
   bio: string | null;
   city: string | null;
   joinedLabel: string | null;
   posts: Post[];
+  isOwnProfile: boolean;
 }) {
   const [tab, setTab] = useState<Tab>("posts");
 
@@ -46,16 +49,23 @@ export default function ProfileTabs({
         ))}
       </div>
 
-      {tab === "posts" &&
-        (posts.length === 0 ? (
-          <p className="text-[#98ADC7] text-center py-12">No posts yet.</p>
-        ) : (
-          <div className="flex flex-col gap-4">
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        ))}
+      {tab === "posts" && (
+        <div className="flex flex-col gap-4">
+          {isOwnProfile && <PostComposer />}
+
+          {posts.length === 0 ? (
+            <p className="text-[#98ADC7] text-center py-12">
+              {isOwnProfile ? "No posts yet -- share something above." : "No posts yet."}
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+              {posts.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {tab === "about" && (
         <div className="rounded-xl border border-[#304055] bg-[#101A28] p-5 flex flex-col gap-3 text-sm">
