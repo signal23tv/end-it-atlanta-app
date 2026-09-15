@@ -92,28 +92,46 @@ export default async function ProfilePage({
             <div className="px-5 pb-5 -mt-10 flex flex-col gap-3">
               <div className="flex items-end justify-between gap-4">
                 <div className="relative shrink-0">
-                  <Avatar
-                    src={profile.avatar_url}
-                    color={profile.avatar_color}
-                    name={profile.display_name || profile.username}
-                    size={80}
-                    className="border-4 border-[#101A28]"
-                  />
-                  {isOwnProfile && (
+                  {isOwnProfile ? (
                     <Link
                       href="/settings/profile"
                       aria-label="Change your photo"
-                      className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#0A1422] border border-[#304055] flex items-center justify-center hover:border-gold transition-colors"
+                      className="group relative block rounded-full"
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="/assets/endit/v1/icons/camera.svg"
-                        alt=""
-                        width={13}
-                        height={13}
-                        style={{ filter: "invert(1)" }}
+                      <Avatar
+                        src={profile.avatar_url}
+                        color={profile.avatar_color}
+                        name={profile.display_name || profile.username}
+                        size={80}
+                        className="border-4 border-[#101A28]"
                       />
+                      {/* Whole photo is tappable -- this overlay is just a
+                          visible hint, not the only way in (the tiny
+                          corner-badge-only version was easy to miss). */}
+                      <span className="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                        <span className="opacity-0 group-hover:opacity-100 text-[#F7FAFF] text-[10px] font-bold uppercase tracking-wide transition-opacity">
+                          Edit
+                        </span>
+                      </span>
+                      <span className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-gold border-2 border-[#101A28] flex items-center justify-center shadow">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="/assets/endit/v1/icons/camera.svg"
+                          alt=""
+                          width={16}
+                          height={16}
+                          style={{ filter: "brightness(0)" }}
+                        />
+                      </span>
                     </Link>
+                  ) : (
+                    <Avatar
+                      src={profile.avatar_url}
+                      color={profile.avatar_color}
+                      name={profile.display_name || profile.username}
+                      size={80}
+                      className="border-4 border-[#101A28]"
+                    />
                   )}
                 </div>
                 {user && !isOwnProfile && (
